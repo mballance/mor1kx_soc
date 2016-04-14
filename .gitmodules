@@ -1,0 +1,24 @@
+[submodule "simscripts"]
+	path = simscripts
+	url = https://github.com/mballance/simscripts.git
+	branch = master
+[submodule "rtl/mor1kx"]
+	path = rtl/mor1kx
+	url = https://github.com/mballance/mor1kx.git
+	branch = master
+[submodule "rtl/wb_sys_ip"]
+	path = rtl/wb_sys_ip
+	url = https://github.com/mballance/wb_sys_ip.git
+	branch = master
+[submodule "rtl/memory_primitives"]
+	path = rtl/memory_primitives
+	url = https://github.com/mballance/memory_primitives.git
+	branch = master
+[submodule "mor1kx_mod"]
+	path = mor1kx_mod
+	url = https://github.com/mballance/mor1kx_mod.git
+	branch = master
+[submodule "rtl/mor1kx_mod"]
+	path = rtl/mor1kx_mod
+	url = https://github.com/mballance/mor1kx_mod.git
+	branch = master
