@@ -20,6 +20,10 @@ module mor1kx_soc(
 		.WB_ADDR_WIDTH  (32 ), 
 		.WB_DATA_WIDTH  (32 )
 		) dwbm ();
+	
+	wire[31:0]						snoop_adr_i = 0;
+	wire							snoop_en_i = 0;
+	wire[31:0]						irq = 0;
 
 	mor1kx_w #(
 		.FEATURE_DATACACHE                ("YES"               ), 
@@ -102,7 +106,10 @@ module mor1kx_soc(
 		.clk                              (clk                             ), 
 		.rstn                             (rstn                            ), 
 		.iwbm                             (iwbm.master                     ), 
-		.dwbm                             (dwbm.master                     ));
+		.dwbm                             (dwbm.master                     ),
+		.irq_i                            (irq                             ),
+		.snoop_adr_i                      (snoop_adr_i                     ),
+		.snoop_en_i                       (snoop_en_i                      ));
 	
 	wb_if #(
 		.WB_ADDR_WIDTH  (32 ), 
