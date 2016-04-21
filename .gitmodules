@@ -22,3 +22,11 @@
 	path = rtl/mor1kx_mod
 	url = https://github.com/mballance/mor1kx_mod.git
 	branch = master
+[submodule "rtl/std_protocol_if"]
+	path = rtl/std_protocol_if
+	url = https://github.com/mballance/std_protocol_if.git
+	branch = master
+[submodule "ve/bfms/wb_bfm"]
+	path = ve/bfms/wb_bfm
+	url = https://github.com/mballance/wb_bfm.git
+	branch = master
