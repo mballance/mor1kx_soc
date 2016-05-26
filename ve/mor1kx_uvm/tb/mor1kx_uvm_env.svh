@@ -4,6 +4,7 @@ class mor1kx_uvm_env extends uvm_env;
 	
 //	typedef generic_rom_agent #(10,32)		generic_rom_agent_t;
 	typedef generic_sram_byte_en_agent #(10,32)		u_ram_agent_t;
+	typedef generic_rom_agent #(10, 32)				u_rom_agent_t;
 
 //	simple_dpi_sdv_connector				m_sdv_connector;
 //	uvm_sdv_publisher #(sw_txn)				m_sw_txn_publisher;
@@ -14,7 +15,7 @@ class mor1kx_uvm_env extends uvm_env;
 //	sw_txn_driver							m_sw_txn_driver2;
 
 	u_ram_agent_t							m_u_ram_agent;
-	generic_rom_agent						m_rom_agent;
+	u_rom_agent_t							m_u_rom_agent;
 	
 	
 	function new(string name, uvm_component parent=null);
@@ -32,6 +33,8 @@ class mor1kx_uvm_env extends uvm_env;
 		super.build_phase(phase);
 
 		m_u_ram_agent = u_ram_agent_t::type_id::create("m_u_ram_agent", this);
+		m_u_rom_agent = u_rom_agent_t::type_id::create("m_u_rom_agent", this);
+		
 //		m_rom_agent = generic_rom_agent::type_id::create("m_rom_agent", this);
 			
 //		m_sdv_connector = simple_dpi_sdv_connector::type_id::create("m_sdv_connector", this);

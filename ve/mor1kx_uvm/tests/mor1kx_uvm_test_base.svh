@@ -15,5 +15,21 @@ class mor1kx_uvm_test_base extends uvm_test;
 		m_env = mor1kx_uvm_env::type_id::create("m_env", this);
 	endfunction
 	
+
+
+	/**
+	 * Task: pre_main_phase
+	 *
+	 * Override from class 
+	 */
+	virtual task pre_main_phase(input uvm_phase phase);
+		
+
+	endtask
+	
+	
+
+	
+	
 endclass
 

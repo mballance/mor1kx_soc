@@ -20,11 +20,16 @@ CFLAGS += \
   -I$(SIMPLE_DPI)/tests/sw \
   -I$(UVM_SDV)/c/common \
   -I$(UVM_SDV)/dpi
+  
+BUILD_TARGETS += build_embedded_sw  
 
-	
 include $(SIMSCRIPTS_DIR)/mkfiles/common_sim.mk
 
-# SIM_DATAFILES += $(call get_plusarg,SW_IMAGE,$(PLUSARGS))
+.phony: build_emedded_sw
+build_embedded_sw :
+	$(Q)$(MAKE) -f $(SIM_DIR)/scripts/embedded_sw.mk build
+
+SIM_DATAFILES += $(call get_plusarg,SW_IMAGE,$(PLUSARGS))
 # UVM_TESTNAME := $(call get_plusarg,UVM_TESTNAME,$(PLUSARGS))
 
 

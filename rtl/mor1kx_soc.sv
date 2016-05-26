@@ -26,29 +26,35 @@ module mor1kx_soc(
 	wire[31:0]						irq = 0;
 
 	mor1kx_w #(
-		.FEATURE_DATACACHE                ("YES"               ), 
+//		.FEATURE_DATACACHE                ("YES"               ), 
+		.FEATURE_DATACACHE                ("NONE"              ), 
 		/*
 		.OPTION_DCACHE_BLOCK_WIDTH        (OPTION_DCACHE_BLOCK_WIDTH       ), 
 		.OPTION_DCACHE_SET_WIDTH          (OPTION_DCACHE_SET_WIDTH         ), 
 		.OPTION_DCACHE_WAYS               (OPTION_DCACHE_WAYS              ), 
 		.OPTION_DCACHE_LIMIT_WIDTH        (OPTION_DCACHE_LIMIT_WIDTH       ), 
 		 */
-		.OPTION_DCACHE_SNOOP              ("YES"             ), 
+//		.OPTION_DCACHE_SNOOP              ("YES"             ), 
+		/** TODO:
 		.FEATURE_DMMU                     ("YES"                    ), 
 		.FEATURE_DMMU_HW_TLB_RELOAD       ("YES"      ), 
+		 */
 		/*
 		.OPTION_DMMU_SET_WIDTH            (OPTION_DMMU_SET_WIDTH           ), 
 		.OPTION_DMMU_WAYS                 (OPTION_DMMU_WAYS                ), 
 		 */
-		.FEATURE_INSTRUCTIONCACHE         ("YES"        ), 
+//		.FEATURE_INSTRUCTIONCACHE         ("YES"        ), 
+		.FEATURE_INSTRUCTIONCACHE         ("NONE"        ), 
 		/*
 		.OPTION_ICACHE_BLOCK_WIDTH        (OPTION_ICACHE_BLOCK_WIDTH       ), 
 		.OPTION_ICACHE_SET_WIDTH          (OPTION_ICACHE_SET_WIDTH         ), 
 		.OPTION_ICACHE_WAYS               (OPTION_ICACHE_WAYS              ), 
 		.OPTION_ICACHE_LIMIT_WIDTH        (OPTION_ICACHE_LIMIT_WIDTH       ), 
 		 */
+		/** TODO:
 		.FEATURE_IMMU                     ("YES"                    ), 
 		.FEATURE_IMMU_HW_TLB_RELOAD       ("YES"      ), 
+		 */
 		/*
 		.OPTION_IMMU_SET_WIDTH            (OPTION_IMMU_SET_WIDTH           ), 
 		.OPTION_IMMU_WAYS                 (OPTION_IMMU_WAYS                ), 
@@ -121,7 +127,13 @@ module mor1kx_soc(
 		.WB_DATA_WIDTH  (32 )
 		) ic2ram ();
 	
-	wb_interconnect_2x2 #(
+	wb_if #(
+		.WB_ADDR_WIDTH  (32 ), 
+		.WB_DATA_WIDTH  (32 )
+		) ic2uart ();
+	
+	
+	wb_interconnect_2x3 #(
 		.WB_ADDR_WIDTH      (32     ), 
 		.WB_DATA_WIDTH      (32     ), 
 		.SLAVE0_ADDR_BASE   (32'h0000_0000  ), 
@@ -134,7 +146,8 @@ module mor1kx_soc(
 		.m0                 (iwbm.slave        ), 
 		.m1                 (dwbm.slave        ), 
 		.s0                 (ic2rom.master     ), 
-		.s1                 (ic2ram.master     ));
+		.s1                 (ic2ram.master     ),
+		.s2					(ic2uart.master    ));
 	
 	wb_rom #(
 		.MEM_ADDR_BITS     (10    ), 
@@ -154,6 +167,30 @@ module mor1kx_soc(
 		.clk               (clk              ), 
 		.rstn              (rstn             ), 
 		.s                 (ic2ram.slave     ));
+
+	// TODO:
+	wire int_o, stx_pad_o, srx_pad_i, rts_pad_o,
+		cts_pad_i, dtr_pad_o, dsr_pad_i, ri_pad_i, dcd_pad_i;
+	assign srx_pad_i = 0;
+	assign cts_pad_i = 1;
+	assign dsr_pad_i = 0;
+	assign ri_pad_i = 0;
+	assign dcd_pad_i = 1;
+		
+	wb_uart wb_uart (
+		.clk        (clk       ), 
+		.rstn       (rstn      ), 
+		.s          (ic2uart.slave         ), 
+		.int_o      (int_o     ), 
+		.stx_pad_o  (stx_pad_o ), 
+		.srx_pad_i  (srx_pad_i ), 
+		.rts_pad_o  (rts_pad_o ), 
+		.cts_pad_i  (cts_pad_i ), 
+		.dtr_pad_o  (dtr_pad_o ), 
+		.dsr_pad_i  (dsr_pad_i ), 
+		.ri_pad_i   (ri_pad_i  ), 
+		.dcd_pad_i  (dcd_pad_i ));
+	
 endmodule
 
 
