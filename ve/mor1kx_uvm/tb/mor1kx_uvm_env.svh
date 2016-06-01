@@ -16,6 +16,8 @@ class mor1kx_uvm_env extends uvm_env;
 
 	u_ram_agent_t							m_u_ram_agent;
 	u_rom_agent_t							m_u_rom_agent;
+
+	wb_uart_agent							m_uart_agent;
 	
 	
 	function new(string name, uvm_component parent=null);
@@ -34,6 +36,8 @@ class mor1kx_uvm_env extends uvm_env;
 
 		m_u_ram_agent = u_ram_agent_t::type_id::create("m_u_ram_agent", this);
 		m_u_rom_agent = u_rom_agent_t::type_id::create("m_u_rom_agent", this);
+		
+		m_uart_agent = wb_uart_agent::type_id::create("m_uart_agent", this);
 		
 //		m_rom_agent = generic_rom_agent::type_id::create("m_rom_agent", this);
 			

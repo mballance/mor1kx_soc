@@ -2,6 +2,7 @@
 // Define the SRAM BFM name, such that we implement the generic SRAM devices
 +define+GENERIC_SRAM_BYTE_EN_BFM_NAME=generic_sram_byte_en
 +define+GENERIC_ROM_BFM_NAME=generic_rom
++define+WB_UART_BFM_NAME=wb_uart
 
 
 -f ${MOR1KX_SOC}/rtl/rtl.f
@@ -13,6 +14,8 @@
 -f ${SV_BFMS}/generic_rom/uvm/uvm.f
 -f ${SV_BFMS}/generic_rom/sv.f
 -f ${SV_BFMS}/utils/sv/sv.f
+-f ${SV_BFMS}/wb_uart/uvm/uvm.f
+-f ${SV_BFMS}/wb_uart/wb_uart.f
 
 // -f ${MOR1KX_SOC}/rtl/memory_primitives/rtl/sim/sim.f
 

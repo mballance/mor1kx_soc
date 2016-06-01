@@ -11,6 +11,8 @@ TB=mor1kx_uvm_tb
 
 SRC_DIRS += $(SIMPLE_DPI)/tests/sw
 
+# VOPT_FLAGS += -xprop
+
 # Must build DPI libraries
 # DPI_LIBRARIES += $(call get_plusarg,DPI_LIBRARY,$(PLUSARGS))
 #LIB_TARGETS += $(foreach lib,$(call get_plusarg,DPI_LIBRARY,$(PLUSARGS)),$(lib)$(DLLEXT))

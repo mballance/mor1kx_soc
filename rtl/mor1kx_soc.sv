@@ -2,11 +2,14 @@
  * mor1kx_soc.sv
  ****************************************************************************/
 
+`define HAVE_UART
+
 /**
  * Module: mor1kx_soc
  * 
  * TODO: Add module documentation
  */
+`include "or1200_defines.v"
 module mor1kx_soc(
 		input			clk,
 		input			rstn);
@@ -24,98 +27,17 @@ module mor1kx_soc(
 	wire[31:0]						snoop_adr_i = 0;
 	wire							snoop_en_i = 0;
 	wire[31:0]						irq = 0;
+	
+	wire[`OR1200_PIC_INTS-1:0]		pic_ints_i = 0;
 
-	mor1kx_w #(
-//		.FEATURE_DATACACHE                ("YES"               ), 
-		.FEATURE_DATACACHE                ("NONE"              ), 
-		/*
-		.OPTION_DCACHE_BLOCK_WIDTH        (OPTION_DCACHE_BLOCK_WIDTH       ), 
-		.OPTION_DCACHE_SET_WIDTH          (OPTION_DCACHE_SET_WIDTH         ), 
-		.OPTION_DCACHE_WAYS               (OPTION_DCACHE_WAYS              ), 
-		.OPTION_DCACHE_LIMIT_WIDTH        (OPTION_DCACHE_LIMIT_WIDTH       ), 
-		 */
-//		.OPTION_DCACHE_SNOOP              ("YES"             ), 
-		/** TODO:
-		.FEATURE_DMMU                     ("YES"                    ), 
-		.FEATURE_DMMU_HW_TLB_RELOAD       ("YES"      ), 
-		 */
-		/*
-		.OPTION_DMMU_SET_WIDTH            (OPTION_DMMU_SET_WIDTH           ), 
-		.OPTION_DMMU_WAYS                 (OPTION_DMMU_WAYS                ), 
-		 */
-//		.FEATURE_INSTRUCTIONCACHE         ("YES"        ), 
-		.FEATURE_INSTRUCTIONCACHE         ("NONE"        ), 
-		/*
-		.OPTION_ICACHE_BLOCK_WIDTH        (OPTION_ICACHE_BLOCK_WIDTH       ), 
-		.OPTION_ICACHE_SET_WIDTH          (OPTION_ICACHE_SET_WIDTH         ), 
-		.OPTION_ICACHE_WAYS               (OPTION_ICACHE_WAYS              ), 
-		.OPTION_ICACHE_LIMIT_WIDTH        (OPTION_ICACHE_LIMIT_WIDTH       ), 
-		 */
-		/** TODO:
-		.FEATURE_IMMU                     ("YES"                    ), 
-		.FEATURE_IMMU_HW_TLB_RELOAD       ("YES"      ), 
-		 */
-		/*
-		.OPTION_IMMU_SET_WIDTH            (OPTION_IMMU_SET_WIDTH           ), 
-		.OPTION_IMMU_WAYS                 (OPTION_IMMU_WAYS                ), 
-		 */
-		/*
-		.FEATURE_TIMER                    (FEATURE_TIMER                   ), 
-		.FEATURE_DEBUGUNIT                (FEATURE_DEBUGUNIT               ), 
-		.FEATURE_PERFCOUNTERS             (FEATURE_PERFCOUNTERS            ), 
-		.FEATURE_MAC                      (FEATURE_MAC                     ), 
-		.FEATURE_SYSCALL                  (FEATURE_SYSCALL                 ), 
-		.FEATURE_TRAP                     (FEATURE_TRAP                    ), 
-		.FEATURE_RANGE                    (FEATURE_RANGE                   ), 
-		.FEATURE_PIC                      (FEATURE_PIC                     ), 
-		.OPTION_PIC_TRIGGER               (OPTION_PIC_TRIGGER              ), 
-		.OPTION_PIC_NMI_WIDTH             (OPTION_PIC_NMI_WIDTH            ), 
-		.FEATURE_DSX                      (FEATURE_DSX                     ), 
-		.FEATURE_OVERFLOW                 (FEATURE_OVERFLOW                ), 
-		.FEATURE_CARRY_FLAG               (FEATURE_CARRY_FLAG              ), 
-		.FEATURE_FASTCONTEXTS             (FEATURE_FASTCONTEXTS            ), 
-		.OPTION_RF_CLEAR_ON_INIT          (OPTION_RF_CLEAR_ON_INIT         ), 
-		.OPTION_RF_NUM_SHADOW_GPR         (OPTION_RF_NUM_SHADOW_GPR        ), 
-		.OPTION_RF_ADDR_WIDTH             (OPTION_RF_ADDR_WIDTH            ), 
-		.OPTION_RF_WORDS                  (OPTION_RF_WORDS                 ), 
-		.OPTION_RESET_PC                  (OPTION_RESET_PC                 ), 
-		.FEATURE_MULTIPLIER               (FEATURE_MULTIPLIER              ), 
-		.FEATURE_DIVIDER                  (FEATURE_DIVIDER                 ), 
-		.FEATURE_ADDC                     (FEATURE_ADDC                    ), 
-		.FEATURE_SRA                      (FEATURE_SRA                     ), 
-		.FEATURE_ROR                      (FEATURE_ROR                     ), 
-		.FEATURE_EXT                      (FEATURE_EXT                     ), 
-		.FEATURE_CMOV                     (FEATURE_CMOV                    ), 
-		.FEATURE_FFL1                     (FEATURE_FFL1                    ), 
-		.FEATURE_ATOMIC                   (FEATURE_ATOMIC                  ), 
-		.FEATURE_CUST1                    (FEATURE_CUST1                   ), 
-		.FEATURE_CUST2                    (FEATURE_CUST2                   ), 
-		.FEATURE_CUST3                    (FEATURE_CUST3                   ), 
-		.FEATURE_CUST4                    (FEATURE_CUST4                   ), 
-		.FEATURE_CUST5                    (FEATURE_CUST5                   ), 
-		.FEATURE_CUST6                    (FEATURE_CUST6                   ), 
-		.FEATURE_CUST7                    (FEATURE_CUST7                   ), 
-		.FEATURE_CUST8                    (FEATURE_CUST8                   ), 
-		.FEATURE_FPU                      (FEATURE_FPU                     ), 
-		.OPTION_SHIFTER                   (OPTION_SHIFTER                  ), 
-		.FEATURE_STORE_BUFFER             (FEATURE_STORE_BUFFER            ), 
-		.OPTION_STORE_BUFFER_DEPTH_WIDTH  (OPTION_STORE_BUFFER_DEPTH_WIDTH ), 
-		.FEATURE_MULTICORE                (FEATURE_MULTICORE               ), 
-		.FEATURE_TRACEPORT_EXEC           (FEATURE_TRACEPORT_EXEC          ), 
-		 */
-		.BUS_IF_TYPE                      ("WISHBONE32"                     )
-		/*
-		.IBUS_WB_TYPE                     (IBUS_WB_TYPE                    ), 
-		.DBUS_WB_TYPE                     (DBUS_WB_TYPE                    )
-		 */
-		) u_cpu (
-		.clk                              (clk                             ), 
-		.rstn                             (rstn                            ), 
-		.iwbm                             (iwbm.master                     ), 
-		.dwbm                             (dwbm.master                     ),
-		.irq_i                            (irq                             ),
-		.snoop_adr_i                      (snoop_adr_i                     ),
-		.snoop_en_i                       (snoop_en_i                      ));
+	or1200_top_w #(.WB_CLMODE(0)) u_cpu (
+		.clk_i       (clk      ), 
+		.rstn_i      (rstn     ), 
+		.pic_ints_i  (pic_ints_i ), 
+		.iwb         (iwbm.master        ), 
+		.iwb_clk_i   (clk  ), 
+		.dwb         (dwbm.master        ), 
+		.dwb_clk_i   (clk  ));
 	
 	wb_if #(
 		.WB_ADDR_WIDTH  (32 ), 
@@ -132,14 +54,17 @@ module mor1kx_soc(
 		.WB_DATA_WIDTH  (32 )
 		) ic2uart ();
 	
-	
+
+`ifdef HAVE_UART
 	wb_interconnect_2x3 #(
 		.WB_ADDR_WIDTH      (32     ), 
 		.WB_DATA_WIDTH      (32     ), 
 		.SLAVE0_ADDR_BASE   (32'h0000_0000  ), 
 		.SLAVE0_ADDR_LIMIT  (32'h0000_FFFF  ), 
 		.SLAVE1_ADDR_BASE   (32'h1000_0000  ), 
-		.SLAVE1_ADDR_LIMIT  (32'h1000_FFFF  )
+		.SLAVE1_ADDR_LIMIT  (32'h1000_FFFF  ),
+		.SLAVE2_ADDR_BASE	(32'h8000_0000  ),
+		.SLAVE2_ADDR_LIMIT	(32'h8000_1000  )
 		) u_ic (
 		.clk                (clk               ), 
 		.rstn               (rstn              ), 
@@ -148,6 +73,22 @@ module mor1kx_soc(
 		.s0                 (ic2rom.master     ), 
 		.s1                 (ic2ram.master     ),
 		.s2					(ic2uart.master    ));
+`else
+		wb_interconnect_2x2 #(
+				.WB_ADDR_WIDTH      (32     ), 
+				.WB_DATA_WIDTH      (32     ), 
+				.SLAVE0_ADDR_BASE   (32'h0000_0000  ), 
+				.SLAVE0_ADDR_LIMIT  (32'h0000_FFFF  ), 
+				.SLAVE1_ADDR_BASE   (32'h1000_0000  ), 
+				.SLAVE1_ADDR_LIMIT  (32'h1000_FFFF  )
+			) u_ic (
+				.clk                (clk               ), 
+				.rstn               (rstn              ), 
+				.m0                 (iwbm.slave        ), 
+				.m1                 (dwbm.slave        ), 
+				.s0                 (ic2rom.master     ), 
+				.s1                 (ic2ram.master     ));
+`endif
 	
 	wb_rom #(
 		.MEM_ADDR_BITS     (10    ), 
@@ -176,8 +117,9 @@ module mor1kx_soc(
 	assign dsr_pad_i = 0;
 	assign ri_pad_i = 0;
 	assign dcd_pad_i = 1;
-		
-	wb_uart wb_uart (
+
+`ifdef HAVE_UART
+	wb_uart u_uart (
 		.clk        (clk       ), 
 		.rstn       (rstn      ), 
 		.s          (ic2uart.slave         ), 
@@ -190,6 +132,7 @@ module mor1kx_soc(
 		.dsr_pad_i  (dsr_pad_i ), 
 		.ri_pad_i   (ri_pad_i  ), 
 		.dcd_pad_i  (dcd_pad_i ));
+`endif	
 	
 endmodule
 

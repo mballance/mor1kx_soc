@@ -13,6 +13,7 @@ module mor1kx_uvm_tb;
 	import mor1kx_uvm_tests_pkg::*;
 	import generic_sram_byte_en_agent_pkg::*;
 	import generic_rom_agent_pkg::*;
+	import wb_uart_agent_pkg::*;
 	
 	reg[15:0]                       rst_cnt = 0;
 	reg                             rstn = 0;
@@ -48,6 +49,7 @@ module mor1kx_uvm_tb;
 		// Register the BFM virtual interfaces
 		automatic u_ram_cfg_t u_ram_cfg = u_ram_cfg_t::type_id::create("u_ram_cfg");
 		automatic u_rom_cfg_t u_rom_cfg = u_rom_cfg_t::type_id::create("u_rom_cfg");
+		automatic wb_uart_config u_uart_cfg = wb_uart_config::type_id::create("u_uart_cfg");
 		
 		// Handle to the SRAM BFM
 		u_ram_cfg.vif = u_soc.u_ram.u_sram.ram;
@@ -58,6 +60,11 @@ module mor1kx_uvm_tb;
 		u_rom_cfg.vif = u_soc.u_rom.u_rom.rom;
 		uvm_config_db #(u_rom_cfg_t)::set(uvm_top, "*",
 				u_rom_cfg_t::report_id, u_rom_cfg);
+		
+		u_uart_cfg.vif = u_soc.u_uart;
+		u_uart_cfg.vif_path = $psprintf("%m.u_soc.u_uart");
+		uvm_config_db #(wb_uart_config)::set(uvm_top, "*",
+				wb_uart_config::report_id, u_uart_cfg);
 			
 	end
 	
