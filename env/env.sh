@@ -9,6 +9,7 @@ fi
 
 export MOR1KX=${MOR1KX_SOC}/rtl/mor1kx_mod
 export WB_SYS_IP=${MOR1KX_SOC}/rtl/wb_sys_ip
+export OC_WB_IP=${MOR1KX_SOC}/rtl/oc_wb_ip
 export MEMORY_PRIMITIVES=${MOR1KX_SOC}/rtl/memory_primitives
 export SV_BFMS=${MOR1KX_SOC}/ve/sv_bfms
 export STD_PROTOCOL_IF=${MOR1KX_SOC}/rtl/std_protocol_if

@@ -4,7 +4,7 @@ class mor1kx_uvm_env extends uvm_env;
 	
 //	typedef generic_rom_agent #(10,32)		generic_rom_agent_t;
 	typedef generic_sram_byte_en_agent #(10,32)		u_ram_agent_t;
-	typedef generic_rom_agent #(10, 32)				u_rom_agent_t;
+	typedef generic_rom_agent #(16, 32)				u_rom_agent_t;
 
 //	simple_dpi_sdv_connector				m_sdv_connector;
 //	uvm_sdv_publisher #(sw_txn)				m_sw_txn_publisher;

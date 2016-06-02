@@ -60,7 +60,7 @@ module mor1kx_soc(
 		.WB_ADDR_WIDTH      (32     ), 
 		.WB_DATA_WIDTH      (32     ), 
 		.SLAVE0_ADDR_BASE   (32'h0000_0000  ), 
-		.SLAVE0_ADDR_LIMIT  (32'h0000_FFFF  ), 
+		.SLAVE0_ADDR_LIMIT  (32'h0003_FFFF  ), 
 		.SLAVE1_ADDR_BASE   (32'h1000_0000  ), 
 		.SLAVE1_ADDR_LIMIT  (32'h1000_FFFF  ),
 		.SLAVE2_ADDR_BASE	(32'h8000_0000  ),
@@ -91,7 +91,7 @@ module mor1kx_soc(
 `endif
 	
 	wb_rom #(
-		.MEM_ADDR_BITS     (10    ), 
+		.MEM_ADDR_BITS     (16    ), 
 		.WB_ADDRESS_WIDTH  (32 ), 
 		.WB_DATA_WIDTH     (32    ), 
 		.INIT_FILE         (""        )

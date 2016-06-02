@@ -1,0 +1,82 @@
+
+#include "asm/spr-defs.h"
+
+	.section .vectors, "ax"
+	.global __reset
+
+	.org	0x100
+__reset:
+	l.andi		r0, r0, 0
+
+	// Clear stack/frame pointers
+	l.andi		r1, r0, 0
+	l.andi		r2, r0, 0
+
+	// Set superviser mode
+	l.ori		r3, r0, SPR_SR_SM
+	l.mtspr		r0, r3, SPR_SR
+
+	l.jal		_ent
+	l.nop
+
+_ent:
+
+	// Setup the stack
+	l.movhi		r1, hi(_end)
+	l.ori		r1, r1, lo(_end)
+	l.addi		r1, r1, 0x100
+	l.or		r2, r0, r1
+
+	// Clear BSS segments
+	l.movhi	r4, hi(_bss_start)
+	l.ori	r4, r4, lo(_bss_start)
+	l.movhi	r5, hi(_bss_end)
+	l.ori	r5, r5, lo(_bss_end)
+.L_clear_bss:
+	l.sw	0(r4), r0
+	l.sfltu	r4,r5
+	l.bf	.L_clear_bss
+	l.addi	r4,r4,4
+
+	// Call C++ init methods
+	l.movhi		r4, hi(__init_array_start)
+	l.ori		r4, r4, lo(__init_array_start)
+	l.movhi		r5, hi(__init_array_end)
+	l.ori		r5, r5, lo(__init_array_end)
+	// cmp r4, r5
+	// eq => skip
+	//
+
+	// Reset registers
+	l.andi	r3, r0, 0
+	l.andi	r4, r0, 0
+	l.andi	r5, r0, 0
+	l.andi	r6, r0, 0
+	l.andi	r7, r0, 0
+	l.andi	r8, r0, 0
+	l.andi	r9, r0, 0
+	l.andi	r10, r0, 0
+	l.andi	r11, r0, 0
+	l.andi	r12, r0, 0
+	l.andi	r13, r0, 0
+	l.andi	r14, r0, 0
+	l.andi	r15, r0, 0
+	l.andi	r17, r0, 0
+	l.andi	r18, r0, 0
+	l.andi	r19, r0, 0
+	l.andi	r20, r0, 0
+	l.andi	r21, r0, 0
+	l.andi	r22, r0, 0
+	l.andi	r23, r0, 0
+	l.andi	r24, r0, 0
+	l.andi	r25, r0, 0
+	l.andi	r26, r0, 0
+	l.andi	r27, r0, 0
+	l.andi	r28, r0, 0
+	l.andi	r29, r0, 0
+	l.andi	r30, r0, 0
+	l.andi	r31, r0, 0
+
+	l.jal	main
+	l.nop
+

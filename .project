@@ -28,6 +28,10 @@
 			<value>$%7BPROJECT_LOC%7D</value>
 		</variable>
 		<variable>
+			<name>OC_WB_IP</name>
+			<value>$%7BPROJECT_LOC%7D/rtl/oc_wb_ip</value>
+		</variable>
+		<variable>
 			<name>STD_PROTOCOL_IF</name>
 			<value>$%7BPROJECT_LOC%7D/rtl/std_protocol_if</value>
 		</variable>

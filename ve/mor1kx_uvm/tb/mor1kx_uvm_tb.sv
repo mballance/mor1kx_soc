@@ -43,7 +43,7 @@ module mor1kx_uvm_tb;
 		.rstn  (rstn ));
 	
 	typedef generic_sram_byte_en_config #(10, 32) 	u_ram_cfg_t;
-	typedef generic_rom_config #(10, 32) 			u_rom_cfg_t;
+	typedef generic_rom_config #(16, 32) 			u_rom_cfg_t;
 	
 	initial begin
 		// Register the BFM virtual interfaces

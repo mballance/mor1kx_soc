@@ -26,3 +26,7 @@
 	path = ve/sv_bfms
 	url = https://github.com/mballance/sv_bfms.git
 	branch = master
+[submodule "rtl/oc_wb_ip"]
+	path = rtl/oc_wb_ip
+	url = https://github.com/mballance/oc_wb_ip.git
+	branch = master
