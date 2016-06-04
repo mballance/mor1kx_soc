@@ -354,7 +354,8 @@
 // is disabled to save area and increase
 // clock frequency.
 //
-//`define OR1200_IMPL_ALU_ROTATE
+// MSB: enable shifts, which is now required by the C compiler
+`define OR1200_IMPL_ALU_ROTATE
 
 //
 // Type of ALU compare to implement

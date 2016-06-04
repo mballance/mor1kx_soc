@@ -13,6 +13,9 @@ MK_INCLUDES += $(MOR1KX_SOC)/rtl/mor1kx_mod/fw/mor1kx.mk
 MK_INCLUDES += $(MOR1KX_SOC)/rtl/mor1kx_mod/fw/rules_defs.mk
 MK_INCLUDES += $(SIM_SCRIPTS_DIR)/../../tests/sw/rules_defs.mk
 
+CFLAGS += -mcompat-delay -fomit-frame-pointer
+CXXFLAGS += -mcompat-delay
+
 include $(MK_INCLUDES)
 
 EXE_TARGETS += $(call get_plusarg,SW_IMAGE,$(PLUSARGS))

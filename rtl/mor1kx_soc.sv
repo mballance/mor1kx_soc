@@ -54,6 +54,11 @@ module mor1kx_soc(
 		.WB_DATA_WIDTH  (32 )
 		) ic2uart ();
 	
+	wb_if #(
+		.WB_ADDR_WIDTH  (32 ), 
+		.WB_DATA_WIDTH  (32 )
+		) ic2err ();
+	
 
 `ifdef HAVE_UART
 	wb_interconnect_2x3 #(
@@ -62,9 +67,9 @@ module mor1kx_soc(
 		.SLAVE0_ADDR_BASE   (32'h0000_0000  ), 
 		.SLAVE0_ADDR_LIMIT  (32'h0003_FFFF  ), 
 		.SLAVE1_ADDR_BASE   (32'h1000_0000  ), 
-		.SLAVE1_ADDR_LIMIT  (32'h1000_FFFF  ),
+		.SLAVE1_ADDR_LIMIT  (32'h100F_FFFF  ),
 		.SLAVE2_ADDR_BASE	(32'h8000_0000  ),
-		.SLAVE2_ADDR_LIMIT	(32'h8000_1000  )
+		.SLAVE2_ADDR_LIMIT	(32'h8000_FFFF  )
 		) u_ic (
 		.clk                (clk               ), 
 		.rstn               (rstn              ), 
@@ -101,7 +106,7 @@ module mor1kx_soc(
 		.s                 (ic2rom.slave     ));
 
 	wb_sram #(
-		.MEM_ADDR_BITS     (10    ), 
+		.MEM_ADDR_BITS     (18    ), 
 		.WB_ADDRESS_WIDTH  (32 ), 
 		.WB_DATA_WIDTH     (32    )
 		) u_ram (

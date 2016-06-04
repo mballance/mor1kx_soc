@@ -5,6 +5,8 @@ include $(SIMSCRIPTS_DIR)/mkfiles/plusargs.mk
 # include $(UVM_SDV)/c/rules_defs.mk
 # include $(UVM_SDV)/dpi/rules_defs.mk
 
+TIMEOUT := 2ms
+
 SCRIPTS_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
 TB=mor1kx_uvm_tb

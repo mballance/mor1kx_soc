@@ -13,6 +13,7 @@
 -f ${SV_BFMS}/generic_sram_byte_en/sv.f
 -f ${SV_BFMS}/generic_rom/uvm/uvm.f
 -f ${SV_BFMS}/generic_rom/sv.f
+-f ${SV_BFMS}/wb/wb.f
 -f ${SV_BFMS}/utils/sv/sv.f
 -f ${SV_BFMS}/wb_uart/uvm/uvm.f
 -f ${SV_BFMS}/wb_uart/wb_uart.f
@@ -23,7 +24,8 @@
 
 -f ${MOR1KX_SOC}/ve/mor1kx_uvm/tests/mor1kx_uvm_tests.f
 
-${MOR1KX_SOC}/ve/mor1kx_uvm/tb/mor1kx_uvm_tb.sv
+// ${MOR1KX_SOC}/ve/mor1kx_uvm/tb/mor1kx_uvm_tb.sv
+-f ${MOR1KX_SOC}/ve/mor1kx_uvm/tb/mor1kx_uvm_env_tb.f
 // -f ${SIMPLE_DPI}/sv/types/types.f
 // -f ${SIMPLE_DPI}/tb/simple_dpi_env.f
 // -f ${SIMPLE_DPI}/tests/simple_dpi_tests.f

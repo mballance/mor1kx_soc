@@ -4,10 +4,10 @@ ifneq (1,$(RULES))
 
 SW_SRC_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
-LIBGCC:=$(shell $(CC) -print-libgcc-file-name)
-LIBC:=$(dir $(LIBGCC))/../../../../or1k-elf/lib/libc.a
-LIBCXX:=$(dir $(LIBGCC))/../../../../or1k-elf/lib/libstdc++.a
-LIBOR1K:=$(dir $(LIBGCC))/../../../../or1k-elf/lib/libor1k.a
+LIBGCC:=$(shell $(CC) -print-libgcc-file-name -mcompat-delay)
+LIBC:=$(dir $(LIBGCC))/../../../../../or1k-elf/lib/compat-delay/libc.a
+LIBCXX:=$(dir $(LIBGCC))/../../../../../or1k-elf/lib/compat-delay/libstdc++.a
+LIBOR1K:=$(dir $(LIBGCC))/../../../../../or1k-elf/lib/compat-delay/libor1k.a
 
 else # Rules
 
@@ -19,10 +19,13 @@ BAREMETAL_OBJ=\
 	baremetal/start.o \
 	baremetal/libc_support.o
 
-$(BUILD_DIR_A)/baremetal/%.elf : baremetal/%.o $(BAREMETAL_OBJ)
-	$(Q)$(LD) -o $@ $^ -T $(SW_SRC_DIR)/baremetal/baremetal.lds \
+$(BUILD_DIR_A)/baremetal/%.elf : baremetal/%.o $(BAREMETAL_OBJ) baremetal.lds
+	$(Q)$(LD) -o $@ $(filter-out %.lds,$^) -T baremetal.lds \
 		$(LIBC) $(LIBGCC) # $(LIBOR1K)
 
+%.lds : $(SW_SRC_DIR)/baremetal/%.lds.h
+	$(Q)$(CC) -E -x c $(CFLAGS) $^ | grep -v '^#' > $@
+	
 baremetal/%.o : $(SW_SRC_DIR)/baremetal/%.S
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)$(AS) -c -o $@ $(ASFLAGS) -I$(SW_SRC_DIR)/baremetal $^

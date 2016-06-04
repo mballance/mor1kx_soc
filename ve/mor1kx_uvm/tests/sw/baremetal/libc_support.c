@@ -3,16 +3,46 @@
 #include <sys/types.h>
 #include <reent.h>
 #include <stdint.h>
+#include <string.h>
 
-struct _reent *__ATTRIBUTE_IMPURE_PTR__ _or1k_current_impure_ptr = 0;
+static int _initialized = 0;
+static struct _reent *__ATTRIBUTE_IMPURE_PTR__ _or1k_current_impure_ptr;
+static struct _reent __ATTRIBUTE_IMPURE_PTR__ _or1k_current_impure_data;
+static struct _reent *__ATTRIBUTE_IMPURE_PTR__ _or1k_exception_impure_ptr;
 
-struct _reent *_or1k_libc_getreent(void) {
-	return _or1k_current_impure_ptr;
+extern char __init_array_start;
+extern char __init_array_end;
+
+void pre_main(void) {
+	char *ptr = &__init_array_start;
+
+	while (ptr != &__init_array_end) {
+		void (*f)(void) = (void (*)(void))ptr;
+		f();
+	}
 }
 
-static void *heap = 0;
+struct _reent *_or1k_libc_getreent(void) {
+//	return 0;
+//	return _impure_ptr;
 
-extern unsigned char end;
+//	return 0;
+	if (!_initialized) {
+		_REENT_INIT_PTR(_impure_ptr);
+////		_REENT_INIT_PTR(_or1k_exception_impure_ptr);
+		_or1k_current_impure_ptr = _impure_ptr;
+//
+//		_REENT_INIT_PTR(&_or1k_current_impure_data);
+//		memset(&_or1k_current_impure_data, 0, sizeof(_or1k_current_impure_data));
+		_initialized = 1;
+	}
+//	return _or1k_current_impure_ptr;
+	return _impure_ptr;
+//	return &_or1k_current_impure_data;
+}
+
+extern unsigned char heap;
+static void *heap_ptr = 0;
 
 void *_sbrk_r(struct _reent *reent, ptrdiff_t incr) {
 
@@ -20,13 +50,13 @@ void *_sbrk_r(struct _reent *reent, ptrdiff_t incr) {
 
 	unsigned char *prev_heap;
 
-	if (heap == 0) {
+	if (heap_ptr == 0) {
 		// initialize
-		heap = &end;
+		heap_ptr = &heap;
 	}
-	prev_heap = heap;
+	prev_heap = heap_ptr;
 
-	heap += incr;
+	heap_ptr += incr;
 
 	// unlock/disable interrupts
 	return prev_heap;
@@ -59,7 +89,12 @@ _ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt) {
 
 _ssize_t _write_r(struct _reent *ptr, int fd, const void *buf, size_t cnt) {
 	if (fd == 0) {
+		int i;
 		// write to the UART
+		const char *p = (const char *)buf;
+		for (i=0; i<cnt; i++) {
+			*((volatile unsigned int *)0x80000000) = p[i];
+		}
 	}
 }
 

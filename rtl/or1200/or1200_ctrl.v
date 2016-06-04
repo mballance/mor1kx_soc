@@ -764,8 +764,10 @@ always @(posedge clk or `OR1200_RST_EVENT rst) begin
 		;
 
 		// Illegal and OR1200 unsupported instructions
-	default:
+	default: begin
+		$display("except_illegal: 'h%08h", id_insn);
 		except_illegal <=  1'b1;
+	end
 
 	endcase
 	end // if (!ex_freeze)

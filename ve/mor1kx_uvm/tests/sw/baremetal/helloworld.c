@@ -1,14 +1,25 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(int argc, char **argv) {
+	char *ptr;
+	char tmp[128];
+	int len, i;
 //	fprintf(stdout, "Hello World\n");
 
-	*((volatile unsigned int *)0x80000000) = 'H';
-	*((volatile unsigned int *)0x80000000) = 'e';
-	*((volatile unsigned int *)0x80000000) = 'l';
-	*((volatile unsigned int *)0x80000000) = 'l';
-	*((volatile unsigned int *)0x80000000) = 'o';
-	*((volatile unsigned int *)0x80000000) = '\n';
+	write(0, "Hello World\n", 12);
+//	do_test();
+//	do_test2();
+	write(0, "Hello World\n", 12);
+	write(0, "Hello World 1\n", 14);
+	ptr = (char *)malloc(16);
+	sprintf(tmp, "Hello sprintf %p\n", ptr);
+	write(0, tmp, strlen(tmp));
+	ptr = (char *)malloc(256);
+	sprintf(tmp, "Hello sprintf %p\n", ptr);
+	write(0, tmp, strlen(tmp));
+	write(0, "Hello World 2\n", 14);
 
 	while (1) { }
 

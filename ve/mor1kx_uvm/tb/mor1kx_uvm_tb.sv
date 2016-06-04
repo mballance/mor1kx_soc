@@ -42,7 +42,24 @@ module mor1kx_uvm_tb;
 		.clk   (clk  ), 
 		.rstn  (rstn ));
 	
-	typedef generic_sram_byte_en_config #(10, 32) 	u_ram_cfg_t;
+//	wb_monitor_bfm #(
+//		.WB_ADDR_WIDTH  (32 ), 
+//		.WB_DATA_WIDTH  (32 )
+//		) u_iwb (
+//		.clk            (clk               ), 
+//		.rstn           (rstn              ), 
+//		.monitor        (u_soc.iwbm.monitor));
+//	
+//	wb_monitor_bfm #(
+//		.WB_ADDR_WIDTH  (32 ), 
+//		.WB_DATA_WIDTH  (32 )
+//		) u_dwb (
+//		.clk            (clk               ), 
+//		.rstn           (rstn              ), 
+//		.monitor        (u_soc.dwbm.monitor));
+	
+	
+	typedef generic_sram_byte_en_config #(18, 32) 	u_ram_cfg_t;
 	typedef generic_rom_config #(16, 32) 			u_rom_cfg_t;
 	
 	initial begin
@@ -71,6 +88,8 @@ module mor1kx_uvm_tb;
 	initial begin
 		run_test();
 	end
+	
+	or1200_monitor		mon();
 
 endmodule
 

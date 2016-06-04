@@ -22,10 +22,25 @@ __reset:
 _ent:
 
 	// Setup the stack
-	l.movhi		r1, hi(_end)
-	l.ori		r1, r1, lo(_end)
-	l.addi		r1, r1, 0x100
+	l.movhi		r1, hi(_ram_end)
+	l.ori		r1, r1, lo(_ram_end)
+//	l.addi		r1, r1, 0x100
 	l.or		r2, r0, r1
+
+	// Relocate the .data section from ROM to RAM
+	l.movhi		r4, hi(__data_load)
+	l.ori		r4, r4, lo(__data_load)
+	l.movhi		r5, hi(__data_start)
+	l.ori		r5, r5, lo(__data_start)
+	l.movhi		r6, hi(_edata)
+	l.ori		r6, r6, lo(_edata)
+.L_rom2ram:
+	l.lwz		r7, 0(r4)
+	l.sw		0(r5), r7
+	l.sfltu		r5, r6
+	l.bf		.L_rom2ram
+	l.addi		r5, r5, 4
+	l.nop
 
 	// Clear BSS segments
 	l.movhi	r4, hi(_bss_start)
@@ -38,11 +53,21 @@ _ent:
 	l.bf	.L_clear_bss
 	l.addi	r4,r4,4
 
-	// Call C++ init methods
+	// TODO: Call C++ init methods
+/*
 	l.movhi		r4, hi(__init_array_start)
 	l.ori		r4, r4, lo(__init_array_start)
 	l.movhi		r5, hi(__init_array_end)
 	l.ori		r5, r5, lo(__init_array_end)
+	l.sfeq		r4, r5 // skip init if the pointers are equal
+	l.bf		.L_no_init
+.L_call_init:
+	l.jalr		r4		// Call init function
+	l.sfltu		r4, r5
+	l.bf		.L_call_init
+	l.addi		r4, r4, 4
+.L_no_init:
+ */
 	// cmp r4, r5
 	// eq => skip
 	//
@@ -77,6 +102,13 @@ _ent:
 	l.andi	r30, r0, 0
 	l.andi	r31, r0, 0
 
+	// Do 'c' setup
+//	l.jal	pre_main
+//	l.nop
+
 	l.jal	main
+	l.nop
+	l.nop
+	l.nop
 	l.nop
 

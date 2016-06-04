@@ -2,10 +2,20 @@
 OUTPUT_FORMAT("elf32-or1k", "elf32-or1k", "elf32-or1k")
 __DYNAMIC = 0;
 
+// 16 - 64k
+// 17 - 128k
+// 18 - 256k
+// 19 - 512k
+// 20 - 1M
+#define ROM_ORIGIN	0x00000000
+#define ROM_LENGTH	0x00010000 // 64k
+#define RAM_ORIGIN  0x10000000
+#define RAM_LENGTH	0x00100000 // 1M
+
 MEMORY
 {
-	rom(rx)  : ORIGIN = 0x00000000, LENGTH = 0x10000
-	ram(rwx) : ORIGIN = 0x10000000, LENGTH = 0x1000
+	rom(rx)  : ORIGIN = ROM_ORIGIN, LENGTH = ROM_LENGTH
+	ram(rwx) : ORIGIN = RAM_ORIGIN, LENGTH = RAM_LENGTH
 }
 
 SECTIONS
@@ -69,8 +79,13 @@ SECTIONS
 		. = ALIGN(4);
 		_bss_end = .;
 	} >ram	
-	
-	_end = .; PROVIDE(end = .);
+
+	. = ALIGN(4);
+
+	_heap = .; PROVIDE(heap = .);
+
+ 	. = (RAM_ORIGIN + RAM_LENGTH - 4);
+	_ram_end = .; PROVIDE(ram_end = .);
 
 	.stab 0 (NOLOAD) : {
 		*(.stab)
