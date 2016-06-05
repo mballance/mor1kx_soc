@@ -13,7 +13,10 @@
 # //  is prohibited from disclosure under the Trade Secrets Act,
 # //  18 U.S.C. Section 1905.
 # //
-# rundir/mor1kx_uvm/mor1kx_uvm_asm_smoketest_0001/vsim.wlf opened as dataset "vsim"
-add wave -position insertpoint vsim:/mor1kx_uvm_tb/u_soc/wb_uart/s/*
-add wave -position insertpoint vsim:/mor1kx_uvm_tb/u_soc/wb_uart/*
+# rundir/mor1kx_uvm/mor1kx_uvm_baremetal_helloworld_0001/vsim.wlf opened as dataset "vsim"
+add wave -position insertpoint vsim:/mor1kx_uvm_tb/u_soc/u_cpu/u_core/or1200_cpu/or1200_genpc/*
+find drivers -source -time {397068 ns} -cause vsim:/mor1kx_uvm_tb/u_soc/u_cpu/u_core/or1200_cpu/or1200_genpc/except_start
+add wave -position insertpoint vsim:/mor1kx_uvm_tb/u_soc/u_cpu/u_core/or1200_cpu/*
+add wave -position insertpoint vsim:/mor1kx_uvm_tb/u_soc/u_cpu/u_core/or1200_cpu/or1200_except/*
+add wave -position insertpoint vsim:/mor1kx_uvm_tb/u_soc/u_cpu/u_core/or1200_cpu/or1200_ctrl/*
 quit
