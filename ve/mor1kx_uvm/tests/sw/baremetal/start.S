@@ -28,16 +28,17 @@ _ent:
 	l.or		r2, r0, r1
 
 	// Relocate the .data section from ROM to RAM
-	l.movhi		r4, hi(__data_load)
+	l.movhi		r4, hi(__data_load)  // data_load is the source addr for data: 0x0000e5d0
 	l.ori		r4, r4, lo(__data_load)
-	l.movhi		r5, hi(__data_start)
+	l.movhi		r5, hi(__data_start) // data_start is the dest addr for data: 0x10000000
 	l.ori		r5, r5, lo(__data_start)
-	l.movhi		r6, hi(_edata)
+	l.movhi		r6, hi(_edata)       // _edata is the end dest addr for data: 0x100008b4
 	l.ori		r6, r6, lo(_edata)
 .L_rom2ram:
 	l.lwz		r7, 0(r4)
 	l.sw		0(r5), r7
 	l.sfltu		r5, r6
+	l.addi		r4, r4, 4
 	l.bf		.L_rom2ram
 	l.addi		r5, r5, 4
 	l.nop

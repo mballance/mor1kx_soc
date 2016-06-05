@@ -25,6 +25,9 @@ CFLAGS += \
   -I$(UVM_SDV)/c/common \
   -I$(UVM_SDV)/dpi
   
+CFLAGS += -g
+ASFLAGS += -G
+  
 BUILD_TARGETS += build_embedded_sw  
 
 include $(SIMSCRIPTS_DIR)/mkfiles/common_sim.mk

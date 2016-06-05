@@ -44,6 +44,7 @@ struct _reent *_or1k_libc_getreent(void) {
 extern unsigned char heap;
 static void *heap_ptr = 0;
 
+static char tmp[256];
 void *_sbrk_r(struct _reent *reent, ptrdiff_t incr) {
 
 	// lock/disable interrupts
@@ -57,6 +58,9 @@ void *_sbrk_r(struct _reent *reent, ptrdiff_t incr) {
 	prev_heap = heap_ptr;
 
 	heap_ptr += incr;
+
+//	sprintf(tmp, "prev_heap: %p\n", prev_heap);
+//	write(0, tmp, strlen(tmp));
 
 	// unlock/disable interrupts
 	return prev_heap;
