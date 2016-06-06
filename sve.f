@@ -8,6 +8,7 @@ ${QUESTA_HOME}/verilog_src/uvm-1.1d/src/uvm_pkg.sv
 
 -f ${SV_BFMS}/sve.f
 
+-F ${MOR1KX_SOC}/ve/mor1kx_soc_subsys_uvm/sve.F
 -f ${MOR1KX_SOC}/ve/mor1kx_uvm/tb/mor1kx_uvm_env.f
 -f ${MOR1KX_SOC}/ve/mor1kx_uvm/tests/mor1kx_uvm_tests.f
 

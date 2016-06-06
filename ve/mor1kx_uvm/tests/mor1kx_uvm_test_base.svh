@@ -23,10 +23,12 @@ class mor1kx_uvm_test_base extends uvm_test;
 	 * Override from class 
 	 */
 	virtual task pre_main_phase(input uvm_phase phase);
-		
 
 	endtask
 	
+	virtual task test_end_signaled();
+		
+	endtask
 	
 
 	

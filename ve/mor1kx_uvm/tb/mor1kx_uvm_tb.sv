@@ -38,9 +38,14 @@ module mor1kx_uvm_tb;
 		end
 	end
 	
+	wire[3:0] pad_i = 0;
+	wire[3:0] pad_o;
+	
 	mor1kx_soc u_soc (
 		.clk   (clk  ), 
-		.rstn  (rstn ));
+		.rstn  (rstn ),
+		.pad_i (pad_i),
+		.pad_o (pad_o));
 	
 //	wb_monitor_bfm #(
 //		.WB_ADDR_WIDTH  (32 ), 
@@ -87,6 +92,55 @@ module mor1kx_uvm_tb;
 	
 	initial begin
 		run_test();
+	end
+
+	reg [3:0] test_end_state = 0;
+	reg [3:0] last_pad_o = 0;
+	always @(posedge clk) begin
+		case (test_end_state)
+			0: begin
+				if (pad_o == 'hA) begin
+					test_end_state <= 1;
+				end
+			end
+			
+			1: begin
+				if (pad_o == 'h5) begin
+					test_end_state <= 2;
+				end
+			end
+			
+			2: begin
+				if (pad_o == 'hf)  begin
+					string testname;
+					
+					if (!$value$plusargs("TESTNAME=%s", testname)) begin
+						$display("Error: +TESTNAME not set");
+					end
+					
+					$display("PASS: %s", testname);
+					test_end_state <= 3;
+				end else if (pad_o == 'h0) begin
+					string testname;
+					
+					if (!$value$plusargs("TESTNAME=%s", testname)) begin
+						$display("Error: +TESTNAME not set");
+					end
+					
+					$display("FAIL: %s", testname);
+					test_end_state <= 3;
+				end
+			end
+			
+			3: begin
+				automatic uvm_component test_base = uvm_top.top_levels[0];
+				automatic mor1kx_uvm_test_base test;
+			
+				$cast(test, test_base);
+				test.test_end_signaled();	
+				$display("End Test");				
+			end
+		endcase
 	end
 	
 	or1200_monitor		mon();

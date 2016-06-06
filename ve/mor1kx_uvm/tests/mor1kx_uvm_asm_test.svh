@@ -4,6 +4,7 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 	`uvm_component_utils(mor1kx_uvm_asm_test)
 	
 	wb_uart_line_listener					m_line_listener;
+	uvm_phase								m_run_phase;
 	
 	/****************************************************************
 	 * Data Fields
@@ -40,6 +41,7 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 	task run_phase(uvm_phase phase);
 		string sw_image;
 		sv_bfms_rw_api_if mem_if = m_env.m_u_rom_agent.get_api();
+		m_run_phase = phase;
 		
 		if ($value$plusargs("SW_IMAGE=%s", sw_image)) begin
 			// Load up the image
@@ -52,6 +54,10 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 		
 		// TODO: Launch any local behavior
 		phase.raise_objection(this, "Main");
+	endtask
+
+	virtual task test_end_signaled();
+		m_run_phase.drop_objection(this, "Main");
 	endtask
 	
 endclass

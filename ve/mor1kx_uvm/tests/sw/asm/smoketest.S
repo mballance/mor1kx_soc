@@ -1,5 +1,6 @@
 
 #include "asm/spr-defs.h"
+#include "asm_defs.h"
 
 	.section .vectors, "ax"
 	.global __reset
@@ -47,6 +48,8 @@ _ent:
 	l.sw		0(r4), r5
 	l.ori		r5, r0, '\n'
 	l.sw		0(r4), r5
+
+	ASM_TEST_PASS
 
 	// 10000000
 	l.movhi		r4, 0x1000

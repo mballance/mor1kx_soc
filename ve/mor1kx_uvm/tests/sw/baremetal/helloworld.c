@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "baremetal_defs.h"
 
 int main(int argc, char **argv) {
 	char *ptr;
@@ -26,6 +27,9 @@ int main(int argc, char **argv) {
 	sprintf(tmp, "Hello sprintf %p\n", ptr);
 	write(0, tmp, strlen(tmp));
 	write(0, "Hello World 2\n", 14);
+
+	// End the test
+	BAREMETAL_TEST_PASS;
 
 	while (1) { }
 

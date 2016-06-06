@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<processor  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+            xsi:noNamespaceSchemaLocation="processor.xsd" 
+            name="generic" 
+            type="GENERIC" 
+            id="0x0CCCCCCC" 
+            doc_version="1.0"
+            command="debugger.sh" 
+            lib_path="libgenericsim.so">
+
+    <registers name="register" resource="17" processing_instructions="apply,rtl_forward">
+        <signal name="clock"    id="clock"  isa="CLOCK"  sample_signal="CLOCK"  sample_edge="RISING"    width="1"   required="true" />
+        <signal name="reset"    id="clock"  isa="RESET"  sample_signal="RESET"  sample_edge="RISING"    width="1"   required="true" />
+        <signal name="pc"       id="pc"     offset="15"   sample_signal="CLOCK"  sample_edge="FALLING"   width="32"  required="true" is_pc="true" />
+
+        <signal name="r0"       id="r0"       offset="0"   sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r1"       id="r1"       offset="1"   sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r2"       id="r2"       offset="2"   sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r3"       id="r3"       offset="3"   sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r4"       id="r4"       offset="4"   sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r5"       id="r5"       offset="5"   sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r6"       id="r6"       offset="6"   sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r7"       id="r7"       offset="7"   sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r8"       id="r8"       offset="8"   sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r9"       id="r9"       offset="9"   sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r10"      id="r10"      offset="10"  sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r11"      id="r11"      offset="11"  sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r12"      id="r12"      offset="12"  sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r13"      id="r13"      offset="13"  sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+        <signal name="r14"      id="r14"      offset="14"  sample_signal="CLOCK"  sample_edge="FALLING"  width="32"  required="true" />
+    </registers>
+
+
+    <buslogger type="generic_bus" id="Master Port" resource_xref="memory" direction="rw">
+        <signal name="clk"    id="clk"      idn="0" width="1"  isa="CLOCK" />
+        <signal name="reset"  id="reset"    idn="1" width="1"  isa="RESET" />
+        <signal name="CS"     id="CS"       idn="2" width="1"/>
+        <signal name="WE"     id="WE"       idn="3" width="1"/>
+        <signal name="ADDR"   id="ADDR"     idn="4" width="32"/>
+        <signal name="RDATA"  id="RDATA"    idn="5" width="32"/>
+        <signal name="WDATA"  id="WDATA"    idn="6" width="32"/>
+        <signal name="SIZE"   id="SIZE"     idn="7" width="3"/>
+        <signal name="DWIDTH" id="DWIDTH"   idn="8" width="8"/>
+    </buslogger>
+
+    <memory id="physical" name="Physical" resource="53" processing_instructions="apply,rtl_forward" is_physical="true" />
+    <memory id="memory" name="Virtual Address Space" resource="54" processing_instructions="apply,rtl_forward,iss_forward" />
+
+    <cpu family="GENERIC">
+	    <group name="Core">
+            <register width="32" gid="15" id="pc" name="PC" description="Program Counter"/>
+            <register width="32" gid="13" id="r13" name="SP" description="Stack Pointer"/>
+            <register width="32" gid="14" id="r14" name="LR" description="Link Register"/>
+	    </group>
+
+        <group name="General Purpose Registers">
+            <register width="32" gid="0"  id="r0" name="R0" description="General register 0"/>
+            <register width="32" gid="1"  id="r1" name="R1" description="General register 1"/>
+            <register width="32" gid="2"  id="r2" name="R2" description="General register 2"/>
+            <register width="32" gid="3"  id="r3" name="R3" description="General register 3"/>
+            <register width="32" gid="4"  id="r4" name="R4" description="General register 4"/>
+            <register width="32" gid="5"  id="r5" name="R5" description="General register 5"/>
+            <register width="32" gid="6"  id="r6" name="R6" description="General register 6"/>
+            <register width="32" gid="7"  id="r7" name="R7" description="General register 7"/>
+            <register width="32" gid="8"  id="r8" name="R8" description="General register 8"/>
+            <register width="32" gid="9"  id="r9" name="R9" description="General register 9"/>
+            <register width="32" gid="10" id="r10" name="R10" description="General register 10"/>
+            <register width="32" gid="11" id="r11" name="R11" description="General register 11"/>
+            <register width="32" gid="12" id="r12" name="R12" description="General register 12"/>
+            <register width="32" gid="13" id="r13" name="R13" description="General register 13"/>
+            <register width="32" gid="14" id="r14" name="R14" description="General register 14"/>
+	    </group>
+    </cpu>
+
+</processor>

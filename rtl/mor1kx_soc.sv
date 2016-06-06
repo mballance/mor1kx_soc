@@ -2,8 +2,6 @@
  * mor1kx_soc.sv
  ****************************************************************************/
 
-`define HAVE_UART
-
 /**
  * Module: mor1kx_soc
  * 
@@ -12,7 +10,9 @@
 `include "or1200_defines.v"
 module mor1kx_soc(
 		input			clk,
-		input			rstn);
+		input			rstn,
+		output[3:0]		pad_o,
+		input[3:0]		pad_i);
 
 	wb_if #(
 		.WB_ADDR_WIDTH  (32 ), 
@@ -59,9 +59,27 @@ module mor1kx_soc(
 		.WB_DATA_WIDTH  (32 )
 		) ic2err ();
 	
+	wb_if #(
+		.WB_ADDR_WIDTH  (32 ), 
+		.WB_DATA_WIDTH  (32 )
+		) ic2dma ();
+	
+	wb_if #(
+		.WB_ADDR_WIDTH  (32 ), 
+		.WB_DATA_WIDTH  (32 )
+		) dma2ic0 ();
+	
+	wb_if #(
+		.WB_ADDR_WIDTH  (32 ), 
+		.WB_DATA_WIDTH  (32 )
+		) dma2ic1 ();
+	
+	wb_if #(
+		.WB_ADDR_WIDTH  (32 ), 
+		.WB_DATA_WIDTH  (32 )
+		) ic2pad ();
 
-`ifdef HAVE_UART
-	wb_interconnect_2x3 #(
+	wb_interconnect_4x5 #(
 		.WB_ADDR_WIDTH      (32     ), 
 		.WB_DATA_WIDTH      (32     ), 
 		.SLAVE0_ADDR_BASE   (32'h0000_0000  ), 
@@ -69,31 +87,24 @@ module mor1kx_soc(
 		.SLAVE1_ADDR_BASE   (32'h1000_0000  ), 
 		.SLAVE1_ADDR_LIMIT  (32'h100F_FFFF  ),
 		.SLAVE2_ADDR_BASE	(32'h8000_0000  ),
-		.SLAVE2_ADDR_LIMIT	(32'h8000_FFFF  )
+		.SLAVE2_ADDR_LIMIT	(32'h8000_0FFF  ),
+		.SLAVE3_ADDR_BASE	(32'h8000_1000  ),
+		.SLAVE3_ADDR_LIMIT	(32'h8000_1FFF  ),
+		.SLAVE4_ADDR_BASE	(32'h8000_2000  ),
+		.SLAVE4_ADDR_LIMIT	(32'h8000_2FFF  )
 		) u_ic (
 		.clk                (clk               ), 
 		.rstn               (rstn              ), 
 		.m0                 (iwbm.slave        ), 
 		.m1                 (dwbm.slave        ), 
+		.m2					(dma2ic0.slave     ),
+		.m3					(dma2ic1.slave     ),
 		.s0                 (ic2rom.master     ), 
 		.s1                 (ic2ram.master     ),
-		.s2					(ic2uart.master    ));
-`else
-		wb_interconnect_2x2 #(
-				.WB_ADDR_WIDTH      (32     ), 
-				.WB_DATA_WIDTH      (32     ), 
-				.SLAVE0_ADDR_BASE   (32'h0000_0000  ), 
-				.SLAVE0_ADDR_LIMIT  (32'h0000_FFFF  ), 
-				.SLAVE1_ADDR_BASE   (32'h1000_0000  ), 
-				.SLAVE1_ADDR_LIMIT  (32'h1000_FFFF  )
-			) u_ic (
-				.clk                (clk               ), 
-				.rstn               (rstn              ), 
-				.m0                 (iwbm.slave        ), 
-				.m1                 (dwbm.slave        ), 
-				.s0                 (ic2rom.master     ), 
-				.s1                 (ic2ram.master     ));
-`endif
+		.s2					(ic2uart.master    ),
+		.s3					(ic2dma.master     ),
+		.s4					(ic2pad.master     )
+		);
 	
 	wb_rom #(
 		.MEM_ADDR_BITS     (16    ), 
@@ -113,6 +124,68 @@ module mor1kx_soc(
 		.clk               (clk              ), 
 		.rstn              (rstn             ), 
 		.s                 (ic2ram.slave     ));
+	
+	generic_sram_line_en_if #(
+		.NUM_ADDR_BITS  (1 ), 
+		.NUM_DATA_BITS  (32 )
+		) bridge2pad (
+		);
+	
+	wb_generic_line_en_sram_bridge #(
+		.ADDRESS_WIDTH  (32 ), 
+		.DATA_WIDTH     (32    )
+		) u_pad_bridge (
+		.clk            (clk                   ), 
+		.rstn           (rstn          		   ), 
+		.wb_s           (ic2pad.slave          ), 
+		.sram_m         (bridge2pad.sram_client));
+	
+	assign bridge2pad.read_data[31:4] = 0;
+	assign bridge2pad.read_data[3:0] = pad_i;
+
+	reg [3:0]		pad_o_reg = 0;
+	always @(posedge clk) begin
+		if (!rstn) begin
+			pad_o_reg <= 0;
+		end else begin
+			if (bridge2pad.write_en) begin
+				pad_o_reg <= bridge2pad.write_data[3:0];
+			end
+		end
+	end
+	assign pad_o = pad_o_reg;
+
+	wire			inta_o, intb_o;
+	wire [30:0]		dma_req_i = 0;
+	wire [30:0]		dma_nd_i = 0;
+	wire [30:0]		dma_ack_o;
+	wire [30:0]		dma_rest_i = 0;
+
+	// We only need a single slave interface to DMA, but
+	// the DMA has two to allow bus-bridge functionality.
+	// We stub out the second slave interface
+	wb_if #(
+			.WB_ADDR_WIDTH  (32 ), 
+			.WB_DATA_WIDTH  (32 )
+		) stub2dma ();	
+
+	wb_master_stub u_dma_stub (
+			.m (stub2dma.master)
+			);
+	
+	wb_dma_w #(.rf_addr(0), .ch_count(31)) u_dma0 (
+		.clk         (clk            ), 
+		.rst_i       (!rstn          ), 
+		.wb0s        (ic2dma.slave   ), 
+		.wb0m        (dma2ic0.master ), 
+		.wb1s        (stub2dma.slave ), 
+		.wb1m        (dma2ic1.master ), 
+		.dma_req_i   (dma_req_i      ), 
+		.dma_nd_i    (dma_nd_i       ), 
+		.dma_ack_o   (dma_ack_o      ), 
+		.dma_rest_i  (dma_rest_i     ), 
+		.inta_o      (inta_o         ), 
+		.intb_o      (intb_o         ));
 
 	// TODO:
 	wire int_o, stx_pad_o, srx_pad_i, rts_pad_o,
@@ -123,7 +196,6 @@ module mor1kx_soc(
 	assign ri_pad_i = 0;
 	assign dcd_pad_i = 1;
 
-`ifdef HAVE_UART
 	wb_uart u_uart (
 		.clk        (clk       ), 
 		.rstn       (rstn      ), 
@@ -137,7 +209,6 @@ module mor1kx_soc(
 		.dsr_pad_i  (dsr_pad_i ), 
 		.ri_pad_i   (ri_pad_i  ), 
 		.dcd_pad_i  (dcd_pad_i ));
-`endif	
 	
 endmodule
 
