@@ -92,13 +92,17 @@ _ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt) {
 }
 
 _ssize_t _write_r(struct _reent *ptr, int fd, const void *buf, size_t cnt) {
-	if (fd == 0) {
+	// TODO: use UART device for output
+	if (fd == 1 || fd == 2) {
 		int i;
 		// write to the UART
 		const char *p = (const char *)buf;
 		for (i=0; i<cnt; i++) {
 			*((volatile unsigned int *)0x80000000) = p[i];
 		}
+		return cnt;
+	} else {
+		return 0;
 	}
 }
 

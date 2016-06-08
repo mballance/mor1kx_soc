@@ -78,12 +78,17 @@ module mor1kx_soc(
 		.WB_ADDR_WIDTH  (32 ), 
 		.WB_DATA_WIDTH  (32 )
 		) ic2pad ();
+	
+	wb_if #(
+		.WB_ADDR_WIDTH  (32 ), 
+		.WB_DATA_WIDTH  (32 )
+		) ic2scratchpad ();
 
-	wb_interconnect_4x5 #(
+	wb_interconnect_4x6 #(
 		.WB_ADDR_WIDTH      (32     ), 
 		.WB_DATA_WIDTH      (32     ), 
 		.SLAVE0_ADDR_BASE   (32'h0000_0000  ), 
-		.SLAVE0_ADDR_LIMIT  (32'h0003_FFFF  ), 
+		.SLAVE0_ADDR_LIMIT  (32'h000F_FFFF  ), 
 		.SLAVE1_ADDR_BASE   (32'h1000_0000  ), 
 		.SLAVE1_ADDR_LIMIT  (32'h100F_FFFF  ),
 		.SLAVE2_ADDR_BASE	(32'h8000_0000  ),
@@ -91,26 +96,29 @@ module mor1kx_soc(
 		.SLAVE3_ADDR_BASE	(32'h8000_1000  ),
 		.SLAVE3_ADDR_LIMIT	(32'h8000_1FFF  ),
 		.SLAVE4_ADDR_BASE	(32'h8000_2000  ),
-		.SLAVE4_ADDR_LIMIT	(32'h8000_2FFF  )
+		.SLAVE4_ADDR_LIMIT	(32'h8000_2FFF  ),
+		.SLAVE5_ADDR_BASE   (32'h9000_0000  ),
+		.SLAVE5_ADDR_LIMIT  (32'h9000_0FFF  )
 		) u_ic (
 		.clk                (clk               ), 
 		.rstn               (rstn              ), 
 		.m0                 (iwbm.slave        ), 
 		.m1                 (dwbm.slave        ), 
 		.m2					(dma2ic0.slave     ),
-		.m3					(dma2ic1.slave     ),
-		.s0                 (ic2rom.master     ), 
-		.s1                 (ic2ram.master     ),
-		.s2					(ic2uart.master    ),
-		.s3					(ic2dma.master     ),
-		.s4					(ic2pad.master     )
+		.m3					(dma2ic1.slave        ),
+		.s0                 (ic2rom.master        ), 
+		.s1                 (ic2ram.master        ),
+		.s2					(ic2uart.master       ),
+		.s3					(ic2dma.master        ),
+		.s4					(ic2pad.master        ),
+		.s5					(ic2scratchpad.master )
 		);
 	
 	wb_rom #(
-		.MEM_ADDR_BITS     (16    ), 
-		.WB_ADDRESS_WIDTH  (32 ), 
+		.MEM_ADDR_BITS     (18    ), 
+		.WB_ADDRESS_WIDTH  (32    ), 
 		.WB_DATA_WIDTH     (32    ), 
-		.INIT_FILE         (""        )
+		.INIT_FILE         (""    )
 		) u_rom (
 		.clk               (clk              ), 
 		.rstn              (rstn             ), 
@@ -124,6 +132,16 @@ module mor1kx_soc(
 		.clk               (clk              ), 
 		.rstn              (rstn             ), 
 		.s                 (ic2ram.slave     ));
+
+	// 4k scratchpad
+	wb_sram #(
+		.MEM_ADDR_BITS     (10    ), 
+		.WB_ADDRESS_WIDTH  (32    ), 
+		.WB_DATA_WIDTH     (32    )
+		) u_scratchpad (
+		.clk               (clk                ), 
+		.rstn              (rstn               ), 
+		.s                 (ic2scratchpad.slave));
 	
 	generic_sram_line_en_if #(
 		.NUM_ADDR_BITS  (1 ), 

@@ -8,7 +8,7 @@ __DYNAMIC = 0;
 // 19 - 512k
 // 20 - 1M
 #define ROM_ORIGIN	0x00000000
-#define ROM_LENGTH	0x00010000 // 64k
+#define ROM_LENGTH	0x00100000 // 1M
 #define RAM_ORIGIN  0x10000000
 #define RAM_LENGTH	0x00100000 // 1M
 

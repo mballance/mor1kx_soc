@@ -65,23 +65,33 @@ module mor1kx_uvm_tb;
 	
 	
 	typedef generic_sram_byte_en_config #(18, 32) 	u_ram_cfg_t;
-	typedef generic_rom_config #(16, 32) 			u_rom_cfg_t;
+	typedef generic_rom_config #(18, 32) 			u_rom_cfg_t;
+	typedef generic_sram_byte_en_config #(10, 32)	u_scratchpad_cfg_t;
+	
 	
 	initial begin
 		// Register the BFM virtual interfaces
 		automatic u_ram_cfg_t u_ram_cfg = u_ram_cfg_t::type_id::create("u_ram_cfg");
 		automatic u_rom_cfg_t u_rom_cfg = u_rom_cfg_t::type_id::create("u_rom_cfg");
+		automatic u_scratchpad_cfg_t u_scratchpad_cfg = 
+			u_scratchpad_cfg_t::type_id::create("u_scratchpad_cfg");
 		automatic wb_uart_config u_uart_cfg = wb_uart_config::type_id::create("u_uart_cfg");
 		
 		// Handle to the SRAM BFM
 		u_ram_cfg.vif = u_soc.u_ram.u_sram.ram;
-		uvm_config_db #(u_ram_cfg_t)::set(uvm_top, "*", 
+		uvm_config_db #(u_ram_cfg_t)::set(uvm_top, "*m_u_ram_agent*", 
 				u_ram_cfg_t::report_id, u_ram_cfg);
 		
 		// Handle to ROM BFM
 		u_rom_cfg.vif = u_soc.u_rom.u_rom.rom;
 		uvm_config_db #(u_rom_cfg_t)::set(uvm_top, "*",
 				u_rom_cfg_t::report_id, u_rom_cfg);
+		
+		// Handle to the scratchpad BFM
+		u_scratchpad_cfg.vif = u_soc.u_scratchpad.u_sram.ram;
+		uvm_config_db #(u_scratchpad_cfg_t)::set(uvm_top, "*m_u_scratchpad_agent*", 
+				u_scratchpad_cfg_t::report_id, u_scratchpad_cfg);
+		
 		
 		u_uart_cfg.vif = u_soc.u_uart;
 		u_uart_cfg.vif_path = $psprintf("%m.u_soc.u_uart");

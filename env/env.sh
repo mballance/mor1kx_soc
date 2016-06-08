@@ -1,5 +1,8 @@
 
-export MOR1KX_SOC=`dirname $SIMSCRIPTS_DIR`
+# should find a way to accept the value from a higher-level script
+if test "$SIMSCRIPTS_PROJECT_ENV" = "true"; then
+ export MOR1KX_SOC=`dirname $SIMSCRIPTS_DIR`
+fi
 
 uname_o=`uname -o`
 
