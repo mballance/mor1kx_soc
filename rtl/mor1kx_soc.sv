@@ -109,9 +109,9 @@ module mor1kx_soc(
 		.s0                 (ic2rom.master        ), 
 		.s1                 (ic2ram.master        ),
 		.s2					(ic2uart.master       ),
-		.s3					(ic2dma.master        ),
+		.s3					(ic2dma.master        ), // 'h8000_1000
 		.s4					(ic2pad.master        ),
-		.s5					(ic2scratchpad.master )
+		.s5					(ic2scratchpad.master )  // 'h9000_0000
 		);
 	
 	wb_rom #(

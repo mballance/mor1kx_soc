@@ -1,19 +1,15 @@
 
 include $(SIMSCRIPTS_DIR)/mkfiles/plusargs.mk
 
-# UVM_SDV:=$(ROOTDIR)/../src/sdv
-# include $(UVM_SDV)/c/rules_defs.mk
-# include $(UVM_SDV)/dpi/rules_defs.mk
 
 TIMEOUT := 2ms
 
-SCRIPTS_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+MK_INCLUDES += $(MOR1KX_SOC)/ve/mor1kx_uvm/sim/scripts/rules_defs.mk
 
 TB=mor1kx_uvm_tb
 
-SRC_DIRS += $(SIMPLE_DPI)/tests/sw
-
 # VOPT_FLAGS += -xprop
+
 
 # Must build DPI libraries
 # DPI_LIBRARIES += $(call get_plusarg,DPI_LIBRARY,$(PLUSARGS))
@@ -21,9 +17,8 @@ SRC_DIRS += $(SIMPLE_DPI)/tests/sw
 # LIB_TARGETS += $(foreach lib,$(DPI_LIBRARIES),$(lib)$(DPIEXT))
 
 CFLAGS += \
-  -I$(SIMPLE_DPI)/tests/sw \
-  -I$(UVM_SDV)/c/common \
-  -I$(UVM_SDV)/dpi
+  -I$(UVM_SDV)/c/common 	\
+  -I$(UVM_SDV)/dpi			\
   
 CFLAGS += -g
 ASFLAGS += -G

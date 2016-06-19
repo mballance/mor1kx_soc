@@ -9,24 +9,18 @@ int main(int argc, char **argv) {
 	int len, i;
 //	fprintf(stdout, "Hello World\n");
 
-	write(0, "Hello World\n", 12);
-//	do_test();
-//	do_test2();
-	write(0, "Hello World\n", 12);
-	ptr = (char *)malloc(4);
-	sprintf(tmp, "Hello sprintf %d\n", (int)ptr);
-	write(0, tmp, strlen(tmp));
-	write(0, "Hello World 1\n", 14);
-	for (i=0; i<16; i++) {
-		sprintf(tmp, "Hello sprintf %d\n", i);
-		write(0, tmp, strlen(tmp));
-	}
+	fprintf(stdout, "Hello World\n");
+	fflush(stdout);
+	fprintf(stdout, "Hello World\n");
+	fflush(stdout);
 
-	write(0, tmp, strlen(tmp));
-	ptr = (char *)malloc(256);
-	sprintf(tmp, "Hello sprintf %p\n", ptr);
-	write(0, tmp, strlen(tmp));
-	write(0, "Hello World 2\n", 14);
+	ptr = (char *)malloc(4);
+	fprintf(stdout, "Hello sprintf %d\n", (int)ptr);
+	fflush(stdout);
+	for (i=0; i<16; i++) {
+		fprintf(stdout, "Hello sprintf %d\n", i);
+	}
+	fflush(stdout);
 
 	// End the test
 	BAREMETAL_TEST_PASS;

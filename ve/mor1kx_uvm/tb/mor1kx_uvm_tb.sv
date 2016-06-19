@@ -47,23 +47,6 @@ module mor1kx_uvm_tb;
 		.pad_i (pad_i),
 		.pad_o (pad_o));
 	
-//	wb_monitor_bfm #(
-//		.WB_ADDR_WIDTH  (32 ), 
-//		.WB_DATA_WIDTH  (32 )
-//		) u_iwb (
-//		.clk            (clk               ), 
-//		.rstn           (rstn              ), 
-//		.monitor        (u_soc.iwbm.monitor));
-//	
-//	wb_monitor_bfm #(
-//		.WB_ADDR_WIDTH  (32 ), 
-//		.WB_DATA_WIDTH  (32 )
-//		) u_dwb (
-//		.clk            (clk               ), 
-//		.rstn           (rstn              ), 
-//		.monitor        (u_soc.dwbm.monitor));
-	
-	
 	typedef generic_sram_byte_en_config #(18, 32) 	u_ram_cfg_t;
 	typedef generic_rom_config #(18, 32) 			u_rom_cfg_t;
 	typedef generic_sram_byte_en_config #(10, 32)	u_scratchpad_cfg_t;
@@ -152,8 +135,10 @@ module mor1kx_uvm_tb;
 			end
 		endcase
 	end
-	
+
+`ifdef ENABLE_OR1200_MON
 	or1200_monitor		mon();
+`endif
 
 endmodule
 

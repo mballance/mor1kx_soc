@@ -1,10 +1,7 @@
 
-class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
+class or1k_subsys_uvm_dma_smoketest extends or1k_subsys_uvm_test_base;
 	
-	`uvm_component_utils(mor1kx_uvm_asm_test)
-	
-	wb_uart_line_listener					m_line_listener;
-	uvm_phase								m_run_phase;
+	`uvm_component_utils(or1k_subsys_uvm_dma_smoketest)
 	
 	/****************************************************************
 	 * Data Fields
@@ -22,8 +19,6 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 	 ****************************************************************/
 	function void build_phase(uvm_phase phase);
 		super.build_phase(phase);
-		m_line_listener = wb_uart_line_listener::type_id::create("m_line_listener", this);
-		
 	endfunction
 
 	/****************************************************************
@@ -31,34 +26,47 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 	 ****************************************************************/
 	function void connect_phase(uvm_phase phase);
 		super.connect_phase(phase);
-		
-		m_env.m_uart_agent.m_mon_out_ap.connect(m_line_listener.analysis_export);
 	endfunction
 
 	/****************************************************************
 	 * run_phase()
 	 ****************************************************************/
 	task run_phase(uvm_phase phase);
-		string sw_image;
-		chandle drv;
-		sv_bfms_rw_api_if mem_if = m_env.m_u_rom_agent.get_api();
-		m_run_phase = phase;
-		
-		if ($value$plusargs("SW_IMAGE=%s", sw_image)) begin
-			// Load up the image
-			elf_loader loader = new(this, mem_if);
-			loader.m_big_endian = 0;
-			loader.load(sw_image);
-		end else begin
-			`uvm_fatal (get_type_name(), "No +SW_IMAGE specified");
+		wb_dma_drv_t drv;
+		sv_bfms_rw_api_if ram;
+		int chan;
+		int unsigned status = 0;
+		phase.raise_objection(this, "Main");
+	
+		wb_dma_drv_init(drv, 'h8000_1000, null);
+		$display("drv: %0d", drv);
+
+//		$display("m_env=%p", m_env);
+//		$display("m_env.m_u_scratchpad_agent=%p", m_env.m_u_scratchpad_agent);
+		ram = m_env.m_u_scratchpad_agent.get_api();
+//		// First, initialize a block of memory
+		for (int i=0; i<64; i++) begin
+			ram.write32(4*i, i+1);
 		end
 		
-		// TODO: Launch any local behavior
-		phase.raise_objection(this, "Main");
-	endtask
-
-	virtual task test_end_signaled();
-		m_run_phase.drop_objection(this, "Main");
+		wb_dma_drv_begin_xfer(drv,
+				'h9000_0000,
+				'h9000_0100,
+				64,
+				null,
+				chan);
+		
+		$display("chan: %0d", chan);
+	
+		do begin
+			#1us;
+			wb_dma_drv_check_status(drv, chan, status);
+			$display("Current status: %0d", status);
+		end while (status == 1);
+		
+		$display("status: %0d", status);
+		
+		phase.drop_objection(this, "Main");		
 	endtask
 	
 endclass

@@ -1,6 +1,6 @@
 
 # should find a way to accept the value from a higher-level script
-if test "$SIMSCRIPTS_PROJECT_ENV" = "true"; then
+if test "x$SIMSCRIPTS_PROJECT_ENV" = "xtrue"; then
  export MOR1KX_SOC=`dirname $SIMSCRIPTS_DIR`
 fi
 
