@@ -6,6 +6,9 @@
 -f ${SV_BFMS}/wb/wb.f
 -f ${SV_BFMS}/wb/uvm/uvm.f
 
+-f ${SV_BFMS}/irq/uvm/uvm.f
+${SV_BFMS}/irq/irq_bfm.sv
+
 // Build the core design and testbench
 -f ${MOR1KX_SOC}/ve/mor1kx_uvm/sim/scripts/vlog_common.f
 

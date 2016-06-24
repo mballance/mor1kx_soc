@@ -37,8 +37,8 @@ class or1k_subsys_uvm_dma_smoketest extends or1k_subsys_uvm_test_base;
 		int chan;
 		int unsigned status = 0;
 		phase.raise_objection(this, "Main");
-	
-		wb_dma_drv_init(drv, 'h8000_1000, null);
+
+		wb_dma_drv_init(drv, 'h8000_1000, 1, null);
 		$display("drv: %0d", drv);
 
 //		$display("m_env=%p", m_env);
@@ -66,7 +66,7 @@ class or1k_subsys_uvm_dma_smoketest extends or1k_subsys_uvm_test_base;
 		
 		$display("status: %0d", status);
 		
-		phase.drop_objection(this, "Main");		
+//		phase.drop_objection(this, "Main");		
 	endtask
 	
 endclass

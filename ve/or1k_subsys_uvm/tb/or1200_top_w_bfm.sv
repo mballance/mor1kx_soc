@@ -42,6 +42,10 @@ module `OR1200_TOP_W_BFM_NAME #(parameter int WB_CLMODE=0) (
 			.rstn           (rstn_i     ), 
 			.master         (dwb        ));	
 
+	irq_bfm u_irq (
+		.clk  (clk_i), 
+		.rstn (rstn_i), 
+		.irq  (pic_ints_i[0]));
 
 endmodule
 

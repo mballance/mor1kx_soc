@@ -5,7 +5,7 @@
 -f ${STD_PROTOCOL_IF}/rtl/wb/wb.f
 -f ${STD_PROTOCOL_IF}/rtl/memory/memory.f
 
-// -f ${MOR1KX_SOC}/rtl/memory_primitives/rtl/rtl.f
+-f ${MOR1KX_SOC}/rtl/memory_primitives/rtl/rtl.f
 
 -f ${MOR1KX_SOC}/rtl/oc_wb_ip/rtl/rtl.f
 

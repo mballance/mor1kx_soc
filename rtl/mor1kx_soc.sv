@@ -11,8 +11,10 @@
 module mor1kx_soc(
 		input			clk,
 		input			rstn,
-		output[3:0]		pad_o,
-		input[3:0]		pad_i);
+		output			pad0_o,
+		output			pad1_o,
+		output			pad2_o,
+		output			pad3_o);
 
 	wb_if #(
 		.WB_ADDR_WIDTH  (32 ), 
@@ -27,8 +29,13 @@ module mor1kx_soc(
 	wire[31:0]						snoop_adr_i = 0;
 	wire							snoop_en_i = 0;
 	wire[31:0]						irq = 0;
+
+	wire[31:0]						irq_i;
+	wire							int_o;
+	wire[`OR1200_PIC_INTS-1:0]		pic_ints_i;
 	
-	wire[`OR1200_PIC_INTS-1:0]		pic_ints_i = 0;
+	assign pic_ints_i[`OR1200_PIC_INTS-1:1] = 0;
+	assign pic_ints_i[0] = int_o;
 
 	or1200_top_w #(.WB_CLMODE(0)) u_cpu (
 		.clk_i       (clk      ), 
@@ -83,8 +90,13 @@ module mor1kx_soc(
 		.WB_ADDR_WIDTH  (32 ), 
 		.WB_DATA_WIDTH  (32 )
 		) ic2scratchpad ();
+	
+	wb_if #(
+		.WB_ADDR_WIDTH  (32 ), 
+		.WB_DATA_WIDTH  (32 )
+		) ic2intc ();
 
-	wb_interconnect_4x6 #(
+	wb_interconnect_4x7 #(
 		.WB_ADDR_WIDTH      (32     ), 
 		.WB_DATA_WIDTH      (32     ), 
 		.SLAVE0_ADDR_BASE   (32'h0000_0000  ), 
@@ -98,20 +110,23 @@ module mor1kx_soc(
 		.SLAVE4_ADDR_BASE	(32'h8000_2000  ),
 		.SLAVE4_ADDR_LIMIT	(32'h8000_2FFF  ),
 		.SLAVE5_ADDR_BASE   (32'h9000_0000  ),
-		.SLAVE5_ADDR_LIMIT  (32'h9000_0FFF  )
+		.SLAVE5_ADDR_LIMIT  (32'h9000_0FFF  ),
+		.SLAVE6_ADDR_BASE   (32'h8000_3000  ),
+		.SLAVE6_ADDR_LIMIT  (32'h8000_3FFF  )
 		) u_ic (
-		.clk                (clk               ), 
-		.rstn               (rstn              ), 
-		.m0                 (iwbm.slave        ), 
-		.m1                 (dwbm.slave        ), 
-		.m2					(dma2ic0.slave     ),
+		.clk                (clk                  ),
+		.rstn               (rstn                 ),
+		.m0                 (iwbm.slave           ),
+		.m1                 (dwbm.slave           ),
+		.m2					(dma2ic0.slave        ),
 		.m3					(dma2ic1.slave        ),
-		.s0                 (ic2rom.master        ), 
+		.s0                 (ic2rom.master        ),
 		.s1                 (ic2ram.master        ),
 		.s2					(ic2uart.master       ),
 		.s3					(ic2dma.master        ), // 'h8000_1000
 		.s4					(ic2pad.master        ),
-		.s5					(ic2scratchpad.master )  // 'h9000_0000
+		.s5					(ic2scratchpad.master ), // 'h9000_0000
+		.s6					(ic2intc.master       )  // 'h8000_3000
 		);
 	
 	wb_rom #(
@@ -157,9 +172,11 @@ module mor1kx_soc(
 		.rstn           (rstn          		   ), 
 		.wb_s           (ic2pad.slave          ), 
 		.sram_m         (bridge2pad.sram_client));
+
+
 	
 	assign bridge2pad.read_data[31:4] = 0;
-	assign bridge2pad.read_data[3:0] = pad_i;
+//	assign bridge2pad.read_data[3:0] = pad_i;
 
 	reg [3:0]		pad_o_reg = 0;
 	always @(posedge clk) begin
@@ -171,9 +188,12 @@ module mor1kx_soc(
 			end
 		end
 	end
-	assign pad_o = pad_o_reg;
+	assign pad0_o = pad_o_reg[0];
+	assign pad1_o = pad_o_reg[1];
+	assign pad2_o = pad_o_reg[2];
+	assign pad3_o = pad_o_reg[3];
 
-	wire			inta_o, intb_o;
+	wire			dma_inta_o, dma_intb_o;
 	wire [30:0]		dma_req_i = 0;
 	wire [30:0]		dma_nd_i = 0;
 	wire [30:0]		dma_ack_o;
@@ -202,11 +222,11 @@ module mor1kx_soc(
 		.dma_nd_i    (dma_nd_i       ), 
 		.dma_ack_o   (dma_ack_o      ), 
 		.dma_rest_i  (dma_rest_i     ), 
-		.inta_o      (inta_o         ), 
-		.intb_o      (intb_o         ));
+		.inta_o      (dma_inta_o     ), 
+		.intb_o      (dma_intb_o     ));
 
 	// TODO:
-	wire int_o, stx_pad_o, srx_pad_i, rts_pad_o,
+	wire uart_int_o, stx_pad_o, srx_pad_i, rts_pad_o,
 		cts_pad_i, dtr_pad_o, dsr_pad_i, ri_pad_i, dcd_pad_i;
 	assign srx_pad_i = 0;
 	assign cts_pad_i = 1;
@@ -215,18 +235,40 @@ module mor1kx_soc(
 	assign dcd_pad_i = 1;
 
 	wb_uart u_uart (
-		.clk        (clk       ), 
-		.rstn       (rstn      ), 
-		.s          (ic2uart.slave         ), 
-		.int_o      (int_o     ), 
-		.stx_pad_o  (stx_pad_o ), 
-		.srx_pad_i  (srx_pad_i ), 
-		.rts_pad_o  (rts_pad_o ), 
-		.cts_pad_i  (cts_pad_i ), 
-		.dtr_pad_o  (dtr_pad_o ), 
-		.dsr_pad_i  (dsr_pad_i ), 
-		.ri_pad_i   (ri_pad_i  ), 
-		.dcd_pad_i  (dcd_pad_i ));
+		.clk        (clk           ), 
+		.rstn       (rstn          ), 
+		.s          (ic2uart.slave ), 
+		.int_o      (uart_int_o    ), 
+		.stx_pad_o  (stx_pad_o     ), 
+		.srx_pad_i  (srx_pad_i     ), 
+		.rts_pad_o  (rts_pad_o     ), 
+		.cts_pad_i  (cts_pad_i     ), 
+		.dtr_pad_o  (dtr_pad_o     ), 
+		.dsr_pad_i  (dsr_pad_i     ), 
+		.ri_pad_i   (ri_pad_i      ), 
+		.dcd_pad_i  (dcd_pad_i     ));
+	
+	simple_pic_w #(
+			.NUM_IRQ  (32 )
+		) u_pic (
+			.clk_i    (clk				), 
+			.rst_i    (!rstn   			), 
+			.s        (ic2intc.slave	), 
+			.irq_i    (irq_i			), 
+			.int_o    (int_o			));	
+	
+	// Connect interrupts
+	
+	assign irq_i = {
+			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
+			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
+			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
+			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 
+			uart_int_o, 
+			dma_intb_o, 
+			dma_inta_o};
+			
+	
 	
 endmodule
 

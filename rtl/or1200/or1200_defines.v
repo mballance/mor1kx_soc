@@ -1067,10 +1067,11 @@
 //
 
 // Define it if you want PIC implemented
-`define OR1200_PIC_IMPLEMENTED
+`undef OR1200_PIC_IMPLEMENTED
 
 // Define number of interrupt inputs (2-31)
-`define OR1200_PIC_INTS 20
+// `define OR1200_PIC_INTS 20
+`define OR1200_PIC_INTS 2
 
 // Address offsets of PIC registers inside PIC group
 `define OR1200_PIC_OFS_PICMR 2'd0

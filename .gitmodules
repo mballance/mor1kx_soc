@@ -30,3 +30,11 @@
 	path = rtl/oc_wb_ip
 	url = https://github.com/mballance/oc_wb_ip.git
 	branch = master
+[submodule "sw/uex"]
+	path = sw/uex
+	url = https://github.com/mballance/uex.git
+	branch = master
+[submodule "rtl/amba_sys_ip"]
+	path = rtl/amba_sys_ip
+	url = https://github.com/mballance/amba_sys_ip.git
+	branch = master
