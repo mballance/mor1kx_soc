@@ -135,13 +135,8 @@ _ent:
 //	l.nop
 
 	// Checkpoint F
-	ASM_TEST_PT(0xF);
-	l.nop
-
-	// Hang for now
-.L_loop:
-	l.j		.L_loop
-	l.nop
+//	ASM_TEST_PT(0xF);
+//	l.nop
 
 	l.jal	main
 	l.nop

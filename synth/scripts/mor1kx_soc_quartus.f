@@ -6,7 +6,7 @@
 /**
  * Port mapping
  */
--assign-pin clk PIN_K14
+-assign-pin clk_i PIN_K14
 -assign-pin pad0_o PIN_AF10
 -assign-pin pad1_o PIN_AD10
 -assign-pin pad2_o PIN_AE11
@@ -15,7 +15,7 @@
 /**
  * Voltage
  */
--io-standard clk "3.3-V LVTTL"
+-io-standard clk_i "3.3-V LVTTL"
 -io-standard pad0_o "3.3-V LVTTL"
 -io-standard pad1_o "3.3-V LVTTL"
 -io-standard pad2_o "3.3-V LVTTL"
