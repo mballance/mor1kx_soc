@@ -9,12 +9,35 @@
  */
 `include "or1200_defines.v"
 module mor1kx_soc(
-		input			clk,
-		input			rstn,
+		input			clk_i,
 		output			pad0_o,
 		output			pad1_o,
 		output			pad2_o,
 		output			pad3_o);
+		
+	reg					clk_r = 0;
+	wire				clk;
+	assign clk = clk_r;
+	reg[4:0]			clk_cnt = 0;
+	reg 				rstn = 0;
+	reg[7:0]			rstn_cnt = 0;
+	
+	always @(posedge clk_i) begin
+		clk_cnt <= clk_cnt + 5'b1;
+		case (clk_cnt[0]) 
+			0: clk_r <= 0;
+			1: clk_r <= 1;
+		endcase
+	end
+	
+	always @(posedge clk) begin
+		if (rstn_cnt == 255) begin
+			rstn <= 1;
+		end else begin
+			rstn <= 0;
+			rstn_cnt <= rstn_cnt + 1;
+		end
+	end
 
 	wb_if #(
 		.WB_ADDR_WIDTH  (32 ), 
@@ -130,17 +153,19 @@ module mor1kx_soc(
 		);
 	
 	wb_rom #(
-		.MEM_ADDR_BITS     (18    ), 
-		.WB_ADDRESS_WIDTH  (32    ), 
-		.WB_DATA_WIDTH     (32    ), 
-		.INIT_FILE         (""    )
+//		.MEM_ADDR_BITS     (18       ), 
+		.MEM_ADDR_BITS     (14       ),  // 64k
+		.WB_ADDRESS_WIDTH  (32       ), 
+		.WB_DATA_WIDTH     (32       ), 
+		.INIT_FILE         ("rom.hex")
 		) u_rom (
 		.clk               (clk              ), 
 		.rstn              (rstn             ), 
 		.s                 (ic2rom.slave     ));
 
 	wb_sram #(
-		.MEM_ADDR_BITS     (18    ), 
+//		.MEM_ADDR_BITS     (18    ), 
+		.MEM_ADDR_BITS     (14    ), // 64k
 		.WB_ADDRESS_WIDTH  (32 ), 
 		.WB_DATA_WIDTH     (32    )
 		) u_ram (
