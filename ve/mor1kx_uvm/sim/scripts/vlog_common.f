@@ -1,7 +1,6 @@
 
 // Define the SRAM BFM name, such that we implement the generic SRAM devices
 +define+GENERIC_SRAM_BYTE_EN_BFM_NAME=generic_sram_byte_en
-+define+GENERIC_ROM_BFM_NAME=generic_rom
 +define+WB_UART_BFM_NAME=wb_uart
 
 

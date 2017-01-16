@@ -156,7 +156,7 @@ module mor1kx_soc(
 //		.MEM_ADDR_BITS     (18       ), 
 		.MEM_ADDR_BITS     (14       ),  // 64k
 		.WB_ADDRESS_WIDTH  (32       ), 
-		.WB_DATA_WIDTH     (32       ), 
+		.WB_DATA_WIDTH     (32       ),
 		.INIT_FILE         ("rom.hex")
 		) u_rom (
 		.clk               (clk              ), 

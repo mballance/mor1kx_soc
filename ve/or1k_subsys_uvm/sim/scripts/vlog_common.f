@@ -3,8 +3,12 @@
 +incdir+${SIM_DIR_A}/../tests
 
 -f ${SV_BFMS}/api/sv/sv.f
+-f ${SV_BFMS}/api/sv/sv_dpi.f
 -f ${SV_BFMS}/wb/wb.f
 -f ${SV_BFMS}/wb/uvm/uvm.f
+-f ${SV_BFMS}/irq/uvm/uvm.f
+
+-F ${OC_WB_IP}/rtl/wb_dma/fw/fw.F
 
 -f ${SV_BFMS}/irq/uvm/uvm.f
 ${SV_BFMS}/irq/irq_bfm.sv

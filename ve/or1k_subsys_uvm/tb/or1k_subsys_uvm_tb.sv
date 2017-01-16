@@ -26,11 +26,11 @@ module or1k_subsys_uvm_tb;
 		automatic wb_cfg_t dwb_cfg = wb_cfg_t::type_id::create("dwb_cfg");
 		automatic irq_config irq_cfg = irq_config::type_id::create("irq_cfg");
 		
-		iwb_cfg.vif = u_tb.u_soc.u_cpu.u_iwb;
+		iwb_cfg.vif = u_tb.u_soc.u_cpu.u_iwb.u_core;
 		uvm_config_db #(wb_cfg_t)::set(uvm_top, "*m_iwb_agent*",
 				wb_cfg_t::report_id, iwb_cfg);
 		
-		dwb_cfg.vif = u_tb.u_soc.u_cpu.u_dwb;
+		dwb_cfg.vif = u_tb.u_soc.u_cpu.u_dwb.u_core;
 		uvm_config_db #(wb_cfg_t)::set(uvm_top, "*m_dwb_agent*",
 				wb_cfg_t::report_id, dwb_cfg);
 		

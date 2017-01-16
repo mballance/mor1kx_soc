@@ -11,5 +11,6 @@ package or1k_subsys_uvm_tests_pkg;
 	
 	`include "or1k_subsys_uvm_test_base.svh"
 	`include "or1k_subsys_uvm_dma_smoketest.svh"
+	`include "or1k_subsys_uvm_dma_smoketest_c.svh"
 	
 endpackage

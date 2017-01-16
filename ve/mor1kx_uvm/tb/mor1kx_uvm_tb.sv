@@ -42,13 +42,15 @@ module mor1kx_uvm_tb;
 	wire[3:0] pad_o;
 	
 	mor1kx_soc u_soc (
-		.clk   (clk  ), 
-		.rstn  (rstn ),
-		.pad_i (pad_i),
-		.pad_o (pad_o));
+		.clk_i  (clk  ), 
+		.pad0_o (pad_o[0]),
+		.pad1_o (pad_o[1]),
+		.pad2_o (pad_o[2]),
+		.pad3_o (pad_o[3])
+		);
 	
-	typedef generic_sram_byte_en_config #(18, 32) 	u_ram_cfg_t;
-	typedef generic_rom_config #(18, 32) 			u_rom_cfg_t;
+	typedef generic_sram_byte_en_config #(14, 32) 	u_ram_cfg_t;
+	typedef generic_rom_config #(14, 32) 			u_rom_cfg_t;
 	typedef generic_sram_byte_en_config #(10, 32)	u_scratchpad_cfg_t;
 	
 	
@@ -66,7 +68,7 @@ module mor1kx_uvm_tb;
 				u_ram_cfg_t::report_id, u_ram_cfg);
 		
 		// Handle to ROM BFM
-		u_rom_cfg.vif = u_soc.u_rom.u_rom.rom;
+		u_rom_cfg.vif = u_soc.u_rom.u_rom.rom.u_core;
 		uvm_config_db #(u_rom_cfg_t)::set(uvm_top, "*",
 				u_rom_cfg_t::report_id, u_rom_cfg);
 		
