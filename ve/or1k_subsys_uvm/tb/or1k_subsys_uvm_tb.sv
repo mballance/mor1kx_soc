@@ -24,7 +24,9 @@ module or1k_subsys_uvm_tb;
 	initial begin
 		automatic wb_cfg_t iwb_cfg = wb_cfg_t::type_id::create("iwb_cfg");
 		automatic wb_cfg_t dwb_cfg = wb_cfg_t::type_id::create("dwb_cfg");
+		automatic wb_cfg_t spr_cfg = wb_cfg_t::type_id::create("spr_cfg");
 		automatic irq_config irq_cfg = irq_config::type_id::create("irq_cfg");
+		automatic irq_config tick_cfg = irq_config::type_id::create("tick_cfg");
 		
 		iwb_cfg.vif = u_tb.u_soc.u_cpu.u_iwb.u_core;
 		uvm_config_db #(wb_cfg_t)::set(uvm_top, "*m_iwb_agent*",
@@ -34,9 +36,17 @@ module or1k_subsys_uvm_tb;
 		uvm_config_db #(wb_cfg_t)::set(uvm_top, "*m_dwb_agent*",
 				wb_cfg_t::report_id, dwb_cfg);
 		
+		spr_cfg.vif = u_tb.u_soc.u_cpu.u_spr.u_core;
+		uvm_config_db #(wb_cfg_t)::set(uvm_top, "*m_spr_agent*",
+				wb_cfg_t::report_id, spr_cfg);
+		
 		irq_cfg.vif = u_tb.u_soc.u_cpu.u_irq;
 		uvm_config_db #(irq_config)::set(uvm_top, "*m_irq_agent*",
 				irq_config::report_id, irq_cfg);
+		
+		tick_cfg.vif = u_tb.u_soc.u_cpu.u_tick;
+		uvm_config_db #(irq_config)::set(uvm_top, "*m_tick_agent*",
+				irq_config::report_id, tick_cfg);
 
 	end
 	
