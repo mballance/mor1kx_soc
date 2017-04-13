@@ -23,10 +23,12 @@ endclass
 class or1k_subsys_uvm_env_rw_api extends sv_bfms_rw_api_if;
 	sv_bfms_rw_api_if			dflt;
 	sv_bfms_rw_api_if			spr;
-	
 
+	// Return the appropriate access API depending on the
+	// high bits of the address
+	// 0xFxxx_xxxx => SPR
+	// Everything else => Default
 	function sv_bfms_rw_api_if get_api(inout bit[31:0] addr);
-		$display("get_api 'h%08h", addr);
 		if (addr[31:28] == 'hf) begin
 			addr[31:28] = 0;
 			return spr;
@@ -89,6 +91,7 @@ class or1k_subsys_uvm_env extends mor1kx_uvm_env;
 	irq_agent							m_tick_agent;
 	or1k_subsys_uvm_env_rw_api			m_api;
 	or1k_subsys_uvm_env_tick_listener	m_uex_tick_listener;
+	or1k_subsys_uvm_env_tick_listener	m_uex_irq_listener;
 	
 	function new(string name, uvm_component parent=null);
 		super.new(name, parent);
@@ -111,6 +114,9 @@ class or1k_subsys_uvm_env extends mor1kx_uvm_env;
 		
 		m_uex_tick_listener = or1k_subsys_uvm_env_tick_listener::type_id::create(
 				"m_uex_tick_listener", this);
+		
+		m_uex_irq_listener = or1k_subsys_uvm_env_tick_listener::type_id::create(
+				"m_uex_irq_listener", this);
 	endfunction
 
 	/**
@@ -127,6 +133,7 @@ class or1k_subsys_uvm_env extends mor1kx_uvm_env;
 		sv_bfms_rw_api_dpi::set_default(m_api);
 		
 		m_tick_agent.m_drv_out_ap.connect(m_uex_tick_listener.analysis_export);
+		m_irq_agent.m_drv_out_ap.connect(m_uex_irq_listener.analysis_export);
 	endfunction
 
 
@@ -143,6 +150,12 @@ class or1k_subsys_uvm_env extends mor1kx_uvm_env;
 				while (1) begin
 					m_uex_tick_listener.m_irq.get(1);
 					uex_pkg::uex_irq(0);
+				end
+			end
+			begin
+				while (1) begin
+					m_uex_irq_listener.m_irq.get(1);
+					uex_pkg::uex_irq(1);
 				end
 			end
 		join_none

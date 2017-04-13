@@ -38,7 +38,7 @@
 	path = rtl/amba_sys_ip
 	url = https://github.com/mballance/amba_sys_ip.git
 	branch = master
-[submodule "googletest_uvm"]
-	path = googletest_uvm
+[submodule "ve/googletest_uvm"]
+	path = ve/googletest_uvm
 	url = https://github.com/mballance/googletest_uvm.git
 	branch = master

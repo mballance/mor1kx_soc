@@ -10,6 +10,8 @@ if test "$uname_o" = "Cygwin"; then
 	MOR1KX_SOC=`cygpath -w $MOR1KX_SOC | sed -e 's%\\\\%/%g'`
 fi
 
+export UEX=${MOR1KX_SOC}/sw/uex
+export GOOGLETEST_UVM=${MOR1KX_SOC}/ve/googletest_uvm
 export MOR1KX=${MOR1KX_SOC}/rtl/mor1kx_mod
 export WB_SYS_IP=${MOR1KX_SOC}/rtl/wb_sys_ip
 export OC_WB_IP=${MOR1KX_SOC}/rtl/oc_wb_ip

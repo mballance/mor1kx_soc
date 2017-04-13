@@ -259,6 +259,9 @@ module mor1kx_soc(
 	assign ri_pad_i = 0;
 	assign dcd_pad_i = 1;
 
+	// TODO:
+	assign uart_int_o = 0;
+
 	wb_uart u_uart (
 		.clk        (clk           ), 
 		.rstn       (rstn          ), 
@@ -277,7 +280,7 @@ module mor1kx_soc(
 			.NUM_IRQ  (32 )
 		) u_pic (
 			.clk_i    (clk				), 
-			.rst_i    (!rstn   			), 
+			.rstn_i   (rstn   			), 
 			.s        (ic2intc.slave	), 
 			.irq_i    (irq_i			), 
 			.int_o    (int_o			));	
@@ -288,9 +291,8 @@ module mor1kx_soc(
 			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
 			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
 			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
-			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 
+			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
 			uart_int_o, 
-			dma_intb_o, 
 			dma_inta_o};
 			
 	
