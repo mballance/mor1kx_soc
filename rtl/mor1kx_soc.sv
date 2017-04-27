@@ -13,7 +13,10 @@ module mor1kx_soc(
 		output			pad0_o,
 		output			pad1_o,
 		output			pad2_o,
-		output			pad3_o);
+		output			pad3_o,
+		output			stx_pad_o,
+		input			srx_pad_i
+		);
 		
 	reg					clk_r = 0;
 	wire				clk;
@@ -126,7 +129,7 @@ module mor1kx_soc(
 		.SLAVE0_ADDR_LIMIT  (32'h000F_FFFF  ), 
 		.SLAVE1_ADDR_BASE   (32'h1000_0000  ), 
 		.SLAVE1_ADDR_LIMIT  (32'h100F_FFFF  ),
-		.SLAVE2_ADDR_BASE	(32'h8000_0000  ),
+		.SLAVE2_ADDR_BASE	(32'h8000_0000  ), // UART
 		.SLAVE2_ADDR_LIMIT	(32'h8000_0FFF  ),
 		.SLAVE3_ADDR_BASE	(32'h8000_1000  ),
 		.SLAVE3_ADDR_LIMIT	(32'h8000_1FFF  ),
@@ -145,7 +148,7 @@ module mor1kx_soc(
 		.m3					(dma2ic1.slave        ),
 		.s0                 (ic2rom.master        ),
 		.s1                 (ic2ram.master        ),
-		.s2					(ic2uart.master       ),
+		.s2					(ic2uart.master       ), // 'h8000_0000
 		.s3					(ic2dma.master        ), // 'h8000_1000
 		.s4					(ic2pad.master        ),
 		.s5					(ic2scratchpad.master ), // 'h9000_0000
@@ -165,9 +168,10 @@ module mor1kx_soc(
 
 	wb_sram #(
 //		.MEM_ADDR_BITS     (18    ), 
-		.MEM_ADDR_BITS     (14    ), // 64k
+		.MEM_ADDR_BITS     (15    ), // 128k
 		.WB_ADDRESS_WIDTH  (32 ), 
-		.WB_DATA_WIDTH     (32    )
+		.WB_DATA_WIDTH     (32    ),
+		.INIT_FILE         ("ram.hex")
 		) u_ram (
 		.clk               (clk              ), 
 		.rstn              (rstn             ), 
@@ -251,16 +255,13 @@ module mor1kx_soc(
 		.intb_o      (dma_intb_o     ));
 
 	// TODO:
-	wire uart_int_o, stx_pad_o, srx_pad_i, rts_pad_o,
-		cts_pad_i, dtr_pad_o, dsr_pad_i, ri_pad_i, dcd_pad_i;
-	assign srx_pad_i = 0;
+	wire uart_int_o, rts_pad_o, cts_pad_i, dtr_pad_o, 
+		dsr_pad_i, ri_pad_i, dcd_pad_i;
+//	assign srx_pad_i = 0;
 	assign cts_pad_i = 1;
 	assign dsr_pad_i = 0;
 	assign ri_pad_i = 0;
 	assign dcd_pad_i = 1;
-
-	// TODO:
-	assign uart_int_o = 0;
 
 	wb_uart u_uart (
 		.clk        (clk           ), 

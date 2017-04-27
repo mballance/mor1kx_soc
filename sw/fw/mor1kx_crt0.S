@@ -15,17 +15,10 @@
 	l.ori			r5, r0, p; \
 	l.sw			0(r4), r5
 
-	.section .ramvec, "aw"
-exp_ptr:
-.word		_exp_handler
-
-irq_ptr:
-.word		_irq_handler
-
 	.section .vectors, "ax"
 	.global __reset
 
-	.org	0x100
+//	.org	0x00001000
 __reset:
 	l.andi		r0, r0, 0
 
@@ -46,15 +39,6 @@ __reset:
 
 _ent:
 
-	// Initialize the Exception and IRQ vectors
-	l.movhi		r1, hi(exp_ptr)
-	l.ori		r1, r1, lo(exp_ptr)
-	l.sw		0(r1), r0
-
-	l.movhi		r1, hi(irq_ptr)
-	l.ori		r1, r1, lo(irq_ptr)
-	l.sw		0(r1), r0
-
 	// Checkpoint 2
 	ASM_TEST_PT(2);
 
@@ -65,20 +49,20 @@ _ent:
 	l.or		r2, r0, r1
 
 	// Relocate the .data section from ROM to RAM
-	l.movhi		r4, hi(__data_load)  // data_load is the source addr for data: 0x0000e5d0
-	l.ori		r4, r4, lo(__data_load)
-	l.movhi		r5, hi(__data_start) // data_start is the dest addr for data: 0x10000000
-	l.ori		r5, r5, lo(__data_start)
-	l.movhi		r6, hi(_edata)       // _edata is the end dest addr for data: 0x100008b4
-	l.ori		r6, r6, lo(_edata)
-.L_rom2ram:
-	l.lwz		r7, 0(r4)
-	l.sw		0(r5), r7
-	l.sfltu		r5, r6
-	l.addi		r4, r4, 4
-	l.bf		.L_rom2ram
-	l.addi		r5, r5, 4
-	l.nop
+//	l.movhi		r4, hi(__data_load)  // data_load is the source addr for data: 0x0000e5d0
+//	l.ori		r4, r4, lo(__data_load)
+//	l.movhi		r5, hi(__data_start) // data_start is the dest addr for data: 0x10000000
+//	l.ori		r5, r5, lo(__data_start)
+//	l.movhi		r6, hi(_edata)       // _edata is the end dest addr for data: 0x100008b4
+//	l.ori		r6, r6, lo(_edata)
+//.L_rom2ram:
+//	l.lwz		r7, 0(r4)
+//	l.sw		0(r5), r7
+//	l.sfltu		r5, r6
+//	l.addi		r4, r4, 4
+//	l.bf		.L_rom2ram
+//	l.addi		r5, r5, 4
+//	l.nop
 
 	// Checkpoint 3
 	ASM_TEST_PT(3);
@@ -96,6 +80,25 @@ _ent:
 
 	// Checkpoint 4
 	ASM_TEST_PT(4);
+
+	// TODO: Call C++ init methods
+/*
+	l.movhi		r4, hi(__init_array_start)
+	l.ori		r4, r4, lo(__init_array_start)
+	l.movhi		r5, hi(__init_array_end)
+	l.ori		r5, r5, lo(__init_array_end)
+	l.sfeq		r4, r5 // skip init if the pointers are equal
+	l.bf		.L_no_init
+.L_call_init:
+	l.jalr		r4		// Call init function
+	l.sfltu		r4, r5
+	l.bf		.L_call_init
+	l.addi		r4, r4, 4
+.L_no_init:
+ */
+	// cmp r4, r5
+	// eq => skip
+	//
 
 	// Reset registers
 	l.andi	r3, r0, 0
@@ -127,18 +130,18 @@ _ent:
 	l.andi	r30, r0, 0
 	l.andi	r31, r0, 0
 
-	l.jal	boot_main
-	l.nop
-	l.j		__reset;
-	l.nop
-	l.nop
-	l.nop
+	// Do 'c' setup
+//	l.jal	pre_main
+//	l.nop
 
-_exp_handler:
-	l.nop
-	l.nop
+	// Checkpoint F
+//	ASM_TEST_PT(0xF);
+//	l.nop
 
-_irq_handler:
+	l.jal	main
+	l.nop
+	l.jr	r9
+	l.nop
 	l.nop
 	l.nop
 

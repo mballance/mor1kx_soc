@@ -42,3 +42,7 @@
 	path = ve/googletest_uvm
 	url = https://github.com/mballance/googletest_uvm.git
 	branch = master
+[submodule "synthscripts"]
+	path = synthscripts
+	url = https://github.com/mballance/synthscripts.git
+	branch = master

@@ -9,6 +9,7 @@
 #include "or1k-support.h"
 #include "mor1kx_soc_memmap.h"
 #include "mor1kx_soc_uex_devtree.h"
+#include "uex_dev_services.h"
 
 static const uint32_t TIMER_TICK_IRQ = 0;
 

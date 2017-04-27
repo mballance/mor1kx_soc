@@ -11,14 +11,19 @@ include $(SIMSCRIPTS_DIR)/mkfiles/plusargs.mk
 
 MK_INCLUDES += $(MOR1KX_SOC)/rtl/mor1kx_mod/fw/mor1kx.mk
 MK_INCLUDES += $(MOR1KX_SOC)/rtl/mor1kx_mod/fw/rules_defs.mk
+MK_INCLUDES += $(MOR1KX_SOC)/sw/fw/rules_defs.mk
 MK_INCLUDES += $(SIM_SCRIPTS_DIR)/../../tests/sw/rules_defs.mk
 
 CFLAGS += -mcompat-delay -fomit-frame-pointer
 CXXFLAGS += -mcompat-delay
 
+$(BUILD_DIR_A)/%.elf : %.elf
+	echo "ELF=>ELF $^"
+
 include $(MK_INCLUDES)
 
 EXE_TARGETS += $(call get_plusarg,SW_IMAGE,$(PLUSARGS))
+EXE_TARGETS += mor1kx_soc_boot.elf
 
 RULES := 1
 

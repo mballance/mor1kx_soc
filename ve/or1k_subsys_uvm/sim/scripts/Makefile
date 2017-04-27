@@ -14,6 +14,9 @@ MK_INCLUDES += $(SV_BFMS)/api/rules_defs.mk
 MK_INCLUDES += $(OC_WB_IP)/rtl/wb_dma/fw/rules_defs.mk
 MK_INCLUDES += $(OC_WB_IP)/rtl/simple_pic/fw/rules_defs.mk
 
+CXXFLAGS += -fexceptions
+CFLAGS += -fexceptions
+
 DPI_OBJS_LIBS += libuex.o mor1kx_soc_uex_devtree.o $(LIBWB_DMA_UEX_FW)
 
 #DPI_OBJS_LIBS += $(foreach swtest,$(call get_plusarg,SWTEST,$(PLUSARGS)),$(BUILD_DIR)/$(swtest).o)

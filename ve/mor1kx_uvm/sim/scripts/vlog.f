@@ -8,3 +8,4 @@
 ${MOR1KX_SOC}/ve/mor1kx_uvm/tb/or1200_monitor.sv
 
 -f ${MOR1KX_SOC}/ve/mor1kx_uvm/sim/scripts/vlog_common.f
+

@@ -32,6 +32,7 @@ class mor1kx_uvm_backdoor_test extends mor1kx_uvm_test_base;
 	 * run_phase()
 	 ****************************************************************/
 	task run_phase(uvm_phase phase);
+`ifdef UNDEFINED
 		mor1kx_uvm_env::u_rom_agent_t agent = m_env.m_u_rom_agent;
 		sv_bfms_rw_api_if rom_if;
 		sv_bfms_rw_api_if ram_if = m_env.m_u_ram_agent.get_api();
@@ -64,6 +65,7 @@ class mor1kx_uvm_backdoor_test extends mor1kx_uvm_test_base;
 		end
 		
 		// TODO: Launch any local behavior
+`endif
 	endtask
 	
 	/**

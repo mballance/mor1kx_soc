@@ -11,7 +11,7 @@ __DYNAMIC = 0;
 #define ROM_LENGTH	0x00010000 // 64k
 #define RAM_ORIGIN  0x10000000
 // #define RAM_LENGTH	0x00100000 // 1M
-#define RAM_LENGTH	0x00010000 // 64k
+#define RAM_LENGTH	0x00001000 // 4k
 
 MEMORY
 {
@@ -61,6 +61,10 @@ SECTIONS
 
 	_etext = .;
 
+	.ramvec : {
+		*(.ramvec)
+	} >ram
+
 	.data : {
 		__data_load = LOADADDR(.data);
 		__data_start = .;
@@ -85,7 +89,7 @@ SECTIONS
 
 	_heap = .; PROVIDE(heap = .);
 
- 	. = (RAM_ORIGIN + RAM_LENGTH - 4);
+ 	. += (RAM_LENGTH - 4);
 	_ram_end = .; PROVIDE(ram_end = .);
 
 //	  . = DATA_SEGMENT_END (.);

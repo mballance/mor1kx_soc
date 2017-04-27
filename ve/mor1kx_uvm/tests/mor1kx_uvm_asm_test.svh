@@ -3,7 +3,6 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 	
 	`uvm_component_utils(mor1kx_uvm_asm_test)
 	
-	wb_uart_line_listener					m_line_listener;
 	uvm_phase								m_run_phase;
 	
 	/****************************************************************
@@ -22,7 +21,6 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 	 ****************************************************************/
 	function void build_phase(uvm_phase phase);
 		super.build_phase(phase);
-		m_line_listener = wb_uart_line_listener::type_id::create("m_line_listener", this);
 		
 	endfunction
 
@@ -32,18 +30,43 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 	function void connect_phase(uvm_phase phase);
 		super.connect_phase(phase);
 		
-		m_env.m_uart_agent.m_mon_out_ap.connect(m_line_listener.analysis_export);
+//		m_env.m_uart_agent.m_mon_out_ap.connect(m_line_listener.analysis_export);
 	endfunction
 
 	/****************************************************************
 	 * run_phase()
 	 ****************************************************************/
 	task run_phase(uvm_phase phase);
+		bit[7:0] data;
+		
+		phase.raise_objection(this, "Main");
+		
+`ifdef UNDEFINED
 		string sw_image;
 		chandle drv;
 		sv_bfms_rw_api_if mem_if = m_env.m_u_rom_agent.get_api();
+`endif
 		m_run_phase = phase;
+	
+		// SW is up and running
+		$display("--> getc");
+		m_env.m_uart_agent.getc(data);
+		$display("<-- getc %02h", data);
+		$display("--> getc");
+		m_env.m_uart_agent.getc(data);
+		$display("<-- getc %02h", data);
+
+		for (int i=1; i<16; i++) begin
+			$display("--> putc");
+			m_env.m_uart_agent.putc(i);
+			$display("<-- putc");
 		
+			$display("--> getc");
+			m_env.m_uart_agent.getc(data);
+			$display("<-- getc %0d", data);
+		end
+	
+`ifdef UNDEFINED	
 		if ($value$plusargs("SW_IMAGE=%s", sw_image)) begin
 			// Load up the image
 			elf_loader loader = new(this, mem_if);
@@ -52,9 +75,8 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 		end else begin
 			`uvm_fatal (get_type_name(), "No +SW_IMAGE specified");
 		end
+`endif
 		
-		// TODO: Launch any local behavior
-		phase.raise_objection(this, "Main");
 	endtask
 
 	virtual task test_end_signaled();

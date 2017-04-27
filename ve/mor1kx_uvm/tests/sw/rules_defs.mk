@@ -16,15 +16,15 @@ else # Rules
 #********************************************************************
 
 BAREMETAL_OBJ=\
-	baremetal/start.o \
+	mor1kx_crt0.o \
 	baremetal/libc_support.o
 
-$(BUILD_DIR_A)/baremetal/%.elf : baremetal/%.o $(BAREMETAL_OBJ) baremetal.lds
-	$(Q)$(LD) -o $@ $(filter-out %.lds,$^) -T baremetal.lds \
+$(BUILD_DIR_A)/baremetal/%.elf : baremetal/%.o $(BAREMETAL_OBJ) mor1kx_app.lds
+	$(Q)$(LD) -o $@ $(filter-out %.lds,$^) -T mor1kx_app.lds \
 		$(LIBC) $(LIBGCC) # $(LIBOR1K)
 
-%.lds : $(SW_SRC_DIR)/baremetal/%.lds.h
-	$(Q)$(CC) -E -x c $(CFLAGS) $^ | grep -v '^#' > $@
+#%.lds : $(SW_SRC_DIR)/baremetal/%.lds.h
+#	$(Q)$(CC) -E -x c $(CFLAGS) $^ | grep -v '^#' > $@
 	
 baremetal/%.o : $(SW_SRC_DIR)/baremetal/%.S
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi

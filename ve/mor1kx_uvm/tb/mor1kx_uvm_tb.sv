@@ -11,9 +11,9 @@
 module mor1kx_uvm_tb;
 	import uvm_pkg::*;
 	import mor1kx_uvm_tests_pkg::*;
-	import generic_sram_byte_en_agent_pkg::*;
-	import generic_rom_agent_pkg::*;
-	import wb_uart_agent_pkg::*;
+//	import generic_sram_byte_en_agent_pkg::*;
+//	import generic_rom_agent_pkg::*;
+	import uart_serial_agent_pkg::*;
 	
 	reg[15:0]                       rst_cnt = 0;
 	reg                             rstn = 0;
@@ -41,28 +41,58 @@ module mor1kx_uvm_tb;
 	wire[3:0] pad_i = 0;
 	wire[3:0] pad_o;
 	
+	wire stx_pad_o, srx_pad_i;
+	
 	mor1kx_soc u_soc (
 		.clk_i  (clk  ), 
 		.pad0_o (pad_o[0]),
 		.pad1_o (pad_o[1]),
 		.pad2_o (pad_o[2]),
-		.pad3_o (pad_o[3])
+		.pad3_o (pad_o[3]),
+		.stx_pad_o(stx_pad_o),
+		.srx_pad_i(srx_pad_i)
 		);
 	
-	typedef generic_sram_byte_en_config #(14, 32) 	u_ram_cfg_t;
-	typedef generic_rom_config #(14, 32) 			u_rom_cfg_t;
-	typedef generic_sram_byte_en_config #(10, 32)	u_scratchpad_cfg_t;
+//	typedef generic_sram_byte_en_config #(14, 32) 	u_ram_cfg_t;
+//	typedef generic_rom_config #(14, 32) 			u_rom_cfg_t;
+//	typedef generic_sram_byte_en_config #(10, 32)	u_scratchpad_cfg_t;
+
+	wire rts_pad_o, cts_pad_i, dtr_pad_o;
+	wire dsr_pad_i, ri_pad_i, dcd_pad_i;
+
+	assign cts_pad_i = 1;
+	assign dsr_pad_i = 0;
+	assign ri_pad_i  = 0;
+	assign dcd_pad_i = 1;
+	uart_serial_bfm u_uart_bfm (
+		.clk_i      (clk      ), 
+		.rstn_i     (rstn     ), 
+		.stx_pad_o  (srx_pad_i ), 
+		.srx_pad_i  (stx_pad_o ), 
+		.rts_pad_o  (rts_pad_o ), 
+		.cts_pad_i  (cts_pad_i ), 
+		.dtr_pad_o  (dtr_pad_o ), 
+		.dsr_pad_i  (dsr_pad_i ), 
+		.ri_pad_i   (ri_pad_i  ), 
+		.dcd_pad_i  (dcd_pad_i ));
+	
+	initial begin
+		u_uart_bfm.set_clkdiv(22);
+	end
 	
 	
 	initial begin
 		// Register the BFM virtual interfaces
+/*
 		automatic u_ram_cfg_t u_ram_cfg = u_ram_cfg_t::type_id::create("u_ram_cfg");
 		automatic u_rom_cfg_t u_rom_cfg = u_rom_cfg_t::type_id::create("u_rom_cfg");
 		automatic u_scratchpad_cfg_t u_scratchpad_cfg = 
 			u_scratchpad_cfg_t::type_id::create("u_scratchpad_cfg");
-		automatic wb_uart_config u_uart_cfg = wb_uart_config::type_id::create("u_uart_cfg");
+ */
+		automatic uart_serial_config u_uart_cfg = uart_serial_config::type_id::create("u_uart_cfg");
 		
 		// Handle to the SRAM BFM
+/*
 		u_ram_cfg.vif = u_soc.u_ram.u_sram.ram;
 		uvm_config_db #(u_ram_cfg_t)::set(uvm_top, "*m_u_ram_agent*", 
 				u_ram_cfg_t::report_id, u_ram_cfg);
@@ -76,13 +106,16 @@ module mor1kx_uvm_tb;
 		u_scratchpad_cfg.vif = u_soc.u_scratchpad.u_sram.ram;
 		uvm_config_db #(u_scratchpad_cfg_t)::set(uvm_top, "*m_u_scratchpad_agent*", 
 				u_scratchpad_cfg_t::report_id, u_scratchpad_cfg);
+ */
 		
-		
-		u_uart_cfg.vif = u_soc.u_uart;
-		u_uart_cfg.vif_path = $psprintf("%m.u_soc.u_uart");
-		uvm_config_db #(wb_uart_config)::set(uvm_top, "*",
-				wb_uart_config::report_id, u_uart_cfg);
-			
+//		u_uart_cfg.vif = u_soc.u_uart;
+//		u_uart_cfg.vif_path = $psprintf("%m.u_soc.u_uart");
+//		uvm_config_db #(wb_uart_config)::set(uvm_top, "*",
+//				wb_uart_config::report_id, u_uart_cfg);
+	
+		u_uart_cfg.vif = u_uart_bfm;
+		uvm_config_db #(uart_serial_config)::set(uvm_top, "*m_uart_agent*",
+				uart_serial_config::report_id, u_uart_cfg);
 	end
 	
 	initial begin
