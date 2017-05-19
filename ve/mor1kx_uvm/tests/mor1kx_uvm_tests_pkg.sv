@@ -8,6 +8,10 @@ package mor1kx_uvm_tests_pkg;
 	import sv_bfms_utils_pkg::*;
 	import uart_serial_agent_pkg::*;
 	import wb_dma_fw_pkg::*;
+	import vmon_client_pkg::*;
+	
+	`include "mor1kx_uvm_vmon_uart_h2m.svh"
+	`include "mor1kx_uvm_vmon_uart_m2h.svh"
 	
 	`include "mor1kx_uvm_test_base.svh"
 	`include "mor1kx_uvm_backdoor_test.svh"

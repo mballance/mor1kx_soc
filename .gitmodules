@@ -46,3 +46,11 @@
 	path = synthscripts
 	url = https://github.com/mballance/synthscripts.git
 	branch = master
+[submodule "fpgamgr"]
+	path = fpgamgr
+	url = https://github.com/mballance/fpgamgr.git
+	branch = master
+[submodule "vmon"]
+	path = vmon
+	url = https://github.com/mballance/vmon.git
+	branch = master

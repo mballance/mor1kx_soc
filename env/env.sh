@@ -18,4 +18,5 @@ export OC_WB_IP=${MOR1KX_SOC}/rtl/oc_wb_ip
 export MEMORY_PRIMITIVES=${MOR1KX_SOC}/rtl/memory_primitives
 export SV_BFMS=${MOR1KX_SOC}/ve/sv_bfms
 export STD_PROTOCOL_IF=${MOR1KX_SOC}/rtl/std_protocol_if
+export VMON=${MOR1KX_SOC}/vmon
 

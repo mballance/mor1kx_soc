@@ -19,9 +19,18 @@ CFLAGS += -fexceptions
 
 DPI_OBJS_LIBS += libuex.o mor1kx_soc_uex_devtree.o $(LIBWB_DMA_UEX_FW)
 
+INFACT_SRC_PROJECTS += $(SIM_DIR)/../tests/infact_or1k_subsys
+
 #DPI_OBJS_LIBS += $(foreach swtest,$(call get_plusarg,SWTEST,$(PLUSARGS)),$(BUILD_DIR)/$(swtest).o)
 
 # VSIM_FLAGS += -trace_dpi 1
+
+RUN_PRE_TARGETS += rom.hex ram.hex
+
+# Stub out initialization files
+%.hex :
+	$(Q)echo "@00000000" > $@
+	$(Q)echo "00000000" >> $@
 
 include $(SIMSCRIPTS_DIR)/mkfiles/common_sim.mk
 

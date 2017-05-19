@@ -50,12 +50,14 @@ SECTIONS
 
 		*(.init)
 		*(.fini)
+		. = ALIGN(0x4);
 	} >rom
 
 	.init_array : {
 		__init_array_start = .;
 		_init = .;
 		*(.init_array)
+		. = ALIGN(0x4);
 	} >rom
 	__init_array_end = .;
 
@@ -63,9 +65,13 @@ SECTIONS
 
 	.ramvec : {
 		*(.ramvec)
+		. = ALIGN(0x4);
 	} >ram
 
-	.data : {
+	. = ALIGN(16);
+
+	.data ALIGN(0x10): {
+		. = ALIGN(0x4);
 		__data_load = LOADADDR(.data);
 		__data_start = .;
 		KEEP(*(.jcr))
@@ -76,7 +82,7 @@ SECTIONS
 		_edata = .;
 	} >ram AT>rom
 
-	.bss : {
+	.bss ALIGN(0x4): {
 		_bss_start = .;
 		*(.shbss)
 		*(.bss .bss.* .gnu.linkonce.b.*)

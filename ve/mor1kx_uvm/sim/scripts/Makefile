@@ -4,7 +4,7 @@ include $(SIMSCRIPTS_DIR)/mkfiles/plusargs.mk
 TARG_OBJCOPY := or1k-elf-objcopy
 
 
-TIMEOUT := 2ms
+TIMEOUT := 500ms
 
 XPROP := $(call have_plusarg,xprop,$(PLUSARGS))
 
@@ -20,6 +20,10 @@ RUN_PRE_TARGETS += rom.hex ram.hex
 
 MK_INCLUDES += $(SIM_DIR)/scripts/rules_defs.mk
 MK_INCLUDES += $(MOR1KX_SOC)/sw/fw/rules_defs.mk
+MK_INCLUDES += $(VMON)/src/client/rules_defs.mk
+MK_INCLUDES += $(VMON)/src/client/sv/rules_defs.mk
+
+DPI_OBJS_LIBS += libvmon_client.o libvmon_client_dpi.o
 
 TB=mor1kx_uvm_tb
 
@@ -36,12 +40,6 @@ else
 endif
 
 VSIM_FLAGS += -suppress 3009
-
-
-# Must build DPI libraries
-# DPI_LIBRARIES += $(call get_plusarg,DPI_LIBRARY,$(PLUSARGS))
-#LIB_TARGETS += $(foreach lib,$(call get_plusarg,DPI_LIBRARY,$(PLUSARGS)),$(lib)$(DLLEXT))
-# LIB_TARGETS += $(foreach lib,$(DPI_LIBRARIES),$(lib)$(DPIEXT))
 
 CFLAGS += \
   -I$(UVM_SDV)/c/common 	\

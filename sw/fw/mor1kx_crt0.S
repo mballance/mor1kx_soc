@@ -3,32 +3,15 @@
  ****************************************************************************/
 #include "asm/spr-defs.h"
 
-#define MOR1KX_PAD_O_ADDR 0x80002000
-
-#define ASM_TEST_PT(p) \
-	l.movhi			r4, hi(MOR1KX_PAD_O_ADDR); \
-	l.ori			r4, r4, lo(MOR1KX_PAD_O_ADDR); \
-	l.ori			r5, r0, 0xA; \
-	l.sw			0(r4), r5; \
-	l.ori			r5, r0, 0x5; \
-	l.sw			0(r4), r5; \
-	l.ori			r5, r0, p; \
-	l.sw			0(r4), r5
-
 	.section .vectors, "ax"
-	.global __reset
+	.global start
 
-//	.org	0x00001000
-__reset:
+start:
 	l.andi		r0, r0, 0
 
 	// Clear stack/frame pointers
 	l.andi		r1, r0, 0
 	l.andi		r2, r0, 0
-
-	// Checkpoint 1
-	ASM_TEST_PT(1);
-
 
 	// Set superviser mode
 	l.ori		r3, r0, SPR_SR_SM
@@ -38,9 +21,6 @@ __reset:
 	l.nop
 
 _ent:
-
-	// Checkpoint 2
-	ASM_TEST_PT(2);
 
 	// Setup the stack
 	l.movhi		r1, hi(_ram_end)
@@ -64,9 +44,6 @@ _ent:
 //	l.addi		r5, r5, 4
 //	l.nop
 
-	// Checkpoint 3
-	ASM_TEST_PT(3);
-
 	// Clear BSS segments
 	l.movhi	r4, hi(_bss_start)
 	l.ori	r4, r4, lo(_bss_start)
@@ -77,9 +54,6 @@ _ent:
 	l.sfltu	r4,r5
 	l.bf	.L_clear_bss
 	l.addi	r4,r4,4
-
-	// Checkpoint 4
-	ASM_TEST_PT(4);
 
 	// TODO: Call C++ init methods
 /*
@@ -132,10 +106,6 @@ _ent:
 
 	// Do 'c' setup
 //	l.jal	pre_main
-//	l.nop
-
-	// Checkpoint F
-//	ASM_TEST_PT(0xF);
 //	l.nop
 
 	l.jal	main

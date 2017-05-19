@@ -47,6 +47,7 @@ SECTIONS
 
 		*(.init)
 		*(.fini)
+		. = ALIGN(4);
 	} >ram
 
 	.init_array : {

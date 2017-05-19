@@ -3,6 +3,7 @@
  ****************************************************************************/
 #include <stdint.h>
 #include "mor1kx_soc_memmap.h"
+#include "vmon_monitor.h"
 
 static void (*main_f)(void) = (void (*)(void))0x10001000;
 
@@ -17,6 +18,23 @@ static void (*main_f)(void) = (void (*)(void))0x10001000;
 
 #define read32(addr) \
 	*((volatile uint32_t *)(addr))
+
+static void io_out8(uint8_t data) {
+	*((volatile uint32_t *)0x80002000) = ((0x8) | (data & 0x7));
+	*((volatile uint32_t *)0x80002000) = ((0x0) | (data & 0x7));
+	*((volatile uint32_t *)0x80002000) = ((0x8) | ((data >> 3) & 0x7));
+	*((volatile uint32_t *)0x80002000) = ((0x0) | ((data >> 3) & 0x7));
+	*((volatile uint32_t *)0x80002000) = ((0x8) | ((data >> 6) & 0x3));
+	*((volatile uint32_t *)0x80002000) = ((0x0) | ((data >> 6) & 0x3));
+}
+
+static void io_outstr(const char *s) {
+	while (*s) {
+		io_out8(*s);
+		s++;
+	}
+	io_out8(0);
+}
 
 static void uart_init(void) {
 	uint8_t val;
@@ -46,9 +64,24 @@ static uint8_t uart_getc() {
 		val = read8((MOR1KX_UART0_BASE+5)); // read LSR
 	} while ((val & 0x01) == 0);
 
-	return read8(MOR1KX_UART0_BASE);
+	val = read8(MOR1KX_UART0_BASE);
+
+	return val;
 }
 
+// Receive data from harness
+static int32_t vmon_h2m(void *ud, uint8_t *data, uint32_t len) {
+	data[0] = uart_getc();
+	return 1;
+}
+
+// Send data to harness
+static int32_t vmon_m2h(void *ud, uint8_t *data, uint32_t len) {
+	uart_putc(data[0]);
+	return 1;
+}
+
+static vmon_monitor_t		prv_vmon;
 
 int boot_main(void) {
 	volatile uint32_t v_t = 0;
@@ -57,14 +90,53 @@ int boot_main(void) {
 
 	uart_init();
 
-	uart_putc(0xEA); // Header
-	uart_putc(0x01); // Hello
+	vmon_monitor_init(&prv_vmon);
+	vmon_monitor_add_h2m_path(&prv_vmon, &vmon_h2m, 0);
+	vmon_monitor_add_m2h_path(&prv_vmon, &vmon_m2h, 0);
 
-	while (1) {
-		val = uart_getc();
-		uart_putc(val+1);
-	}
+	vmon_monitor_run(&prv_vmon);
 
-	main_f();
+//	io_outstr("Hello World!\n");
+////	io_out8('H');
+////	io_out8('e');
+////	io_out8('l');
+////	io_out8('l');
+////	io_out8('o');
+//
+//	// Spin forward looking for a header byte
+//	while (1) {
+//		while (1) {
+//			val = uart_getc();
+//
+//			if (val == 0xEA) { // header byte
+//				break;
+//			}
+//		}
+//		uart_putc(0xE5); // ACK
+//
+//		while (1) {
+//			// Connected
+//			val = uart_getc();
+//
+//			if (val == 0xEA) { // header byte
+//				val = uart_getc();
+//
+//				switch (val) {
+//				case 0: {
+//					uart_putc(0xE5); // ACK
+////					main_f();
+//				} break;
+//
+//				case 1: {
+//					uart_putc(0xE6); // ACK
+//				} break;
+//				}
+//			} else {
+//				break;
+//			}
+//		}
+//	}
+
+
 }
 

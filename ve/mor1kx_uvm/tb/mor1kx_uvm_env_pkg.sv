@@ -9,6 +9,7 @@ package mor1kx_uvm_env_pkg;
 //	import uvm_sdv_pkg::*;
 //	import uvm_sdv_dpi_pkg::*;
 //	import types_pkg::*;
+	import vmon_client_pkg::*;
 
 //	`include "simple_dpi_sdv_connector.svh"
 	`include "mor1kx_uvm_env.svh"

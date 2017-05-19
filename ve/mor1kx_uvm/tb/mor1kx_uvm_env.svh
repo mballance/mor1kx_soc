@@ -21,6 +21,7 @@ class mor1kx_uvm_env extends uvm_env;
 
 //	wb_uart_agent							m_uart_agent;
 	uart_serial_agent						m_uart_agent;
+	vmon_client								m_vmon_client;
 	
 	
 	function new(string name, uvm_component parent=null);
@@ -36,7 +37,7 @@ class mor1kx_uvm_env extends uvm_env;
 	 */
 	virtual function void build_phase(input uvm_phase phase);
 		super.build_phase(phase);
-
+		
 //		m_u_ram_agent = u_ram_agent_t::type_id::create("m_u_ram_agent", this);
 //		m_u_rom_agent = u_rom_agent_t::type_id::create("m_u_rom_agent", this);
 //		m_u_scratchpad_agent = u_scratchpad_agent_t::type_id::create("m_u_scratchpad_agent", this);
@@ -56,7 +57,9 @@ class mor1kx_uvm_env extends uvm_env;
 //		m_sw_txn_seqr2 = new("m_sw_txn_seqr2", this);
 //		m_sw_txn_driver2 = sw_txn_driver::type_id::create("m_sw_txn_driver2", this);
 		
+		
 		m_uart_agent = uart_serial_agent::type_id::create("m_uart_agent", this);
+		m_vmon_client = new();
 
 	endfunction
 
@@ -67,6 +70,8 @@ class mor1kx_uvm_env extends uvm_env;
 	 */
 	virtual function void connect_phase(input uvm_phase phase);
 		super.connect_phase(phase);
+		
+		// TODO: connect H2M and M2H vmon paths
 
 //		m_sdv_connector.register_endpoint(m_sw_txn_publisher.nonblocking_endpoint_imp);
 //

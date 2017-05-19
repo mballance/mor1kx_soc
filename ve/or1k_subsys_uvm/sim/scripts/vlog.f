@@ -6,6 +6,8 @@ ${GOOGLETEST_UVM}/src/googletest_uvm_pkg.sv
 -f ${SV_BFMS}/api/sv/sv_dpi.f
 ${UEX}/impl/sv/uex_pkg.sv
 
+-f ${MEMORY_PRIMITIVES}/rtl/sim/sim.f
+
 -f ${MOR1KX_SOC}/ve/or1k_subsys_uvm/sim/scripts/vlog_common.f
 
 

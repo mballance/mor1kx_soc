@@ -114,6 +114,7 @@ module mor1kx_uvm_tb;
 //				wb_uart_config::report_id, u_uart_cfg);
 	
 		u_uart_cfg.vif = u_uart_bfm;
+		u_uart_cfg.has_monitor = 0;
 		uvm_config_db #(uart_serial_config)::set(uvm_top, "*m_uart_agent*",
 				uart_serial_config::report_id, u_uart_cfg);
 	end
@@ -121,55 +122,102 @@ module mor1kx_uvm_tb;
 	initial begin
 		run_test();
 	end
-
-	reg [3:0] test_end_state = 0;
-	reg [3:0] last_pad_o = 0;
+	
+	reg [3:0] test_state = 0;
+	reg [7:0] data = 0;
+	
 	always @(posedge clk) begin
-		case (test_end_state)
-			0: begin
-				if (pad_o == 'hA) begin
-					test_end_state <= 1;
+		case (test_state)
+			0: begin // Beginning of v0
+				if (pad_o[3] == 1) begin
+					test_state <= 1;
+					data[2:0] <= pad_o[2:0];
 				end
 			end
 			
 			1: begin
-				if (pad_o == 'h5) begin
-					test_end_state <= 2;
+				if (pad_o[3] == 0) begin
+					test_state <= 2;
 				end
 			end
 			
-			2: begin
-				if (pad_o == 'hf)  begin
-					string testname;
-					
-					if (!$value$plusargs("TESTNAME=%s", testname)) begin
-						$display("Error: +TESTNAME not set");
-					end
-					
-					$display("PASS: %s", testname);
-					test_end_state <= 3;
-				end else if (pad_o == 'h0) begin
-					string testname;
-					
-					if (!$value$plusargs("TESTNAME=%s", testname)) begin
-						$display("Error: +TESTNAME not set");
-					end
-					
-					$display("FAIL: %s", testname);
-					test_end_state <= 3;
+			2: begin // Beginning of v1
+				if (pad_o[3] == 1) begin
+					test_state <= 3;
+					data[5:3] <= pad_o[2:0];
 				end
 			end
 			
 			3: begin
-				automatic uvm_component test_base = uvm_top.top_levels[0];
-				automatic mor1kx_uvm_test_base test;
+				if (pad_o[3] == 0) begin
+					test_state <= 4;
+				end
+			end
 			
-				$cast(test, test_base);
-				test.test_end_signaled();	
-				$display("End Test");				
+			4: begin
+				if (pad_o[3] == 1) begin
+					test_state <= 5;
+					data[7:6] <= pad_o[1:0];
+				end
+			end
+			
+			5: begin
+				if (pad_o[3] == 0) begin
+					test_state <= 0;
+					$display("Data: 'h%02h", data);
+				end
 			end
 		endcase
 	end
+
+//	reg [3:0] test_end_state = 0;
+//	reg [3:0] last_pad_o = 0;
+//	always @(posedge clk) begin
+//		case (test_end_state)
+//			0: begin
+//				if (pad_o == 'hA) begin
+//					test_end_state <= 1;
+//				end
+//			end
+//			
+//			1: begin
+//				if (pad_o == 'h5) begin
+//					test_end_state <= 2;
+//				end
+//			end
+//			
+//			2: begin
+//				if (pad_o == 'hf)  begin
+//					string testname;
+//					
+//					if (!$value$plusargs("TESTNAME=%s", testname)) begin
+//						$display("Error: +TESTNAME not set");
+//					end
+//					
+//					$display("PASS: %s", testname);
+//					test_end_state <= 3;
+//				end else if (pad_o == 'h0) begin
+//					string testname;
+//					
+//					if (!$value$plusargs("TESTNAME=%s", testname)) begin
+//						$display("Error: +TESTNAME not set");
+//					end
+//					
+//					$display("FAIL: %s", testname);
+//					test_end_state <= 3;
+//				end
+//			end
+//			
+//			3: begin
+//				automatic uvm_component test_base = uvm_top.top_levels[0];
+//				automatic mor1kx_uvm_test_base test;
+//			
+//				$cast(test, test_base);
+//				test.test_end_signaled();	
+//				$display("End Test");				
+//			end
+//		endcase
+//	end
 
 `ifdef ENABLE_OR1200_MON
 	or1200_monitor		mon();

@@ -58,6 +58,16 @@ class or1k_subsys_uvm_env_rw_api extends sv_bfms_rw_api_if;
 	endtask
 
 	/**
+	 * Task: read16
+	 *
+	 * Override from class 
+	 */
+	virtual task read16(input bit[31:0] addr, output bit[15:0] data);
+		sv_bfms_rw_api_if api = get_api(addr);
+		api.read16(addr, data);
+	endtask
+	
+	/**
 	 * Task: write32
 	 *
 	 * Override from class 
@@ -77,6 +87,16 @@ class or1k_subsys_uvm_env_rw_api extends sv_bfms_rw_api_if;
 		api.write8(addr, data);
 	endtask
 
+	/**
+	 * Task: write16
+	 *
+	 * Override from class 
+	 */
+	virtual task write16(input bit[31:0] addr, input bit[15:0] data);
+		sv_bfms_rw_api_if api = get_api(addr);
+		api.write16(addr, data);
+	endtask
+	
 endclass
 
 class or1k_subsys_uvm_env extends mor1kx_uvm_env;

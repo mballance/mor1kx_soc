@@ -34,7 +34,7 @@ __reset:
 	l.andi		r2, r0, 0
 
 	// Checkpoint 1
-	ASM_TEST_PT(1);
+//	ASM_TEST_PT(1);
 
 
 	// Set superviser mode
@@ -56,13 +56,15 @@ _ent:
 	l.sw		0(r1), r0
 
 	// Checkpoint 2
-	ASM_TEST_PT(2);
+//	ASM_TEST_PT(2);
 
 	// Setup the stack
 	l.movhi		r1, hi(_ram_end)
 	l.ori		r1, r1, lo(_ram_end)
 //	l.addi		r1, r1, 0x100
 	l.or		r2, r0, r1
+
+	l.ori		r7, r0, 0
 
 	// Relocate the .data section from ROM to RAM
 	l.movhi		r4, hi(__data_load)  // data_load is the source addr for data: 0x0000e5d0
@@ -81,7 +83,7 @@ _ent:
 	l.nop
 
 	// Checkpoint 3
-	ASM_TEST_PT(3);
+//	ASM_TEST_PT(3);
 
 	// Clear BSS segments
 	l.movhi	r4, hi(_bss_start)
@@ -95,7 +97,7 @@ _ent:
 	l.addi	r4,r4,4
 
 	// Checkpoint 4
-	ASM_TEST_PT(4);
+//	ASM_TEST_PT(4);
 
 	// Reset registers
 	l.andi	r3, r0, 0
