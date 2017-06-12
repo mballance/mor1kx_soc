@@ -54,3 +54,7 @@
 	path = vmon
 	url = https://github.com/mballance/vmon.git
 	branch = master
+[submodule "rtl/fpio"]
+	path = rtl/fpio
+	url = https://github.com/mballance/fpio.git
+	branch = master

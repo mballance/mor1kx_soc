@@ -9,13 +9,15 @@
  */
 `include "or1200_defines.v"
 module mor1kx_soc(
-		input			clk_i,
-		output			pad0_o,
-		output			pad1_o,
-		output			pad2_o,
-		output			pad3_o,
-		output			stx_pad_o,
-		input			srx_pad_i
+		input					clk_i,
+		output					pad0_o,
+		output					pad1_o,
+		output					pad2_o,
+		output					pad3_o,
+		output					stx_pad_o,
+		input					srx_pad_i,
+		fpio_fifo_if.fifo_out	dat_o,
+		fpio_fifo_if.fifo_in	dat_i
 		);
 		
 	reg					clk_r = 0;
@@ -121,14 +123,19 @@ module mor1kx_soc(
 		.WB_ADDR_WIDTH  (32 ), 
 		.WB_DATA_WIDTH  (32 )
 		) ic2intc ();
+	
+	wb_if #(
+		.WB_ADDR_WIDTH  (32 ),
+		.WB_DATA_WIDTH  (32 )
+		) ic2fpio ();
 
-	wb_interconnect_4x7 #(
+	wb_interconnect_4x8 #(
 		.WB_ADDR_WIDTH      (32     ), 
 		.WB_DATA_WIDTH      (32     ), 
 		.SLAVE0_ADDR_BASE   (32'h0000_0000  ), 
 		.SLAVE0_ADDR_LIMIT  (32'h000F_FFFF  ), 
-		.SLAVE1_ADDR_BASE   (32'h1000_0000  ), 
-		.SLAVE1_ADDR_LIMIT  (32'h100F_FFFF  ),
+		.SLAVE1_ADDR_BASE   (32'h0200_0000  ), 
+		.SLAVE1_ADDR_LIMIT  (32'h020F_FFFF  ),
 		.SLAVE2_ADDR_BASE	(32'h8000_0000  ), // UART
 		.SLAVE2_ADDR_LIMIT	(32'h8000_0FFF  ),
 		.SLAVE3_ADDR_BASE	(32'h8000_1000  ),
@@ -138,7 +145,10 @@ module mor1kx_soc(
 		.SLAVE5_ADDR_BASE   (32'h9000_0000  ),
 		.SLAVE5_ADDR_LIMIT  (32'h9000_0FFF  ),
 		.SLAVE6_ADDR_BASE   (32'h8000_3000  ),
-		.SLAVE6_ADDR_LIMIT  (32'h8000_3FFF  )
+		.SLAVE6_ADDR_LIMIT  (32'h8000_3FFF  ),
+		.SLAVE7_ADDR_BASE   (32'h8000_4000  ), // FPIO
+		.SLAVE7_ADDR_LIMIT  (32'h8000_4FFF  )
+		
 		) u_ic (
 		.clk                (clk                  ),
 		.rstn               (rstn                 ),
@@ -152,7 +162,8 @@ module mor1kx_soc(
 		.s3					(ic2dma.master        ), // 'h8000_1000
 		.s4					(ic2pad.master        ),
 		.s5					(ic2scratchpad.master ), // 'h9000_0000
-		.s6					(ic2intc.master       )  // 'h8000_3000
+		.s6					(ic2intc.master       ), // 'h8000_3000
+		.s7					(ic2fpio.master       )  // 'h8000_4000
 		);
 	
 	wb_rom #(
@@ -286,13 +297,25 @@ module mor1kx_soc(
 			.irq_i    (irq_i			), 
 			.int_o    (int_o			));	
 	
+	
 	// Connect interrupts
+	wire fpio_irq;
+	wb_fpio #(
+		.FIFO_BITS  (8 )
+		) u_fpio (
+		.clk        (clk			), 
+		.rstn       (rstn			), 
+		.irq        (fpio_irq		), 
+		.s          (ic2fpio.slave	), 
+		.dat_o      (dat_o			), 
+		.dat_i      (dat_i			));
 	
 	assign irq_i = {
 			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
 			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
 			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
-			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0,
+			1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 
+			fpio_irq,
 			uart_int_o, 
 			dma_inta_o};
 			

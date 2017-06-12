@@ -16,6 +16,10 @@
 	</natures>
 	<variableList>
 		<variable>
+			<name>FPIO</name>
+			<value>$%7BPROJECT_LOC%7D/rtl/fpio</value>
+		</variable>
+		<variable>
 			<name>MEMORY_PRIMITIVES</name>
 			<value>$%7BPROJECT_LOC%7D/rtl/memory_primitives</value>
 		</variable>
@@ -38,6 +42,10 @@
 		<variable>
 			<name>SV_BFMS</name>
 			<value>$%7BPROJECT_LOC%7D/ve/sv_bfms</value>
+		</variable>
+		<variable>
+			<name>VMON</name>
+			<value>$%7BPROJECT_LOC%7D/vmon</value>
 		</variable>
 		<variable>
 			<name>WB_SYS_IP</name>

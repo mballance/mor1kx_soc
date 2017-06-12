@@ -8,8 +8,6 @@
 -f ${SV_BFMS}/wb/uvm/uvm.f
 -f ${SV_BFMS}/irq/uvm/uvm.f
 
--F ${OC_WB_IP}/rtl/wb_dma/fw/fw.F
-
 -f ${SV_BFMS}/irq/uvm/uvm.f
 ${SV_BFMS}/irq/irq_bfm.sv
 

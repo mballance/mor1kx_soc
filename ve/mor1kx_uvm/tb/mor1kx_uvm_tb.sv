@@ -42,6 +42,19 @@ module mor1kx_uvm_tb;
 	wire[3:0] pad_o;
 	
 	wire stx_pad_o, srx_pad_i;
+
+	localparam FIFO_BITS = 8;
+	localparam FIFO_DATA_WIDTH = 8;
+	
+	fpio_fifo_if #(
+		.FIFO_BITS   (FIFO_BITS  		), 
+		.DATA_WIDTH  (FIFO_DATA_WIDTH	)
+		) u_soc2tb ();
+	
+	fpio_fifo_if #(
+		.FIFO_BITS   (FIFO_BITS  		), 
+		.DATA_WIDTH  (FIFO_DATA_WIDTH	)
+		) u_tb2soc ();
 	
 	mor1kx_soc u_soc (
 		.clk_i  (clk  ), 
@@ -50,7 +63,9 @@ module mor1kx_uvm_tb;
 		.pad2_o (pad_o[2]),
 		.pad3_o (pad_o[3]),
 		.stx_pad_o(stx_pad_o),
-		.srx_pad_i(srx_pad_i)
+		.srx_pad_i(srx_pad_i),
+		.dat_o(u_soc2tb.fifo_out),
+		.dat_i(u_tb2soc.fifo_in)
 		);
 	
 //	typedef generic_sram_byte_en_config #(14, 32) 	u_ram_cfg_t;

@@ -20,7 +20,13 @@
 -f ${SV_BFMS}/uart/uvm/uvm.f
 -f ${SV_BFMS}/uart/sv.f
 
-${MOR1KX_SOC}/rtl/oc_wb_ip/rtl/wb_dma/fw/wb_dma_fw_pkg.sv
+-F ${VMON}/src/client/sv/vmon_client.F
+
+-F ${FPIO}/ve/bfms/fpio_fifo_in_client/uvm/sve.F
+${FPIO}/ve/bfms/fpio_fifo_in_client/fpio_fifo_in_client_bfm.sv
+
+-F ${FPIO}/ve/bfms/fpio_fifo_out_client/uvm/sve.F
+${FPIO}/ve/bfms/fpio_fifo_out_client/fpio_fifo_out_client_bfm.sv
 
 // -f ${MOR1KX_SOC}/rtl/memory_primitives/rtl/sim/sim.f
 

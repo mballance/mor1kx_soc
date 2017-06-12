@@ -4,9 +4,12 @@
 ${UVM_HOME}/src/uvm_pkg.sv
 
 -f ${MOR1KX_SOC}/rtl/std_protocol_if/rtl/rtl.f
--f ${MOR1KX_SOC}/rtl/rtl.f
+// -f ${MOR1KX_SOC}/rtl/rtl.f
+-F ${MOR1KX_SOC}/rtl/sve.F
 
 -f ${SV_BFMS}/sve.f
+
+-F ${VMON}/src/client/sv/vmon_client.F
 
 -F ${MOR1KX_SOC}/ve/or1k_subsys_uvm/sve.F
 -f ${MOR1KX_SOC}/ve/mor1kx_uvm/tb/mor1kx_uvm_env.f

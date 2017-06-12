@@ -45,6 +45,7 @@ class or1k_subsys_uvm_env_rw_api extends sv_bfms_rw_api_if;
 	virtual task read32(input bit[31:0] addr, output bit[31:0] data);
 		sv_bfms_rw_api_if api = get_api(addr);
 		api.read32(addr, data);
+		$display("READ32: 'h%08h 'h%08h", addr, data);
 	endtask
 
 	/**
@@ -99,6 +100,71 @@ class or1k_subsys_uvm_env_rw_api extends sv_bfms_rw_api_if;
 	
 endclass
 
+class or1k_subsys_uvm_env_mem_services extends uex_mem_services;
+	
+	or1k_subsys_uvm_env_rw_api			m_rw_api;
+	
+	function new();
+	endfunction
+	
+	virtual task iowrite8(byte unsigned data, longint unsigned addr);
+		m_rw_api.write8(addr, data);
+	endtask
+	
+	virtual task ioread8(
+		output byte unsigned data, 
+		input longint unsigned addr);
+		m_rw_api.read8(addr, data);
+	endtask
+	
+	virtual task iowrite16(
+		shortint unsigned data, 
+		longint unsigned addr);
+		m_rw_api.write16(addr, data);
+	endtask
+	
+	virtual task ioread16(
+		output shortint unsigned data, 
+		input longint unsigned addr);
+		m_rw_api.read16(addr, data);
+	endtask
+	
+	virtual task iowrite32(
+		int unsigned data, 
+		longint unsigned addr);
+		m_rw_api.write32(addr, data);
+	endtask
+	
+	virtual task ioread32(
+		output int unsigned data, 
+		input longint unsigned addr);
+		m_rw_api.read32(addr, data);
+	endtask
+	
+	virtual task iowrite64(
+		longint unsigned data, 
+		longint unsigned addr);
+		$display("Error: iowrite64 unimplemented");
+	endtask
+	
+	virtual task ioread64(
+		output longint unsigned data, 
+		input longint unsigned addr);
+		$display("Error: ioread64 unimplemented");
+	endtask
+
+	virtual function longint unsigned ioalloc(int unsigned sz);
+		$display("Error: ioalloc unimplemented");
+	endfunction
+	
+	virtual function void iofree(longint unsigned p);
+		$display("Error: iofree unimplemented");
+	endfunction
+
+
+endclass
+
+
 class or1k_subsys_uvm_env extends mor1kx_uvm_env;
 	`uvm_component_utils(or1k_subsys_uvm_env)
 	
@@ -110,6 +176,7 @@ class or1k_subsys_uvm_env extends mor1kx_uvm_env;
 	irq_agent							m_irq_agent;
 	irq_agent							m_tick_agent;
 	or1k_subsys_uvm_env_rw_api			m_api;
+	or1k_subsys_uvm_env_mem_services	m_mem_services;
 	or1k_subsys_uvm_env_tick_listener	m_uex_tick_listener;
 	or1k_subsys_uvm_env_tick_listener	m_uex_irq_listener;
 	
@@ -131,6 +198,8 @@ class or1k_subsys_uvm_env extends mor1kx_uvm_env;
 		m_irq_agent = irq_agent::type_id::create("m_irq_agent", this);
 		m_tick_agent = irq_agent::type_id::create("m_tick_agent", this);
 		m_api = new();
+		m_mem_services = new();
+		m_mem_services.m_rw_api = m_api;
 		
 		m_uex_tick_listener = or1k_subsys_uvm_env_tick_listener::type_id::create(
 				"m_uex_tick_listener", this);
@@ -151,6 +220,7 @@ class or1k_subsys_uvm_env extends mor1kx_uvm_env;
 		m_api.spr  = m_spr_agent.get_api();
 		
 		sv_bfms_rw_api_dpi::set_default(m_api);
+		uex_pkg::m_mem_services = m_mem_services;
 		
 		m_tick_agent.m_drv_out_ap.connect(m_uex_tick_listener.analysis_export);
 		m_irq_agent.m_drv_out_ap.connect(m_uex_irq_listener.analysis_export);

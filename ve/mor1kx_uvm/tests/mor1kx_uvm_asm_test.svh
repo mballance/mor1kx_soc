@@ -48,6 +48,9 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 		bit[7:0] data;
 		bit valid;
 		byte unsigned tdata[] = new [2048];
+		longint unsigned addr;
+		string path;
+		int status;
 		
 		phase.raise_objection(this, "Main");
 		
@@ -62,13 +65,24 @@ class mor1kx_uvm_asm_test extends mor1kx_uvm_test_base;
 		m_env.m_vmon_client.connect(valid);
 		$display("<-- connect %d\n", valid);
 	
+		$value$plusargs("SW_IMAGE=%s", path);
+	
+		addr = m_env.m_vmon_client.get_entry_addr(path);
+		$display("ADDR: path=%0s addr='h%08h", path, addr);
+		
+		m_env.m_vmon_client.exec(addr);
+		
+		m_env.m_vmon_client.wait_endtest(status);
+		
+		$display("STATUS: %0d", status);
+	
 
-		for (int i=0; i<2048; i+=64) begin
-			int read_len = ((2048-i)<64)?(2048-i):64;
-			$display("--> read %0d", i);
-			m_env.m_vmon_client.read(i, tdata, read_len);
-			$display("<-- read %0d", i);
-		end
+//		for (int i=0; i<2048; i+=64) begin
+//			int read_len = ((2048-i)<64)?(2048-i):64;
+//			$display("--> read %0d", i);
+//			m_env.m_vmon_client.read(i, tdata, read_len);
+//			$display("<-- read %0d", i);
+//		end
 		
 //		// Connect to the software
 //		do begin

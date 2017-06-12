@@ -7,7 +7,6 @@
 +incdir+${MOR1KX_SOC}/ve/mor1kx_uvm/tb
 ${MOR1KX_SOC}/ve/mor1kx_uvm/tb/or1200_monitor.sv
 
--F ${VMON}/src/client/sv/vmon_client.F
-
 -f ${MOR1KX_SOC}/ve/mor1kx_uvm/sim/scripts/vlog_common.f
+
 

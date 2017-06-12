@@ -19,12 +19,9 @@ MK_INCLUDES += $(SIMSCRIPTS_DIR)/mkfiles/common_tool_gcc.mk
 CFLAGS += -mcompat-delay -fomit-frame-pointer
 CXXFLAGS += -mcompat-delay
 CFLAGS += -g -DVMON_ARCH_32
-
-#$(BUILD_DIR)/%.elf : %.elf
-#	echo "ELF"
+CFLAGS += -fPIC
 
 include $(MK_INCLUDES)
-
 
 
 EXE_TARGETS += $(call get_plusarg,SW_IMAGE,$(PLUSARGS))

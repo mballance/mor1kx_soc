@@ -3,6 +3,7 @@
 #include <string.h>
 #include "baremetal_defs.h"
 #include <stdint.h>
+#include "vmon_monitor.h"
 
 int main(int argc, char **argv) {
 //	char *ptr;
@@ -34,7 +35,9 @@ int main(int argc, char **argv) {
 	// End the test
 //	BAREMETAL_TEST_PASS;
 
-//	while (1) { }
+	vmon_monitor_endtest(glbl_mon, 1);
+
+	while (1) { }
 
 	return 0;
 }

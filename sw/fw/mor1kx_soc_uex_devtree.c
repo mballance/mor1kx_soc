@@ -2,8 +2,16 @@
 #include "mor1kx_soc_uex_devtree.h"
 #include "mor1kx_soc_memmap.h"
 #include "uex_dev_services.h"
+#include "wb_uart_uex_drv.h"
 
 static uex_device_t devices[] = {
+		{
+				"UART0",
+				(void *)MOR1KX_UART0_BASE,
+				64,
+				{MOR1KX_UART0_IRQ},
+				1
+		},
 		{
 				"PIC",
 				(void *)MOR1KX_PIC_BASE,
@@ -17,12 +25,24 @@ static uex_device_t devices[] = {
 				256,
 				{MOR1KX_DMA0_IRQ},
 				1
+		},
+		{
+				"FPIO0",
+				(void *)MOR1KX_FPIO0_BASE,
+				64,
+				{MOR1KX_FPIO0_IRQ},
+				1
 		}
 };
 
 void mor1kx_soc_devtree_init(void) {
 
 	uex_set_devtree(devices, sizeof(devices)/sizeof(uex_device_t));
+
+	wb_uart_uex_drv_init(
+			&mor1kx_soc_devtree.uart0,
+			MOR1KX_UART0_BASE,
+			11); // 115200baud
 
 	simple_pic_drv_init(
 			&mor1kx_soc_devtree.pic,
@@ -43,6 +63,10 @@ void mor1kx_soc_devtree_init(void) {
 			&mor1kx_soc_devtree.pic,
 			MOR1KX_UART0_IRQ,
 			1);
+
+	fpio_uex_drv_init(
+			&mor1kx_soc_devtree.fpio0,
+			MOR1KX_FPIO0_BASE);
 
 }
 

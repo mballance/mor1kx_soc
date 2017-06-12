@@ -1,22 +1,17 @@
 Note: loading defaults from .simscripts
 run_root=/scratch1/ballance/rundir/mor1kx_uvm
 cmd=
-Test: tests/mor1kx_uvm_baremetal_helloworld.f
+Test: tests/mor1kx_uvm_asm_smoketest.f
 make: Entering directory `/export/scratch/ballance/rundir/mor1kx_uvm/qs'
-if test ! -d `dirname sv_bfms_rw_api_if.o`; then mkdir -p `dirname sv_bfms_rw_api_if.o`; fi
-rm -rf work
-vlib work
-/u/release/10.6a/questasim/gcc-4.7.4-linux_x86_64/bin/g++ -c -o sv_bfms_rw_api_if.o -fPIC -g -I/include -I/include/vltstd -std=c++0x  -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/oc_wb_ip/rtl/wb_dma/fw/  -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/oc_wb_ip/rtl/simple_pic/fw/  -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/sv_bfms/api//c  -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/sv_bfms/api//../utils/c  -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/sv_bfms/api//c/sv_bfms_rw_api_if.cpp
-vlog -sv \
-		 \
-		-f /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts/vlog.f -f /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts/vlog_memalt.f
 ** Warning: (vlog-175) Possible loop detected while processing nested arguments file '/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/std_protocol_if/rtl/wb/wb.f'
 ** Warning: (vlog-175) Possible loop detected while processing nested arguments file '/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/std_protocol_if/rtl/memory/memory.f'
+** Warning: (vlog-175) Possible loop detected while processing nested arguments file '/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/fpio/rtl/rtl.f'
 ** Warning: (vlog-175) Possible loop detected while processing nested arguments file '/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/sv_bfms/utils/sv/sv.f'
 QuestaSim-64 vlog 10.6a Compiler 2017.03 Mar 16 2017
-Start time: 15:22:00 on Apr 27,2017
+Start time: 10:19:40 on Jun 09,2017
 vlog -sv -f /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts/vlog.f -f /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts/vlog_memalt.f 
 -- Compiling module or1200_monitor
+-- Compiling package vmon_client_pkg
 -- Compiling interface wb_if
 -- Compiling module wb_master_stub
 -- Compiling module wb_slave_stub
@@ -45,8 +40,6 @@ vlog -sv -f /project/inFact/ballance/work/projects/pss_examples/infact_dma_block
 -- Compiling module wb_dma_ch_rf
 -- Compiling module wb_dma_ch_rf_dummy
 -- Compiling module wb_dma_ch_sel
-rm -f libsv_bfms_dpi.o
-ld -r -o libsv_bfms_dpi.o sv_bfms_rw_api_if.o
 -- Compiling module wb_dma_de
 -- Compiling module wb_dma_inc30r
 -- Compiling module wb_dma_pri_enc_sub
@@ -78,6 +71,11 @@ ld -r -o libsv_bfms_dpi.o sv_bfms_rw_api_if.o
 -- Compiling module uart16550d_transmitter
 -- Compiling module uart16550d_wb
 -- Compiling module wb_uart16550d_w
+-- Compiling interface fpio_fifo_if
+-- Compiling module fpio_fifo
+-- Compiling interface fpio_if
+-- Compiling module fpio_tx
+-- Compiling module fpio
 -- Compiling module or1200_alu
 -- Compiling module or1200_cfgr
 -- Compiling module or1200_cpu
@@ -220,6 +218,17 @@ ld -r -o libsv_bfms_dpi.o sv_bfms_rw_api_if.o
 ** Warning: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/wb_sys_ip/rtl/wb_uart/uart_wb.v(142): (vlog-2275) 'uart_wb' already exists and will be overwritten.
 -- Compiling module uart_wb
 -- Compiling module wb_uart
+** Warning: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/fpio/rtl/fpio_fifo_if.sv(10): (vlog-2275) 'fpio_fifo_if' already exists and will be overwritten.
+-- Compiling interface fpio_fifo_if
+** Warning: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/fpio/rtl/fpio_fifo.sv(10): (vlog-2275) 'fpio_fifo' already exists and will be overwritten.
+-- Compiling module fpio_fifo
+** Warning: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/fpio/rtl/fpio_if.sv(10): (vlog-2275) 'fpio_if' already exists and will be overwritten.
+-- Compiling interface fpio_if
+** Warning: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/fpio/rtl/fpio_tx.sv(10): (vlog-2275) 'fpio_tx' already exists and will be overwritten.
+-- Compiling module fpio_tx
+** Warning: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/fpio/rtl/fpio.sv(10): (vlog-2275) 'fpio' already exists and will be overwritten.
+-- Compiling module fpio
+-- Compiling module wb_fpio
 -- Compiling module mor1kx_soc
 ** Warning: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/memory_primitives/rtl/generic_rom_w.sv(10): (vlog-2275) 'generic_rom_w' already exists and will be overwritten.
 -- Compiling module generic_rom_w
@@ -246,17 +255,23 @@ ld -r -o libsv_bfms_dpi.o sv_bfms_rw_api_if.o
 -- Compiling package uart_serial_agent_pkg
 -- Compiling interface uart_serial_bfm
 -- Importing package uart_serial_agent_pkg
--- Compiling package wb_dma_fw_pkg
 -- Compiling package mor1kx_uvm_env_pkg
+-- Importing package vmon_client_pkg
 -- Compiling package mor1kx_uvm_tests_pkg
 -- Importing package mor1kx_uvm_env_pkg
 -- Importing package sv_bfms_utils_pkg
--- Importing package wb_dma_fw_pkg
 -- Compiling module mor1kx_uvm_tb
 -- Importing package mor1kx_uvm_tests_pkg
+-- Compiling package fpio_fifo_in_client_agent_pkg
+-- Compiling interface fpio_fifo_in_client_bfm_core
+-- Compiling interface fpio_fifo_in_client_bfm
+-- Compiling package fpio_fifo_out_client_agent_pkg
+-- Compiling interface fpio_fifo_out_client_bfm_core
+-- Compiling interface fpio_fifo_out_client_bfm
 -- Compiling module generic_rom
 -- Compiling module generic_sram_byte_en
 -- Compiling module generic_sram_line_en
+-- Compiling module generic_sram_line_en_dualport
 -- Compiling UDP CYCLONEV_PRIM_DFFE
 -- Compiling UDP CYCLONEV_PRIM_DFFEAS
 -- Compiling UDP CYCLONEV_PRIM_DFFEAS_HIGH
@@ -528,10 +543,10 @@ ld -r -o libsv_bfms_dpi.o sv_bfms_rw_api_if.o
 Top level modules:
 	wb_slave_stub
 	generic_sram_line_en_w
-	generic_sram_line_en_dualport_w
 	wb_dma_ch_rf_dummy
 	wb_uart16550_w
 	wb_uart16550d_w
+	fpio_tx
 	or1200_dpram_256x32
 	or1200_dpram_32x32
 	or1200_fpu_arith
@@ -590,8 +605,8 @@ Top level modules:
 	wb_interconnect_4x5_pt
 	wb_interconnect_4x6
 	wb_interconnect_4x6_pt
+	wb_interconnect_4x7
 	wb_interconnect_4x7_pt
-	wb_interconnect_4x8
 	wb_interconnect_4x8_pt
 	mor1kx_uvm_tb
 	cyclonev_dffe
@@ -736,40 +751,45 @@ Top level modules:
 	alt_fault_injection
 	sld_virtual_jtag_basic
 	altsource_probe
-End time: 15:22:03 on Apr 27,2017, Elapsed time: 0:00:03
-Errors: 0, Warnings: 23
-echo "PLUSARGS=+tool.visualizer +UVM_TESTNAME=mor1kx_uvm_asm_test +SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/baremetal/helloworld.elf +TIMEOUT=20ms"
-PLUSARGS=+tool.visualizer +UVM_TESTNAME=mor1kx_uvm_asm_test +SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/baremetal/helloworld.elf +TIMEOUT=20ms
-echo "XPROP= PLUSARGS=+tool.visualizer +UVM_TESTNAME=mor1kx_uvm_asm_test +SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/baremetal/helloworld.elf +TIMEOUT=20ms"
-XPROP= PLUSARGS=+tool.visualizer +UVM_TESTNAME=mor1kx_uvm_asm_test +SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/baremetal/helloworld.elf +TIMEOUT=20ms
-make -f /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts/embedded_sw.mk build
+End time: 10:19:43 on Jun 09,2017, Elapsed time: 0:00:03
+Errors: 0, Warnings: 29
+echo "PLUSARGS=+UVM_TESTNAME=mor1kx_uvm_asm_test +SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/asm/smoketest.elf"
+PLUSARGS=+UVM_TESTNAME=mor1kx_uvm_asm_test +SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/asm/smoketest.elf
+echo "XPROP= PLUSARGS=+UVM_TESTNAME=mor1kx_uvm_asm_test +SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/asm/smoketest.elf"
+XPROP= PLUSARGS=+UVM_TESTNAME=mor1kx_uvm_asm_test +SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/asm/smoketest.elf
 make[1]: Entering directory `/export/scratch/ballance/rundir/mor1kx_uvm/qs'
-or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -c -o start.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//start.S
-or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -c -o ashldi3.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//ashldi3.S
-or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -c -o ashrdi3.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//ashrdi3.S
-or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -c -o lshrdi3.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//lshrdi3.S
-or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -c -o muldi3.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//muldi3.S
-or1k-elf-gcc -mcompat-delay -fomit-frame-pointer -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -c -o cache.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//cache.c
-if test ! -d `dirname baremetal/helloworld.o`; then mkdir -p `dirname baremetal/helloworld.o`; fi
-or1k-elf-gcc -c -o mor1kx_crt0.o -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw//mor1kx_crt0.S
-if test ! -d `dirname baremetal/libc_support.o`; then mkdir -p `dirname baremetal/libc_support.o`; fi
-or1k-elf-gcc -E -x c -mcompat-delay -fomit-frame-pointer -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw//mor1kx_app.lds.h | grep -v '^#' > mor1kx_app.lds
-or1k-elf-gcc -c -o mor1kx_fw_boot.o -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw//mor1kx_fw_boot.S
-or1k-elf-gcc -c -o mor1kx_fw.o -mcompat-delay -fomit-frame-pointer -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw//mor1kx_fw.c
-or1k-elf-gcc -E -x c -mcompat-delay -fomit-frame-pointer -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw//mor1kx_boot.lds.h | grep -v '^#' > mor1kx_boot.lds
-or1k-elf-gcc -c -o baremetal/helloworld.o -mcompat-delay -fomit-frame-pointer -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw//baremetal /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw//baremetal/helloworld.c
-or1k-elf-gcc -c -o baremetal/libc_support.o -mcompat-delay -fomit-frame-pointer -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw//baremetal /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw//baremetal/libc_support.c
+or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common -c -o start.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//start.S
+or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common -c -o ashldi3.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//ashldi3.S
+or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common -c -o ashrdi3.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//ashrdi3.S
+or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common -c -o lshrdi3.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//lshrdi3.S
+or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common -c -o muldi3.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//muldi3.S
+or1k-elf-gcc -mcompat-delay -fomit-frame-pointer -g -DVMON_ARCH_32 -fPIC -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common -c -o cache.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//cache.c
+echo "SW_SRC_DIR: /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw/"
+or1k-elf-gcc -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common   -c -o mor1kx_fw_boot.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/mor1kx_fw_boot.S
+SW_SRC_DIR: /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw/
+if test ! -d asm; then mkdir -p asm; fi
+or1k-elf-gcc -mcompat-delay -fomit-frame-pointer -g -DVMON_ARCH_32 -fPIC -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common   -c -o mor1kx_fw.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/mor1kx_fw.c
+or1k-elf-gcc -mcompat-delay -fomit-frame-pointer -g -DVMON_ARCH_32 -fPIC -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/In file included from /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw//asm/smoketest.S:3:0:
+/project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw//asm/asm_defs.h:14:0: warning: "ASM_TEST_PASS" redefined
+ #define ASM_TEST_PASS \
+ ^
+/project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw//asm/asm_defs.h:4:0: note: this is the location of the previous definition
+ #define ASM_TEST_PASS \
+ ^
+infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common   -c -o ulibc.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ulibc.c
+or1k-elf-gcc -mcompat-delay -fomit-frame-pointer -g -DVMON_ARCH_32 -fPIC -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common   -c -o vmon_monitor.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/vmon_monitor.c
+or1k-elf-gcc -mcompat-delay -fomit-frame-pointer -g -DVMON_ARCH_32 -fPIC -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common   -c -o vmon_monitor_ep0.o /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/vmon_monitor_ep0.c
+or1k-elf-gcc -E -x c -mcompat-delay -fomit-frame-pointer -g -DVMON_ARCH_32 -fPIC -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw//mor1kx_boot.lds.h | grep -v '^#' > mor1kx_boot.lds
+or1k-elf-gcc -c -o asm/smoketest.o -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/mor1kx_mod/fw//include/asm -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/sw/fw/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor/ -I/home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/vmon/src/monitor//../common -I/project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw//asm /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw//asm/smoketest.S
+or1k-elf-ld -o /scratch1/ballance/rundir/mor1kx_uvm/qs/asm/smoketest.elf asm/smoketest.o -T /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/sim/scripts//../../tests/sw//asm/asm.lds
 or1k-elf-ld -r -o libcore.o start.o ashldi3.o ashrdi3.o lshrdi3.o muldi3.o cache.o
-or1k-elf-ld -o mor1kx_soc_boot.elf mor1kx_fw_boot.o mor1kx_fw.o -T mor1kx_boot.lds
-or1k-elf-ld -o /scratch1/ballance/rundir/mor1kx_uvm/qs/baremetal/helloworld.elf baremetal/helloworld.o mor1kx_crt0.o baremetal/libc_support.o -T mor1kx_app.lds \
-		/project/s4c/ballance/tools/compilers/gcc-or1k-elf-4.9.2-linux_x86_64/bin/../lib/gcc/or1k-elf/4.9.2/compat-delay//../../../../../or1k-elf/lib/compat-delay/libc.a /project/s4c/ballance/tools/compilers/gcc-or1k-elf-4.9.2-linux_x86_64/bin/../lib/gcc/or1k-elf/4.9.2/compat-delay/libgcc.a # /project/s4c/ballance/tools/compilers/gcc-or1k-elf-4.9.2-linux_x86_64/bin/../lib/gcc/or1k-elf/4.9.2/compat-delay//../../../../../or1k-elf/lib/compat-delay/libor1k.a
-rm mor1kx_app.lds baremetal/libc_support.o baremetal/helloworld.o mor1kx_crt0.o
+or1k-elf-ld -r -o libvmon_monitor.o vmon_monitor.o vmon_monitor_ep0.o
+or1k-elf-ld -o mor1kx_soc_boot.elf mor1kx_fw_boot.o mor1kx_fw.o ulibc.o libvmon_monitor.o -T mor1kx_boot.lds
+rm asm/smoketest.o
 make[1]: Leaving directory `/export/scratch/ballance/rundir/mor1kx_uvm/qs'
-vopt -o mor1kx_uvm_tb_opt mor1kx_uvm_tb -dpiheader mor1kx_uvm_tb_dpi.h +designfile -debug  
-/u/release/10.6a/questasim/gcc-4.7.4-linux_x86_64/bin/g++ -shared -o /scratch1/ballance/rundir/mor1kx_uvm/qs/dpi.so libsv_bfms_dpi.o 
 QuestaSim-64 vopt 10.6a Compiler 2017.03 Mar 16 2017
-Start time: 15:22:03 on Apr 27,2017
-vopt -o mor1kx_uvm_tb_opt mor1kx_uvm_tb -dpiheader mor1kx_uvm_tb_dpi.h "+designfile" -debug 
+Start time: 10:19:43 on Jun 09,2017
+vopt -o mor1kx_uvm_tb_opt mor1kx_uvm_tb -dpiheader mor1kx_uvm_tb_dpi.h 
 
 Top level modules:
 	mor1kx_uvm_tb
@@ -780,9 +800,10 @@ Analyzing design...
 -- Importing package mor1kx_uvm_tests_pkg
 -- Importing package mor1kx_uvm_env_pkg
 -- Importing package uart_serial_agent_pkg
+-- Importing package vmon_client_pkg
 -- Importing package sv_bfms_api_pkg
 -- Importing package sv_bfms_utils_pkg
--- Importing package wb_dma_fw_pkg
+-- Loading interface fpio_fifo_if
 -- Loading module mor1kx_soc
 -- Loading interface wb_if
 -- Loading module or1200_top_w
@@ -827,7 +848,7 @@ Analyzing design...
 -- Loading module or1200_pic
 -- Loading module or1200_tt
 -- Loading module or1200_pm
--- Loading module wb_interconnect_4x7
+-- Loading module wb_interconnect_4x8
 -- Loading module wb_interconnect_NxN
 -- Loading module wb_rom
 -- Loading interface generic_sram_line_en_if
@@ -867,6 +888,11 @@ Analyzing design...
 -- Loading module uart_debug_if
 -- Loading module simple_pic_w
 -- Loading module simple_pic
+-- Loading module wb_fpio
+-- Loading module fpio
+-- Loading module fpio_fifo
+-- Loading module generic_sram_line_en_dualport_w
+-- Loading module generic_sram_line_en_dualport
 -- Loading interface uart_serial_bfm
 -- Loading module or1200_monitor
 -- Loading package mtiUvm.questa_uvm_pkg
@@ -875,7 +901,7 @@ Analyzing design...
 -- Loading module ALTERA_DEVICE_FAMILIES
 -- Loading module ALTERA_MF_MEMORY_INITIALIZATION
 ** Warning: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/wb_sys_ip/rtl/wb_uart/wb_uart.sv(28): (vopt-2241) Connection width does not match width of port 'wb_adr_i'. The port definition is at: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/wb_sys_ip/rtl/wb_uart/uart_top.v(144).
-Optimizing 153 design-units (inlining 168/239 module instances):
+Optimizing 165 design-units (inlining 182/286 module instances):
 -- Inlining module wb_dma_ch_rf(fast)
 -- Inlining module wb_dma_ch_rf(fast__1)
 -- Inlining module wb_dma_ch_rf(fast__2)
@@ -972,6 +998,8 @@ Optimizing 153 design-units (inlining 168/239 module instances):
 -- Optimizing module altsyncram(fast__1)
 -- Inlining module altsyncram_body(fast__2)
 -- Optimizing module altsyncram(fast__2)
+-- Inlining module altsyncram_body(fast__3)
+-- Optimizing module altsyncram(fast__3)
 -- Optimizing module wb_dma_ch_arb(fast)
 -- Inlining module wb_NxN_arbiter(fast)
 -- Optimizing module wb_interconnect_NxN(fast)
@@ -986,60 +1014,66 @@ Optimizing 153 design-units (inlining 168/239 module instances):
 -- Inlining module uart_debug_if(fast)
 -- Inlining module uart_top(fast)
 -- Optimizing module wb_uart(fast)
--- Inlining interface wb_if(fast)
--- Inlining interface wb_if(fast__1)
--- Inlining interface generic_sram_line_en_if(fast__1)
--- Inlining interface wb_if(fast__2)
--- Inlining module mor1kx_soc(fast)
+-- Inlining interface fpio_fifo_if(fast)
 -- Inlining interface uart_serial_bfm(fast)
 -- Inlining module or1200_monitor(fast)
 -- Optimizing module mor1kx_uvm_tb(fast)
 -- Optimizing module ALTERA_DEVICE_FAMILIES(fast)
 -- Optimizing module ALTERA_MF_MEMORY_INITIALIZATION(fast)
--- Optimizing module wb_interconnect_4x7(fast)
+-- Inlining interface wb_if(fast)
+-- Inlining interface wb_if(fast__1)
+-- Inlining interface generic_sram_line_en_if(fast__1)
+-- Inlining interface wb_if(fast__2)
+-- Optimizing module mor1kx_soc(fast)
+-- Optimizing module wb_interconnect_4x8(fast)
 -- Optimizing module simple_pic(fast)
+-- Inlining interface generic_sram_line_en_if(fast__3)
+-- Optimizing module fpio_fifo(fast)
+-- Inlining module generic_sram_line_en_dualport(fast)
+-- Optimizing module generic_sram_line_en_dualport_w(fast)
 -- Optimizing module or1200_top_w(fast)
 -- Inlining module generic_sram_byte_en(fast)
 -- Optimizing module generic_sram_byte_en_w(fast)
 -- Inlining module generic_sram_byte_en(fast__1)
 -- Optimizing module generic_sram_byte_en_w(fast__1)
+-- Inlining interface fpio_fifo_if(fast)
+-- Optimizing module fpio(fast)
 -- Inlining module generic_rom(fast)
 -- Optimizing module generic_rom_w(fast)
 -- Optimizing module wb_generic_byte_en_sram_bridge(fast)
 -- Optimizing module wb_generic_byte_en_sram_bridge(fast__1)
 -- Optimizing module wb_generic_line_en_sram_bridge(fast)
 -- Optimizing module wb_generic_line_en_sram_bridge(fast__1)
+-- Optimizing module wb_generic_line_en_sram_bridge(fast__2)
 -- Inlining interface generic_sram_byte_en_if(fast)
 -- Optimizing module wb_sram(fast)
 -- Inlining interface generic_sram_byte_en_if(fast__1)
 -- Optimizing module wb_sram(fast__1)
+-- Inlining interface generic_sram_line_en_if(fast__2)
+-- Optimizing module wb_fpio(fast)
 -- Inlining interface generic_sram_line_en_if(fast)
 -- Optimizing module wb_rom(fast)
 -- Optimizing module simple_pic_w(fast)
 -- Optimizing module wb_master_stub(fast)
--- Optimizing package wb_dma_fw_pkg(fast)
 -- Optimizing package sv_bfms_api_pkg(fast)
+-- Optimizing package vmon_client_pkg(fast)
 -- Optimizing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)(fast)
 -- Optimizing package mtiUvm.questa_uvm_pkg(fast)
 -- Optimizing package sv_bfms_utils_pkg(fast)
 -- Optimizing package uart_serial_agent_pkg(fast)
 -- Optimizing package mor1kx_uvm_env_pkg(fast)
 -- Optimizing package mor1kx_uvm_tests_pkg(fast)
+-- Optimizing interface fpio_fifo_if(fast)
 -- Optimizing interface wb_if(fast)
 -- Optimizing interface generic_sram_line_en_if(fast)
 -- Optimizing interface generic_sram_byte_en_if(fast)
 -- Optimizing interface uart_serial_bfm(fast)
-viscom:
-VISCOM: QuestaSim /u/release/10.6a/questasim/linux_x86_64/Visualizer/bin/viscom 10.6a at 2017.03 Mar 16 2017
-VISCOM: Writing design.bin
-VISCOM: Done writing design.bin
-
 Optimized design name is mor1kx_uvm_tb_opt
-End time: 15:22:08 on Apr 27,2017, Elapsed time: 0:00:05
+End time: 10:19:45 on Jun 09,2017, Elapsed time: 0:00:02
 Errors: 0, Warnings: 1
-SIMSCRIPTS_TOOLS: visualizer
-SIMSCRIPTS_PLUSARGS_TOOLS: visualizer
-PLUSARGS: +SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/baremetal/helloworld.elf +TIMEOUT=20ms +UVM_TESTNAME=mor1kx_uvm_asm_test +tool.visualizer
+SIMSCRIPTS_TOOLS: 
+SIMSCRIPTS_PLUSARGS_TOOLS: 
+PLUSARGS: +SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/asm/smoketest.elf +UVM_TESTNAME=mor1kx_uvm_asm_test
 INFACT_IMPORT_TARGETS: 
 build-pre-compile: 
 build-compile: vlog_compile
@@ -1051,33 +1085,16 @@ make: Leaving directory `/export/scratch/ballance/rundir/mor1kx_uvm/qs'
 make: Entering directory `/export/scratch/ballance/rundir/mor1kx_uvm/qs'
 == Simulator: qs == 
 == Enabled Tools ==
-  - visualizer
 make: Leaving directory `/export/scratch/ballance/rundir/mor1kx_uvm/qs'
-or1k-elf-objcopy /scratch1/ballance/rundir/mor1kx_uvm/qs/mor1kx_soc_boot.elf -O ihex rom.ihex
-perl /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/synthscripts/bin/objcopy_ihex2quartus_filter.pl rom.ihex rom.hex
 fill=0
-or1k-elf-objcopy /scratch1/ballance/rundir/mor1kx_uvm/qs/baremetal/helloworld.elf -O ihex ram.ihex
-perl /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/synthscripts/bin/objcopy_ihex2quartus_filter.pl \
-		-fill 0x1000 ram.ihex ram.hex
 fill=4096
-touch run-pre
-echo  > run.do
-echo "echo \"SV_SEED: 1\"" >> run.do
-echo "coverage attribute -name TESTNAME -value mor1kx_uvm_baremetal_helloworld_1" >> run.do
-echo "coverage save -onexit cov.ucdb" >> run.do
-echo "run 20ms; quit -f" >> run.do
-vmap work /scratch1/ballance/rundir/mor1kx_uvm/qs/work 
 QuestaSim-64 vmap 10.6a Lib Mapping Utility 2017.03 Mar 16 2017
 vmap work /scratch1/ballance/rundir/mor1kx_uvm/qs/work 
 Copying /u/release/10.6a/questasim/linux_x86_64/../modelsim.ini to modelsim.ini
 Modifying modelsim.ini
-if test -f /scratch1/ballance/rundir/mor1kx_uvm/qs/design.bin; then cp /scratch1/ballance/rundir/mor1kx_uvm/qs/design.bin .; fi
-vsim -suppress 3009  -sv_seed 1 -classdebug -uvmcontrol=struct,msglog -qwavedb=+report=class+signal+class+transaction+uvm_schematic -batch -do run.do mor1kx_uvm_tb_opt -l simx.log \
-		+TESTNAME=mor1kx_uvm_baremetal_helloworld -f sim.f -sv_lib /scratch1/ballance/rundir/mor1kx_uvm/qs/dpi 
-# Loading Mentor Graphics Visualizer shared object '/u/release/10.6a/questasim/linux_x86_64/Visualizer/bin/libqvisualizer.so'
-# vsim -suppress 3009 -sv_seed 1 -classdebug -uvmcontrol=struct,msglog -qwavedb=+report=class+signal+class+transaction+uvm_schematic -batch -do "run.do" mor1kx_uvm_tb_opt -l simx.log "+TESTNAME=mor1kx_uvm_baremetal_helloworld" "+UVM_TESTNAME=mor1kx_uvm_asm_test" "+SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/baremetal/helloworld.elf" "+TIMEOUT=20ms" -sv_lib /scratch1/ballance/rundir/mor1kx_uvm/qs/dpi 
-# Start time: 15:22:08 on Apr 27,2017
-# Loading /scratch1/ballance/tmp/ballance@infact6_dpi_19639/linux_x86_64_gcc-5.3.0/export_tramp.so
+# vsim -suppress 3009 -sv_seed 1 -batch -do "run.do" mor1kx_uvm_tb_opt -l simx.log "+TESTNAME=mor1kx_uvm_asm_smoketest" "+UVM_TESTNAME=mor1kx_uvm_asm_test" "+SW_IMAGE=/scratch1/ballance/rundir/mor1kx_uvm/qs/asm/smoketest.elf" -sv_lib /scratch1/ballance/rundir/mor1kx_uvm/qs/dpi 
+# Start time: 10:19:46 on Jun 09,2017
+# Loading /scratch1/ballance/tmp/ballance@infact6_dpi_15703/linux_x86_64_gcc-5.3.0/export_tramp.so
 # //  Questa Sim-64
 # //  Version 10.6a linux_x86_64 Mar 16 2017
 # //
@@ -1093,18 +1110,21 @@ vsim -suppress 3009  -sv_seed 1 -classdebug -uvmcontrol=struct,msglog -qwavedb=+
 # //  18 U.S.C. Section 1905.
 # //
 # Loading sv_std.std
-# Loading work.wb_dma_fw_pkg(fast)
 # Loading work.sv_bfms_api_pkg(fast)
 # Loading mtiUvm.uvm_pkg
 # Loading work.sv_bfms_utils_pkg(fast)
+# Loading work.vmon_client_pkg(fast)
 # Loading work.uart_serial_bfm(fast)
 # Loading work.uart_serial_agent_pkg(fast)
 # Loading work.mor1kx_uvm_env_pkg(fast)
 # Loading work.mor1kx_uvm_tests_pkg(fast)
+# ** Warning: (vsim-PLI-3691) /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/tests/mor1kx_uvm_asm_test.svh(68): Expected a system task, not a system function '$value$plusargs'.
+#    Time: 0 ns  Iteration: 0  Region: /mor1kx_uvm_tests_pkg::mor1kx_uvm_asm_test::run_phase File: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/ve/mor1kx_uvm/tests/mor1kx_uvm_tests_pkg.sv
 # Loading work.mor1kx_uvm_tb(fast)
+# Loading work.mor1kx_soc(fast)
 # Loading work.or1200_top_w(fast)
 # Loading work.or1200_top(fast)
-# Loading work.wb_interconnect_4x7(fast)
+# Loading work.wb_interconnect_4x8(fast)
 # Loading work.wb_interconnect_NxN(fast)
 # Loading work.wb_rom(fast)
 # Loading work.wb_generic_line_en_sram_bridge(fast)
@@ -1127,34 +1147,20 @@ vsim -suppress 3009  -sv_seed 1 -classdebug -uvmcontrol=struct,msglog -qwavedb=+
 # Loading work.wb_uart(fast)
 # Loading work.simple_pic_w(fast)
 # Loading work.simple_pic(fast)
+# Loading work.wb_fpio(fast)
+# Loading work.wb_generic_line_en_sram_bridge(fast__2)
+# Loading work.fpio(fast)
+# Loading work.fpio_fifo(fast)
+# Loading work.generic_sram_line_en_dualport_w(fast)
+# Loading work.altsyncram(fast__3)
 # Loading mtiUvm.questa_uvm_pkg(fast)
+# Compiling /scratch1/ballance/tmp/ballance@infact6_dpi_15703/linux_x86_64_gcc-5.3.0/exportwrapper.c
+# Loading /scratch1/ballance/tmp/ballance@infact6_dpi_15703/linux_x86_64_gcc-5.3.0/vsim_auto_compile.so
 # Loading /scratch1/ballance/rundir/mor1kx_uvm/qs/dpi.so
 # Loading /u/release/10.6a/questasim/uvm-1.1d/linux_x86_64/uvm_dpi.so
-# ** Warning: (vsim-3770) Failed to find user specified function '_wb_dma_drv_init' in DPI precompiled library search list "/scratch1/ballance/rundir/mor1kx_uvm/qs/dpi.so /u/release/10.6a/questasim/uvm-1.1d/linux_x86_64/uvm_dpi.so ".
-#    Time: 0 ps  Iteration: 0  Region: /wb_dma_fw_pkg File: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/oc_wb_ip/rtl/wb_dma/fw/wb_dma_fw_pkg.sv
-# ** Warning: (vsim-3770) Failed to find user specified function '_wb_dma_drv_init_single_xfer' in DPI precompiled library search list "/scratch1/ballance/rundir/mor1kx_uvm/qs/dpi.so /u/release/10.6a/questasim/uvm-1.1d/linux_x86_64/uvm_dpi.so ".
-#    Time: 0 ps  Iteration: 0  Region: /wb_dma_fw_pkg File: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/oc_wb_ip/rtl/wb_dma/fw/wb_dma_fw_pkg.sv
-# ** Warning: (vsim-3770) Failed to find user specified function '_wb_dma_drv_init_linklist_desc' in DPI precompiled library search list "/scratch1/ballance/rundir/mor1kx_uvm/qs/dpi.so /u/release/10.6a/questasim/uvm-1.1d/linux_x86_64/uvm_dpi.so ".
-#    Time: 0 ps  Iteration: 0  Region: /wb_dma_fw_pkg File: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/oc_wb_ip/rtl/wb_dma/fw/wb_dma_fw_pkg.sv
-# ** Warning: (vsim-3770) Failed to find user specified function '_wb_dma_drv_init_linklist_xfer' in DPI precompiled library search list "/scratch1/ballance/rundir/mor1kx_uvm/qs/dpi.so /u/release/10.6a/questasim/uvm-1.1d/linux_x86_64/uvm_dpi.so ".
-#    Time: 0 ps  Iteration: 0  Region: /wb_dma_fw_pkg File: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/oc_wb_ip/rtl/wb_dma/fw/wb_dma_fw_pkg.sv
-# ** Warning: (vsim-3770) Failed to find user specified function '_wb_dma_drv_check_status' in DPI precompiled library search list "/scratch1/ballance/rundir/mor1kx_uvm/qs/dpi.so /u/release/10.6a/questasim/uvm-1.1d/linux_x86_64/uvm_dpi.so ".
-#    Time: 0 ps  Iteration: 0  Region: /wb_dma_fw_pkg File: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/oc_wb_ip/rtl/wb_dma/fw/wb_dma_fw_pkg.sv
-# ** Warning: (vsim-3770) Failed to find user specified function '_wb_dma_drv_poll' in DPI precompiled library search list "/scratch1/ballance/rundir/mor1kx_uvm/qs/dpi.so /u/release/10.6a/questasim/uvm-1.1d/linux_x86_64/uvm_dpi.so ".
-#    Time: 0 ps  Iteration: 0  Region: /wb_dma_fw_pkg File: /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/rtl/oc_wb_ip/rtl/wb_dma/fw/wb_dma_fw_pkg.sv
 # 
 # do run.do
 # SV_SEED: 1
-# 
-# *****************************************************************
-#    Using QuickLZ compression software.
-# *****************************************************************
-# 
-# qwavedb_dumpvars: Initiating qwavedb class logging
-# 
-# 	Loading class filter file '/u/release/10.6a/questasim/linux_x86_64/Visualizer/bin/../config/uvmclassfilter.txt'
-# 
-# qwavedb_dumpvars: Done initiating qwavedb class logging
 # ----------------------------------------------------------------
 # UVM-1.1d
 # (C) 2007-2013 Mentor Graphics Corporation
@@ -1176,7 +1182,7 @@ vsim -suppress 3009  -sv_seed 1 -classdebug -uvmcontrol=struct,msglog -qwavedb=+
 #       (Specify +UVM_NO_RELNOTES to turn off this notice)
 # 
 # UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(215) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.3
-# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(217) @ 0: reporter [Questa UVM]  questa_uvm::init(+trlog,+msglog)
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(217) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
 # WB_SRAM path mor1kx_uvm_tb.u_soc.u_ram: MEM_ADDR_BITS=15 WB_ADDRESS_WIDTH=32 WB_DATA_WIDTH=32
 # mor1kx_uvm_tb.u_soc.u_ram.u_bridge: ADDRESS_WIDTH=15 DATA_WIDTH=32 ADR[16:2]
 # WB_SRAM path mor1kx_uvm_tb.u_soc.u_scratchpad: MEM_ADDR_BITS=10 WB_ADDRESS_WIDTH=32 WB_DATA_WIDTH=32
@@ -1186,314 +1192,24 @@ vsim -suppress 3009  -sv_seed 1 -classdebug -uvmcontrol=struct,msglog -qwavedb=+
 # (mor1kx_uvm_tb.u_soc.u_uart.uart_top) UART INFO: Doesn't have baudrate output
 # 
 # UVM_INFO @ 0.00 ns: reporter [RNTST] Running test mor1kx_uvm_asm_test...
-# UART: has_monitor=1
-# --> getc
-# Mentor Graphics software version 10.6a (Build number 0)
-# Copyright (C) 1999-2015 by Mentor Graphics All rights reserved.
-	 Class Filter File used = /u/release/10.6a/questasim/linux_x86_64/Visualizer/bin/../config/uvmclassfilter.txt
-# qwavedb_dumpvars: Initiating qwavedb waveform capturing
+# UART: has_monitor=0
+client_add_h2m_if: 0x316cdf0
+ret: 0x31a9140
+# --> connect
 # 
-# 
-# qwavedb_dumpvars: Done initiating qwavedb waveform capturing
-# 
-# UART Write: 'h00000003
-# UART Write: 'h00000000
-# UART Write: 'h00000003
-# UART Write: 'h00000000
-#  60450.00 ns: beginning of start bit
-#  67810.00 ns: end of start bit
-#  71490.00 ns: sample data bit 0
-#  78850.00 ns: sample data bit 1
-#  86210.00 ns: sample data bit 0
-#  93570.00 ns: sample data bit 1
-# 100930.00 ns: sample data bit 0
-# 108290.00 ns: sample data bit 1
-# 115650.00 ns: sample data bit 1
-# 123010.00 ns: sample data bit 1
-# Rx Done
-# <-- getc ea
-# --> getc
-# UART Write: 'h00000000
-# 134970.00 ns: beginning of start bit
-# 142330.00 ns: end of start bit
-# 146010.00 ns: sample data bit 1
-# 153370.00 ns: sample data bit 0
-# 160730.00 ns: sample data bit 0
-# 168090.00 ns: sample data bit 0
-# 175450.00 ns: sample data bit 0
-# 182810.00 ns: sample data bit 0
-# 190170.00 ns: sample data bit 0
-# 197530.00 ns: sample data bit 0
-# Rx Done
-# <-- getc 01
-# --> putc
-# **************************************************************************
-# * Questa UVM Transaction Recording Turned ON.                            *
-# * recording_detail has been set.                                         *
-# *  To turn off, set 'recording_detail' to off:                           *
-# * uvm_config_db#(int)            ::set(null, "", "recording_detail", 0); *
-# * uvm_config_db#(uvm_bitstream_t)::set(null, "", "recording_detail", 0); *
-# **************************************************************************
-# ------------------------------------
-# Name  Type               Size  Value
-# ------------------------------------
-# item  uvm_sequence_item  -     @716 
-# ------------------------------------
-# 201670.00 ns: Begin Tx
-# 209490.00 ns: Begin Data Bit 0
-# 216850.00 ns: Begin Data Bit 1
-# 224210.00 ns: Begin Data Bit 2
-# 231570.00 ns: Begin Data Bit 3
-# 238930.00 ns: Begin Data Bit 4
-# 246290.00 ns: Begin Data Bit 5
-# 253650.00 ns: Begin Data Bit 6
-# 261010.00 ns: Begin Data Bit 7
-# 275270.00 ns: End stop bit
-# <-- putc
-# --> getc
-# UART Write: 'h00000000
-# 283550.00 ns: beginning of start bit
-# 290910.00 ns: end of start bit
-# 294590.00 ns: sample data bit 0
-# 301950.00 ns: sample data bit 1
-# 309310.00 ns: sample data bit 0
-# 316670.00 ns: sample data bit 0
-# 324030.00 ns: sample data bit 0
-# 331390.00 ns: sample data bit 0
-# 338750.00 ns: sample data bit 0
-# 346110.00 ns: sample data bit 0
-# Rx Done
 # Saving coverage database on exit...
-# qwavedb_dumpvars : Simulation ending at [4 2820130816] 0
-# ========= Visualizer Dump Summary report =========
-# 	 #Design Ids       = 3097
-# 	 #Class Ids        = 1808 (Recycled = 0)
-# 	 #Transaction Ids  = 1
-# 	 #Total Ids        = 4907
-# 	 #Swaps            = 14
-# 	  Id Memory        = 510.33 KB
-# 	  Swap Memory      = 50.00 MB
-# ========= End of Visualizer Dump Summary report =========
-# 
-# ======================== Class Defs ========================
-# 
-# Class uvm_factory (11) with 2 vars:
-# 	Var m_debug_pass
-# 	Var m_inst
-# Class uvm_recorder (55) with 13 vars:
-# 	Var m_leaf_name
-# 	Var file
-# 	Var handle
-# 	Var recording_depth
-# 	Var tr_handle
-# 	Var abstract
-# 	Var identifier
-# 	Var physical
-# 	Var default_radix
-# 	Var policy
-# 	Var filename
-# 	Var type_name
-# 	Var scope
-# Class uvm_report_server (62) with 6 vars:
-# 	Var m_leaf_name
-# 	Var max_quit_count
-# 	Var quit_count
-# 	Var enable_report_id_count_summary
-# 	Var m_max_quit_overridable
-# 	Var m_global_report_server
-# Class uvm_end_of_elaboration_phase (74) with 3 vars:
-# 	Var m_leaf_name
-# 	Var type_name
-# 	Var m_inst
-# Class uvm_start_of_simulation_phase (75) with 3 vars:
-# 	Var m_leaf_name
-# 	Var type_name
-# 	Var m_inst
-# Class uvm_run_phase (76) with 3 vars:
-# 	Var m_leaf_name
-# 	Var type_name
-# 	Var m_inst
-# Class uvm_check_phase (78) with 3 vars:
-# 	Var m_leaf_name
-# 	Var type_name
-# 	Var m_inst
-# Class uvm_report_phase (79) with 3 vars:
-# 	Var m_leaf_name
-# 	Var type_name
-# 	Var m_inst
-# Class uvm_reset_phase (82) with 3 vars:
-# 	Var m_leaf_name
-# 	Var type_name
-# 	Var m_inst
-# Class uvm_configure_phase (85) with 3 vars:
-# 	Var m_leaf_name
-# 	Var type_name
-# 	Var m_inst
-# Class uvm_main_phase (88) with 3 vars:
-# 	Var m_leaf_name
-# 	Var type_name
-# 	Var m_inst
-# Class uvm_root (94) with 7 vars:
-# 	Var m_leaf_name
-# 	Var m_name
-# 	Var enable_print_topology
-# 	Var finish_on_completion
-# 	Var m_phase_all_done
-# 	Var clp
-# 	Var m_inst
-# Class uart_serial_driver (336) with 5 vars:
-# 	Var m_leaf_name
-# 	Var m_name
-# 	Var report_id
-# 	Var ap
-# 	Var m_cfg
-# Class uart_serial_config (345) with 7 vars:
-# 	Var m_leaf_name
-# 	Var has_driver
-# 	Var has_monitor
-# 	Var has_sequencer
-# 	Var report_id
-# 	Var vif_path
-# 	Var vif
-# Class uart_serial_seq_item (346) with 10 vars:
-# 	Var m_leaf_name
-# 	Var m_transaction_id
-# 	Var stream_handle
-# 	Var tr_handle
-# 	Var m_recorder
-# 	Var m_sequence_id
-# 	Var m_parent_sequence
-# 	Var m_sequencer
-# 	Var data
-# 	Var report_id
-# Class uart_serial_monitor (347) with 6 vars:
-# 	Var m_leaf_name
-# 	Var m_name
-# 	Var type_name
-# 	Var report_id
-# 	Var ap
-# 	Var m_cfg
-# Class uart_serial_agent (348) with 12 vars:
-# 	Var m_leaf_name
-# 	Var m_name
-# 	Var is_active
-# 	Var type_name
-# 	Var report_id
-# 	Var m_cfg
-# 	Var m_driver
-# 	Var m_drv_out_ap
-# 	Var m_mon_out_ap
-# 	Var m_monitor
-# 	Var m_recv_item
-# 	Var m_seqr
-# Class uart_serial_tx_seq (364) with 10 vars:
-# 	Var m_leaf_name
-# 	Var m_transaction_id
-# 	Var stream_handle
-# 	Var tr_handle
-# 	Var m_recorder
-# 	Var m_sequence_id
-# 	Var m_parent_sequence
-# 	Var m_sequencer
-# 	Var report_id
-# 	Var type_name
-# Class uvm_sequencer__3 (367) with 2 vars:
-# 	Var m_leaf_name
-# 	Var m_name
-# Class mor1kx_uvm_env (375) with 5 vars:
-# 	Var m_leaf_name
-# 	Var m_name
-# 	Var type_name
-# 	Var type_name
-# 	Var m_uart_agent
-# Class mor1kx_uvm_asm_test (381) with 7 vars:
-# 	Var m_leaf_name
-# 	Var m_name
-# 	Var type_name
-# 	Var type_name
-# 	Var m_env
-# 	Var type_name
-# 	Var m_run_phase
-# Class questa_messagelogger_report_server (384) with 7 vars:
-# 	Var m_leaf_name
-# 	Var max_quit_count
-# 	Var quit_count
-# 	Var enable_report_id_count_summary
-# 	Var m_max_quit_overridable
-# 	Var m_global_report_server
-# 	Var m_q
-# Class questa_uvm_recorder (386) with 20 vars:
-# 	Var m_leaf_name
-# 	Var file
-# 	Var handle
-# 	Var recording_depth
-# 	Var tr_handle
-# 	Var abstract
-# 	Var identifier
-# 	Var physical
-# 	Var default_radix
-# 	Var policy
-# 	Var filename
-# 	Var type_name
-# 	Var scope
-# 	Var UVM_TR_TRACE_API
-# 	Var UVM_TR_TRACE_API_DETAIL
-# 	Var UVM_TR_TRACE_PLI_CALLS
-# 	Var uvm_tr_initialized
-# 	Var type_name
-# 	Var questa_uvm_default_recorder
-# 	Var scope
-# Class questa_uvm_components_finalized_phase (387) with 3 vars:
-# 	Var m_leaf_name
-# 	Var type_name
-# 	Var m_inst
-# ======================== Class Defs End ====================
-# 
-# ======================== Class Dumping Summary ========================
-# 
-#      #Inst  Id's/inst         Name
-#          3         10         uart_serial_seq_item
-#          1         20         questa_uvm_recorder
-#          1         13         uvm_recorder
-#          1         12         uart_serial_agent
-#          1         10         uart_serial_tx_seq
-#          1          7         uvm_root
-#          1          7         uart_serial_config
-#          1          7         mor1kx_uvm_asm_test
-#          1          7         questa_messagelogger_report_server
-#          1          6         uvm_report_server
-#          1          6         uart_serial_monitor
-#          1          5         uart_serial_driver
-#          1          5         mor1kx_uvm_env
-#          1          3         uvm_end_of_elaboration_phase
-#          1          3         uvm_start_of_simulation_phase
-#          1          3         uvm_run_phase
-#          1          3         uvm_check_phase
-#          1          3         uvm_report_phase
-#          1          3         uvm_reset_phase
-#          1          3         uvm_configure_phase
-#          1          3         uvm_main_phase
-#          1          3         questa_uvm_components_finalized_phase
-#          1          2         uvm_factory
-#          1          2         uvm_sequencer__3
-# --------------------------------------------------------------------------------
-#         26        146         Total
-# ======================== End of Class Dumping Summary ========================
-# End time: 15:22:31 on Apr 27,2017, Elapsed time: 0:00:23
-# Errors: 0, Warnings: 6
-touch run-main
-touch run-post
-touch run
+# End time: 10:20:43 on Jun 09,2017, Elapsed time: 0:00:57
+# Errors: 0, Warnings: 1
 Failed to launch check program at /home/ballance/dirs/infact/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/simscripts/bin/runtest.pl line 768.
 make: Entering directory `/export/scratch/ballance/rundir/mor1kx_uvm/qs'
-vcover merge /scratch1/ballance/rundir/mor1kx_uvm/cov_merge.ucdb /scratch1/ballance/rundir/mor1kx_uvm/mor1kx_uvm_baremetal_helloworld_0001/cov.ucdb
+vcover merge /scratch1/ballance/rundir/mor1kx_uvm/cov_merge.ucdb /scratch1/ballance/rundir/mor1kx_uvm/mor1kx_uvm_asm_smoketest_0001/cov.ucdb
 QuestaSim-64 vcover 10.6a Coverage Utility 2017.03 Mar 16 2017
-Start time: 15:22:31 on Apr 27,2017
-vcover merge /scratch1/ballance/rundir/mor1kx_uvm/cov_merge.ucdb /scratch1/ballance/rundir/mor1kx_uvm/mor1kx_uvm_baremetal_helloworld_0001/cov.ucdb 
+Start time: 10:20:43 on Jun 09,2017
+vcover merge /scratch1/ballance/rundir/mor1kx_uvm/cov_merge.ucdb /scratch1/ballance/rundir/mor1kx_uvm/mor1kx_uvm_asm_smoketest_0001/cov.ucdb 
 QuestaSim-64 vcover 10.6a Coverage Utility 2017.03 Mar 16 2017
-Merging file /scratch1/ballance/rundir/mor1kx_uvm/mor1kx_uvm_baremetal_helloworld_0001/cov.ucdb
+Merging file /scratch1/ballance/rundir/mor1kx_uvm/mor1kx_uvm_asm_smoketest_0001/cov.ucdb
 Writing merged result to /scratch1/ballance/rundir/mor1kx_uvm/cov_merge.ucdb
 
-End time: 15:22:31 on Apr 27,2017, Elapsed time: 0:00:00
+End time: 10:20:43 on Jun 09,2017, Elapsed time: 0:00:00
 Errors: 0, Warnings: 0
 make: Leaving directory `/export/scratch/ballance/rundir/mor1kx_uvm/qs'

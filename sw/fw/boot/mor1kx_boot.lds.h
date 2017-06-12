@@ -9,7 +9,7 @@ __DYNAMIC = 0;
 // 20 - 1M
 #define ROM_ORIGIN	0x00000000
 #define ROM_LENGTH	0x00010000 // 64k
-#define RAM_ORIGIN  0x10000000
+#define RAM_ORIGIN  0x02000000
 // #define RAM_LENGTH	0x00100000 // 1M
 #define RAM_LENGTH	0x00001000 // 4k
 
@@ -95,7 +95,8 @@ SECTIONS
 
 	_heap = .; PROVIDE(heap = .);
 
- 	. += (RAM_LENGTH - 4);
+// 	. += (RAM_LENGTH - 4);
+ 	. = (RAM_ORIGIN + RAM_LENGTH - 4);
 	_ram_end = .; PROVIDE(ram_end = .);
 
 //	  . = DATA_SEGMENT_END (.);

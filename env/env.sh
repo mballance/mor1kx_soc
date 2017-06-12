@@ -11,6 +11,7 @@ if test "$uname_o" = "Cygwin"; then
 fi
 
 export UEX=${MOR1KX_SOC}/sw/uex
+export FPIO=${MOR1KX_SOC}/rtl/fpio
 export GOOGLETEST_UVM=${MOR1KX_SOC}/ve/googletest_uvm
 export MOR1KX=${MOR1KX_SOC}/rtl/mor1kx_mod
 export WB_SYS_IP=${MOR1KX_SOC}/rtl/wb_sys_ip

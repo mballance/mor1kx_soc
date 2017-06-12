@@ -19,8 +19,11 @@ BAREMETAL_OBJ=\
 	mor1kx_crt0.o \
 	baremetal/libc_support.o
 
-$(BUILD_DIR_A)/baremetal/%.elf : baremetal/%.o $(BAREMETAL_OBJ) mor1kx_app.lds
-	$(Q)$(LD) -o $@ $(filter-out %.lds,$^) -T mor1kx_app.lds \
+$(BUILD_DIR_A)/baremetal/%.elf : \
+	baremetal/%.o $(BAREMETAL_OBJ) \
+	mor1kx_app.lds mor1kx_soc_boot.elf
+	$(Q)$(LD) -o $@ $(filter-out %.lds %.elf,$^) -T mor1kx_app.lds \
+		-R mor1kx_soc_boot.elf \
 		$(LIBC) $(LIBGCC) # $(LIBOR1K)
 
 #%.lds : $(SW_SRC_DIR)/baremetal/%.lds.h
