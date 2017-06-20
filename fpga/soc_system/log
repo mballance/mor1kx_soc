@@ -1,0 +1,5 @@
+run_root=/scratch1/ballance/rundir/fpga
+make: Entering directory `/export/scratch/ballance/rundir/fpga/synth'
+make: /project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/fpga/soc_system/scripts/Makefile: No such file or directory
+make: *** No rule to make target `/project/inFact/ballance/work/projects/pss_examples/infact_dma_block2soc/rtl/mor1kx_soc/fpga/soc_system/scripts/Makefile'.  Stop.
+make: Leaving directory `/export/scratch/ballance/rundir/fpga/synth'
